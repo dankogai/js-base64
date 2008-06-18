@@ -1,11 +1,11 @@
 /*
- * $Id: base64.js,v 0.1 2008/06/18 06:07:01 dankogai Exp dankogai $
+ * $Id: base64.js,v 0.2 2008/06/18 08:01:50 dankogai Exp dankogai $
  */
 
 (function(){
 
 var b64chars 
-    = 'ABCDEFGHIJKLMNOPQRSTUVWZYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+    = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 var b64tab = function(bin){
     var t = {};
     for (var i = 0, l = bin.length; i < l; i++) t[bin.charAt(i)] = i;
