@@ -10,7 +10,7 @@
 <tr><th width="50%">Text</th><th>Base64
 (URL Safe <input id="encodeURI" type="checkbox" onclick="doit()">)</th></tr>
 <tr>
-<th><textarea id="text" cols="32" rows="4" onkeyup="doit()">
+<th><textarea id="srctxt" cols="32" rows="4" onkeyup="doit()">
 </textarea></th>
 <th><textarea id="base64" cols=32" rows="4" onkeyup="
     $('text').value = Base64.decode(this.value);
@@ -28,13 +28,11 @@
 
 <script src="./base64.js"></script>
 <script>
-
 $ = function(id){ return document.getElementById(id) };
-
 function doit(){
     var encoded = Base64[ 
         'encode' + ($('encodeURI').checked ? 'URI' : '')
-     ]($('text').value);
+     ]($('srctxt').value);
     $('base64').value = encoded;
     if (1 /*@cc_on -1 @*/) {
         $('data').src = 'data:text/plain;base64,' 
