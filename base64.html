@@ -13,7 +13,7 @@
 <th><textarea id="srctxt" cols="32" rows="4" onkeyup="doit()">
 </textarea></th>
 <th><textarea id="base64" cols=32" rows="4" onkeyup="
-    $('text').value = Base64.decode(this.value);
+    $('srctxt').value = Base64.decode(this.value);
     doit();
     if (1 /*@cc_on -1 @*/) $('data').src = 'data:text/plain;base64,' + this.value;
 "></textarea></th>
