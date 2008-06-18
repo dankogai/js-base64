@@ -5,7 +5,7 @@
 (function(){
 
 var b64chars 
-    = 'ABCDEFGHIJKLMNOPQRSTUVWZYZabcdefghijklmnopqrstuvwzyz0123456789+/';
+    = 'ABCDEFGHIJKLMNOPQRSTUVWZYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 var b64tab = function(bin){
     var t = {};
     for (var i = 0, l = bin.length; i < l; i++) t[bin.charAt(i)] = i;
