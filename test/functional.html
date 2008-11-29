@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>base64.js performance test</title>
+        <script type="text/javascript" src="../base64.js"></script>
+<style type="text/css">
+ul#log li.ok {
+    color: green;
+}
+
+ul#log li.ng {
+    color: red;
+}
+</style>
+        <script type="text/javascript">
+            window.onload = function() {
+                var logElm = document.getElementById('log');
+                var test = function(method, source, result) {
+                    var toStr = function(v) {
+                        if (v instanceof Array) {
+                            var hexs = [];
+                            for (var i = 0; i < v.length; i ++) {
+                                hexs.push('0x' + v[i].toString(16).toUpperCase());
+                            }
+                            return '[' + hexs.join(', ') + ']';
+                        }
+                        else if (typeof v == 'string' || v instanceof String) {
+                            return '"' + v + '"';
+                        }
+                        return '[?]';
+                    }
+                    var elm = document.createElement('li');
+                    var fn = Base64[method];
+                    if (
+                            (typeof result == 'string' || result instanceof String) && fn(source) == result ||
+                            result instanceof Array && function(a, b) {
+                                if (a.length != b.length) return false;
+                                for (var i = 0; i < a.length; i ++) if (a[i] != b[i]) return false;
+                                return true;
+                            } (fn(source), result)
+                    ) {
+                        elm.className = 'ok';
+                        var message = 'Base64.' + method + '(' + toStr(source) + ') == ' + toStr(result);
+                    }
+                    else {
+                        elm.className = 'ng';
+                        var message = 'Base64.' + method + '(' + toStr(source) + ') == ' + toStr(fn(source)) + ' != ' + toStr(result);
+                    }
+                    elm.appendChild(document.createTextNode(message));
+                    logElm.appendChild(elm);
+                };
+
+                var data = {
+                    convertUTF8ArrayToBase64:[
+                        [[0x61], 'YQ=='],
+                        [[0xE3, 0x81, 0x81], '44GB'],
+                        [[0xE3, 0x81, 0x82], '44GC'],
+                        [[0xE3, 0x81, 0x83], '44GD'],
+                        [[0xE3, 0x81, 0x84], '44GE'],
+                        [[0x61, 0xE3, 0x81, 0x82], 'YeOBgg=='],
+                        [[0xE3, 0x81, 0x82, 0x61], '44GCYQ=='],
+                        [[0xE3, 0x81, 0xBE, 0xE3, 0x81, 0xBF], '44G+44G/']
+                    ],
+                    convertBase64ToUTF8Array:[
+                        ['YQ==', [0x61]],
+                        ['44GB', [0xE3, 0x81, 0x81]],
+                        ['44GC', [0xE3, 0x81, 0x82]],
+                        ['44GD', [0xE3, 0x81, 0x83]],
+                        ['44GE', [0xE3, 0x81, 0x84]],
+                        ['YeOBgg==', [0x61, 0xE3, 0x81, 0x82]],
+                        ['44GCYQ==', [0xE3, 0x81, 0x82, 0x61]],
+                        ['44G+44G/', [0xE3, 0x81, 0xBE, 0xE3, 0x81, 0xBF]]
+                    ],
+                    convertUTF16ArrayToUTF8Array:[
+                        [[0x61], [0x61]],
+                        [[0x3041], [0xE3, 0x81, 0x81]],
+                        [[0x3042], [0xE3, 0x81, 0x82]],
+                        [[0x3043], [0xE3, 0x81, 0x83]],
+                        [[0x3044], [0xE3, 0x81, 0x84]],
+                        [[0x61, 0x3042], [0x61, 0xE3, 0x81, 0x82]],
+                        [[0x3042, 0x61], [0xE3, 0x81, 0x82, 0x61]],
+                        [[0x307E, 0x307F], [0xE3, 0x81, 0xBE, 0xE3, 0x81, 0xBF]] 
+                    ],
+                    convertUTF8ArrayToUTF16Array:[
+                        [[0x61], [0x61]],
+                        [[0xE3, 0x81, 0x81], [0x3041]],
+                        [[0xE3, 0x81, 0x82], [0x3042]],
+                        [[0xE3, 0x81, 0x83], [0x3043]],
+                        [[0xE3, 0x81, 0x84], [0x3044]],
+                        [[0x61, 0xE3, 0x81, 0x82], [0x61, 0x3042]],
+                        [[0xE3, 0x81, 0x82, 0x61], [0x3042, 0x61]],
+                        [[0xE3, 0x81, 0xBE, 0xE3, 0x81, 0xBF], [0x307E, 0x307F]] 
+                    ],
+                    convertUTF8StringToBase64:[
+                        ['\u0061', 'YQ=='],
+                        ['\u00E3\u0081\u0081', '44GB'],
+                        ['\u00E3\u0081\u0082', '44GC'],
+                        ['\u00E3\u0081\u0083', '44GD'],
+                        ['\u00E3\u0081\u0084', '44GE'],
+                        ['\u0061\u00E3\u0081\u0082', 'YeOBgg=='],
+                        ['\u00E3\u0081\u0082\u0061', '44GCYQ=='],
+                        ['\u00E3\u0081\u00BE\u00E3\u0081\u00BF', '44G+44G/']
+                    ],
+                    convertBase64ToUTF8String:[
+                        ['YQ==', '\u0061'],
+                        ['44GB', '\u00E3\u0081\u0081'],
+                        ['44GC', '\u00E3\u0081\u0082'],
+                        ['44GD', '\u00E3\u0081\u0083'],
+                        ['44GE', '\u00E3\u0081\u0084'],
+                        ['YeOBgg==', '\u0061\u00E3\u0081\u0082'],
+                        ['44GCYQ==', '\u00E3\u0081\u0082\u0061'],
+                        ['44G+44G/', '\u00E3\u0081\u00BE\u00E3\u0081\u00BF']
+                    ],
+                    convertUTF8StringToUTF16Array:[
+                        ['\u0061', [0x61]],
+                        ['\u00E3\u0081\u0081', [0x3041]],
+                        ['\u00E3\u0081\u0082', [0x3042]],
+                        ['\u00E3\u0081\u0083', [0x3043]],
+                        ['\u00E3\u0081\u0084', [0x3044]],
+                        ['\u0061\u00E3\u0081\u0082', [0x61, 0x3042]],
+                        ['\u00E3\u0081\u0082\u0061', [0x3042, 0x61]],
+                        ['\u00E3\u0081\u00BE\u00E3\u0081\u00BF', [0x307E, 0x307F]] 
+                    ],
+                    convertUTF8ArrayToUTF16String:[
+                        [[0x61], 'a'],
+                        [[0xE3, 0x81, 0x81], 'ぁ'],
+                        [[0xE3, 0x81, 0x82], 'あ'],
+                        [[0xE3, 0x81, 0x83], 'ぃ'],
+                        [[0xE3, 0x81, 0x84], 'い'],
+                        [[0x61, 0xE3, 0x81, 0x82], 'aあ'],
+                        [[0xE3, 0x81, 0x82, 0x61], 'あa'],
+                        [[0xE3, 0x81, 0xBE, 0xE3, 0x81, 0xBF], 'まみ']
+                    ],
+                    convertUTF8StringToUTF16String:[
+                        ['\u0061', 'a'],
+                        ['\u00E3\u0081\u0081', 'ぁ'],
+                        ['\u00E3\u0081\u0082', 'あ'],
+                        ['\u00E3\u0081\u0083', 'ぃ'],
+                        ['\u00E3\u0081\u0084', 'い'],
+                        ['\u0061\u00E3\u0081\u0082', 'aあ'],
+                        ['\u00E3\u0081\u0082\u0061', 'あa'],
+                        ['\u00E3\u0081\u00BE\u00E3\u0081\u00BF', 'まみ']
+                    ],
+                    convertUTF16StringToUTF8Array:[
+                        ['a', [0x61]],
+                        ['ぁ', [0xE3, 0x81, 0x81]],
+                        ['あ', [0xE3, 0x81, 0x82]],
+                        ['ぃ', [0xE3, 0x81, 0x83]],
+                        ['い', [0xE3, 0x81, 0x84]],
+                        ['aあ', [0x61, 0xE3, 0x81, 0x82]],
+                        ['あa', [0xE3, 0x81, 0x82, 0x61]],
+                        ['まみ', [0xE3, 0x81, 0xBE, 0xE3, 0x81, 0xBF]]
+                    ],
+                    convertUTF16ArrayToUTF8String:[
+                        [[0x61], '\u0061'],
+                        [[0x3041], '\u00E3\u0081\u0081'],
+                        [[0x3042], '\u00E3\u0081\u0082'],
+                        [[0x3043], '\u00E3\u0081\u0083'],
+                        [[0x3044], '\u00E3\u0081\u0084'],
+                        [[0x61, 0x3042], '\u0061\u00E3\u0081\u0082'],
+                        [[0x3042, 0x61], '\u00E3\u0081\u0082\u0061'],
+                        [[0x307E, 0x307F], '\u00E3\u0081\u00BE\u00E3\u0081\u00BF'] 
+                    ],
+                    convertUTF16StringToUTF8String:[
+                        ['a', '\u0061'],
+                        ['ぁ', '\u00E3\u0081\u0081'],
+                        ['あ', '\u00E3\u0081\u0082'],
+                        ['ぃ', '\u00E3\u0081\u0083'],
+                        ['い', '\u00E3\u0081\u0084'],
+                        ['aあ', '\u0061\u00E3\u0081\u0082'],
+                        ['あa', '\u00E3\u0081\u0082\u0061'],
+                        ['まみ', '\u00E3\u0081\u00BE\u00E3\u0081\u00BF']
+                    ],
+                    convertUTF16StringToBase64:[
+                        ['a', 'YQ=='],
+                        ['ぁ', '44GB'],
+                        ['あ', '44GC'],
+                        ['ぃ', '44GD'],
+                        ['い', '44GE'],
+                        ['aあ', 'YeOBgg=='],
+                        ['あa', '44GCYQ=='],
+                        ['まみ', '44G+44G/']
+                    ],
+                    convertBase64ToUTF16String:[
+                        ['YQ==', 'a'],
+                        ['44GB', 'ぁ'],
+                        ['44GC', 'あ'],
+                        ['44GD', 'ぃ'],
+                        ['44GE', 'い'],
+                        ['YeOBgg==', 'aあ'],
+                        ['44GCYQ==', 'あa'],
+                        ['44G+44G/', 'まみ']
+                    ],
+                    fromBase64:[
+                        ['YQ==', '\u0061'],
+                        ['44GB', '\u00E3\u0081\u0081'],
+                        ['44GC', '\u00E3\u0081\u0082'],
+                        ['44GD', '\u00E3\u0081\u0083'],
+                        ['44GE', '\u00E3\u0081\u0084'],
+                        ['YeOBgg==', '\u0061\u00E3\u0081\u0082'],
+                        ['44GCYQ==', '\u00E3\u0081\u0082\u0061'],
+                        ['44G+44G/', '\u00E3\u0081\u00BE\u00E3\u0081\u00BF']
+                    ],
+                    toBase64:[
+                        ['\u0061', 'YQ=='],
+                        ['\u00E3\u0081\u0081', '44GB'],
+                        ['\u00E3\u0081\u0082', '44GC'],
+                        ['\u00E3\u0081\u0083', '44GD'],
+                        ['\u00E3\u0081\u0084', '44GE'],
+                        ['\u0061\u00E3\u0081\u0082', 'YeOBgg=='],
+                        ['\u00E3\u0081\u0082\u0061', '44GCYQ=='],
+                        ['\u00E3\u0081\u00BE\u00E3\u0081\u00BF', '44G+44G/']
+                    ],
+                    atob:[
+                        ['YQ==', '\u0061'],
+                        ['44GB', '\u00E3\u0081\u0081'],
+                        ['44GC', '\u00E3\u0081\u0082'],
+                        ['44GD', '\u00E3\u0081\u0083'],
+                        ['44GE', '\u00E3\u0081\u0084'],
+                        ['YeOBgg==', '\u0061\u00E3\u0081\u0082'],
+                        ['44GCYQ==', '\u00E3\u0081\u0082\u0061'],
+                        ['44G+44G/', '\u00E3\u0081\u00BE\u00E3\u0081\u00BF']
+                    ],
+                    btoa:[
+                        ['\u0061', 'YQ=='],
+                        ['\u00E3\u0081\u0081', '44GB'],
+                        ['\u00E3\u0081\u0082', '44GC'],
+                        ['\u00E3\u0081\u0083', '44GD'],
+                        ['\u00E3\u0081\u0084', '44GE'],
+                        ['\u0061\u00E3\u0081\u0082', 'YeOBgg=='],
+                        ['\u00E3\u0081\u0082\u0061', '44GCYQ=='],
+                        ['\u00E3\u0081\u00BE\u00E3\u0081\u00BF', '44G+44G/']
+                    ],
+                    utob:[
+                        ['a', '\u0061'],
+                        ['ぁ', '\u00E3\u0081\u0081'],
+                        ['あ', '\u00E3\u0081\u0082'],
+                        ['ぃ', '\u00E3\u0081\u0083'],
+                        ['い', '\u00E3\u0081\u0084'],
+                        ['aあ', '\u0061\u00E3\u0081\u0082'],
+                        ['あa', '\u00E3\u0081\u0082\u0061'],
+                        ['まみ', '\u00E3\u0081\u00BE\u00E3\u0081\u00BF']
+                    ],
+                    btou:[
+                        ['\u0061', 'a'],
+                        ['\u00E3\u0081\u0081', 'ぁ'],
+                        ['\u00E3\u0081\u0082', 'あ'],
+                        ['\u00E3\u0081\u0083', 'ぃ'],
+                        ['\u00E3\u0081\u0084', 'い'],
+                        ['\u0061\u00E3\u0081\u0082', 'aあ'],
+                        ['\u00E3\u0081\u0082\u0061', 'あa'],
+                        ['\u00E3\u0081\u00BE\u00E3\u0081\u00BF', 'まみ']
+                    ],
+                    encode:[
+                        ['a', 'YQ=='],
+                        ['ぁ', '44GB'],
+                        ['あ', '44GC'],
+                        ['ぃ', '44GD'],
+                        ['い', '44GE'],
+                        ['aあ', 'YeOBgg=='],
+                        ['あa', '44GCYQ=='],
+                        ['まみ', '44G+44G/']
+                    ],
+                    encodeURI:[
+                        ['a', 'YQ'],
+                        ['ぁ', '44GB'],
+                        ['あ', '44GC'],
+                        ['ぃ', '44GD'],
+                        ['い', '44GE'],
+                        ['aあ', 'YeOBgg'],
+                        ['あa', '44GCYQ'],
+                        ['まみ', '44G-44G_']
+                    ],
+                    decode:[
+                        ['YQ==', 'a'],
+                        ['YQ', 'a'],
+                        ['44GB', 'ぁ'],
+                        ['44GC', 'あ'],
+                        ['44GD', 'ぃ'],
+                        ['44GE', 'い'],
+                        ['YeOBgg==', 'aあ'],
+                        ['YeOBgg', 'aあ'],
+                        ['44GCYQ==', 'あa'],
+                        ['44GCYQ', 'あa'],
+                        ['44G+44G/', 'まみ'],
+                        ['44G-44G_', 'まみ']
+                    ]
+                };
+
+                for (var name in data)
+                    for (var i = 0; i < data[name].length; i ++)
+                        test.apply(null, [name, data[name][i][0], data[name][i][1]]);
+            };
+
+        </script>
+    </head>
+    <body>
+        <ul id="log"></ul>
+    </body>
+</html>

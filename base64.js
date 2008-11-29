@@ -185,6 +185,8 @@ window.Base64 = {
     convertUTF16StringToUTF8Array:convertUTF16StringToUTF8Array,
     convertUTF16ArrayToUTF8String:convertUTF16ArrayToUTF8String,
     convertUTF16StringToUTF8String:convertUTF16StringToUTF8String,
+    convertUTF16StringToBase64:convertUTF16StringToBase64,
+    convertBase64ToUTF16String:convertBase64ToUTF16String,
     fromBase64:convertBase64ToUTF8String,
     toBase64:convertUTF8StringToBase64,
     atob:atob,
