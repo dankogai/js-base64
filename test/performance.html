@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>base64.js performance test</title>
+        <script type="text/javascript" src="../base64.js"></script>
+        <script type="text/javascript">
+            window.onload = function() {
+                var logElm = document.getElementById('log');
+                var log = [];
+                var logIndex = 0;
+                var methods = ['utob', 'btou', 'atob', 'btoa'];
+                for (var i = 0; i < methods.length; i ++) {
+                    (function(method) {
+                        var fn = Base64[method];
+                        Base64[method + '_'] = function(a) {
+                            log[logIndex++] = '<li>' + method + ' start: ' + (new Date - start) + '</li>';
+                            var r = fn(a);
+                            log[logIndex++] = '<li>' + method + ' end  : ' + (new Date - start) + '</li>';
+                            return r;
+                        };
+                    })(methods[i])
+                }
+                var sources = [];
+                for (var i = 0; i < 1000; i ++) {
+                    sources.push('ほげほげ、foo foo bar bar、ほげほげ\n');
+                }
+                var source = sources.join('');
+                var start = new Date;
+                var result0 = Base64.btoa_(Base64.utob_(source));
+                var result1 = Base64.btou_(Base64.atob_(result0));
+                logElm.innerHTML = log.join('\n') + '<li>\nbase64:</li>\n<li>' + result0 + '</li><li>\nroundtrip:</li>\n<li>' + result1 + '</li>';
+            };
+        </script>
+    </head>
+    <body>
+<ul id="log"></ul>
+    </body>
+</html>
