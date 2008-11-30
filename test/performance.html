@@ -14,14 +14,14 @@
                     var fn = Base64[method];
                     Base64[method] = function() {
                         log[logIndex++] = '<li>' + method + ' start: ' + (new Date - start) + '</li>';
-                        if (fn.apply && !(fn + '').match(/native/))
+                        if (fn.apply && (fn + '').indexOf('[native code]') < 0)
                             var r = fn.apply(this, arguments);
                         else
                             var r = fn(arguments[0]);
                         log[logIndex++] = '<li>' + method + ' end  : ' + (new Date - start) + '</li>';
                         return r;
                     };
-                })(method)
+                })(method);
 
                 var sources = [];
                 for (var i = 0; i < 1000; i ++) {

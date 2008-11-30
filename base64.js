@@ -4,10 +4,10 @@
 
 (function(){
 
-var b64chars 
+var b64chars
     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
-var b64charcodes = function() {
+var b64charcodes = function(){
     var a = [];
     var codeA = 'A'.charCodeAt(0);
     var codea = 'a'.charCodeAt(0);
@@ -26,7 +26,7 @@ var b64tab = function(bin){
     return t;
 }(b64chars);
 
-var stringToArray = function(s) {
+var stringToArray = function(s){
     var a = [];
     for (var i = 0, l = s.length; i < l; i ++) a[i] = s.charCodeAt(i);
     return a;
@@ -34,14 +34,14 @@ var stringToArray = function(s) {
 
 var convertUTF8ArrayToBase64 = function(bin){
     var padlen = 0;
-    while(bin.length % 3) {
+    while (bin.length % 3){
         bin.push(0);
         padlen++;
     };
     var b64 = [];
     for (var i = 0, l = bin.length; i < l; i += 3){
         var c0 = bin[i], c1 = bin[i+1], c2 = bin[i+2];
-        if (c0 >= 256 || c1 >= 256 || c2 >= 256) 
+        if (c0 >= 256 || c1 >= 256 || c2 >= 256)
             throw 'unsupported character found';
         var n = (c0 << 16) | (c1 << 8) | c2;
         b64.push(
@@ -51,12 +51,12 @@ var convertUTF8ArrayToBase64 = function(bin){
             b64charcodes[ n         & 63]
         );
     }
-    while(padlen--) b64[b64.length - padlen - 1] = '='.charCodeAt(0);
+    while (padlen--) b64[b64.length - padlen - 1] = '='.charCodeAt(0);
     return String.fromCharCode.apply(String, b64);
 };
 
-var convertBase64ToUTF8Array = function(b64) {
-    b64 = b64.replace(/[^A-Za-z0-9\+\/]/g, '');
+var convertBase64ToUTF8Array = function(b64){
+    b64 = b64.replace(/[^A-Za-z0-9+\/]+/g, '');
     var bin = [];
     var padlen = b64.length % 4;
     for (var i = 0, l = b64.length; i < l; i += 4){
@@ -101,12 +101,12 @@ var convertUTF8ArrayToUTF16Array = function(bin){
             uni.push(c0);
         }else{
             var c1 = bin[++i];
-            if(c0 < 0xe0){
+            if (c0 < 0xe0){
                 uni.push(((c0 & 0x1f) << 6) | (c1 & 0x3f));
             }else{
                 var c2 = bin[++i];
                 uni.push(
-                       ((c0 & 0x0f) << 12) | ((c1 & 0x3f) <<  6) | (c2 & 0x3f)
+                       ((c0 & 0x0f) << 12) | ((c1 & 0x3f) << 6) | (c2 & 0x3f)
                 );
             }
         }
@@ -146,28 +146,28 @@ var convertUTF16StringToUTF8String = function(uni){
     return String.fromCharCode.apply(String, convertUTF16ArrayToUTF8Array(stringToArray(uni)));
 };
 
-if (window.btoa) {
+if (window.btoa){
     var btoa = window.btoa;
-    var convertUTF16StringToBase64 = function (uni) {
+    var convertUTF16StringToBase64 = function (uni){
         return btoa(convertUTF16StringToUTF8String(uni));
     };
 }
 else {
     var btoa = convertUTF8StringToBase64;
-    var convertUTF16StringToBase64 = function (uni) {
+    var convertUTF16StringToBase64 = function (uni){
         return convertUTF8ArrayToBase64(convertUTF16StringToUTF8Array(uni));
     };
 }
 
-if (window.atob) {
+if (window.atob){
     var atob = window.atob;
-    var convertBase64ToUTF16String = function (b64) {
+    var convertBase64ToUTF16String = function (b64){
         return convertUTF8StringToUTF16String(atob(b64));
     };
 }
 else {
     var atob = convertBase64ToUTF8String;
-    var convertBase64ToUTF16String = function (b64) {
+    var convertBase64ToUTF16String = function (b64){
         return convertUTF8ArrayToUTF16String(convertBase64ToUTF8Array(b64));
     };
 }
@@ -205,7 +205,7 @@ window.Base64 = {
             return m0 == '+' ? '-' : '_';
         }).replace(/=+$/, '');
     },
-    decode:function(a){ 
+    decode:function(a){
         return convertBase64ToUTF16String(a.replace(/[-_]/g, function(m0){
             return m0 == '-' ? '+' : '/';
         }));
