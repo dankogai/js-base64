@@ -1,5 +1,5 @@
 /*
- * $Id: base64.js,v 1.0 2009/03/01 22:00:51 dankogai Exp dankogai $
+ * $Id: base64.js,v 1.1 2009/03/01 22:38:45 dankogai Exp dankogai $
  *
  * History:
  *   dankogai's original: character-based
@@ -44,15 +44,15 @@ var toBase64 = function(bin){
 var btoa = window.btoa || toBase64;
 
 var sub_fromBase64 = function(m){
-    var n = (b64tab[b64.charAt(0)] << 18)
-        |   (b64tab[b64.charAt(1)] << 12)
-        |   (b64tab[b64.charAt(2)] <<  6)
-        |   (b64tab[b64.charAt(3)]);
+        var n = (b64tab[ m.charAt(0) ] << 18)
+            |   (b64tab[ m.charAt(1) ] << 12)
+            |   (b64tab[ m.charAt(2) ] <<  6)
+            |   (b64tab[ m.charAt(3) ]);
     return String.fromCharCode(  n >> 16 )
         +  String.fromCharCode( (n >>  8) & 0xff )
         +  String.fromCharCode(  n        & 0xff );
 };
-    
+
 var fromBase64 = function(b64){
     b64 = b64.replace(/[^A-Za-z0-9\+\/]/g, '');
     var padlen = 0;
@@ -60,7 +60,7 @@ var fromBase64 = function(b64){
         b64 += 'A';
         padlen++;
     }
-    var bin = b64.replace(/A-Za-z0-9\+\/{4}/g, sub_fromBase64);
+    var bin = b64.replace(/[A-Za-z0-9\+\/]{4}/g, sub_fromBase64);
     bin.length -= [0,0,2,1][padlen];
     return bin;
 };
@@ -84,7 +84,7 @@ var utob = function(uni){
 };
 
 var re_bytes_nonascii
-    = /(?:[\xC0-\xDF][\x80-\xBF]|[\xE0-\xEF][\x80-\xBF]{2}|[\xF0-\xF7][\x80-\xBF]{3})/g;
+    = /[\xC0-\xDF][\x80-\xBF]|[\xE0-\xEF][\x80-\xBF]{2}|[\xF0-\xF7][\x80-\xBF]{3}/g;
 
 var sub_bytes_nonascii = function(m){
     var c0 = m.charCodeAt(0);
