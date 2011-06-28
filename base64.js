@@ -52,7 +52,7 @@ var convertUTF8ArrayToBase64 = function(bin){
         );
     }
     while (padlen--) b64[b64.length - padlen - 1] = '='.charCodeAt(0);
-    return String.fromCharCode.apply(String, b64);
+    return chunkStringFromCharCodeApply(b64);
 };
 
 var convertBase64ToUTF8Array = function(b64){
@@ -119,7 +119,7 @@ var convertUTF8StringToBase64 = function(bin){
 };
 
 var convertBase64ToUTF8String = function(b64){
-    return String.fromCharCode.apply(String, convertBase64ToUTF8Array(b64));
+    return chunkStringFromCharCodeApply(convertBase64ToUTF8Array(b64));
 };
 
 var convertUTF8StringToUTF16Array = function(bin){
@@ -127,11 +127,11 @@ var convertUTF8StringToUTF16Array = function(bin){
 };
 
 var convertUTF8ArrayToUTF16String = function(bin){
-    return String.fromCharCode.apply(String, convertUTF8ArrayToUTF16Array(bin));
+    return chunkStringFromCharCodeApply(convertUTF8ArrayToUTF16Array(bin));
 };
 
 var convertUTF8StringToUTF16String = function(bin){
-    return String.fromCharCode.apply(String, convertUTF8ArrayToUTF16Array(stringToArray(bin)));
+    return chunkStringFromCharCodeApply(convertUTF8ArrayToUTF16Array(stringToArray(bin)));
 };
 
 var convertUTF16StringToUTF8Array = function(uni){
@@ -139,11 +139,22 @@ var convertUTF16StringToUTF8Array = function(uni){
 };
 
 var convertUTF16ArrayToUTF8String = function(uni){
-    return String.fromCharCode.apply(String, convertUTF16ArrayToUTF8Array(uni));
+    return chunkStringFromCharCodeApply(convertUTF16ArrayToUTF8Array(uni));
 };
 
 var convertUTF16StringToUTF8String = function(uni){
-    return String.fromCharCode.apply(String, convertUTF16ArrayToUTF8Array(stringToArray(uni)));
+    return chunkStringFromCharCodeApply(convertUTF16ArrayToUTF8Array(stringToArray(uni)));
+};
+
+//
+// String.fromCharCode.apply will only handle arrays as big as 65536, after that
+// it'll return a truncated string with no warning.
+//
+var chunkStringFromCharCodeApply = function(arr){
+  var string = '';
+  while(arr.length > 0)
+    string += String.fromCharCode.apply(String, arr.splice(0, 65536));
+  return string;
 };
 
 if (window.btoa){
