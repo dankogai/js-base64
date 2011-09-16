@@ -67,7 +67,7 @@ var fromBase64 = function(b64){
 
 var atob = window.atob || fromBase64;
 
-var re_char_nonascii = /[^\x00-\xFF]/g;
+var re_char_nonascii = /[^\x00-\x7F]/g;
 
 var sub_char_nonascii = function(m){
     var n = m.charCodeAt(0);
