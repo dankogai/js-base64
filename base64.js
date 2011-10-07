@@ -61,7 +61,8 @@ var fromBase64 = function(b64){
         padlen++;
     }
     var bin = b64.replace(/[A-Za-z0-9\+\/]{4}/g, sub_fromBase64);
-    bin.length -= [0,0,2,1][padlen];
+    if (padlen >= 2)
+        bin = bin.substring(0, bin.length - [0,0,2,1][padlen]);
     return bin;
 };
 
