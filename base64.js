@@ -1,13 +1,14 @@
 /*
- * $Id: base64.js,v 1.1 2009/03/01 22:38:45 dankogai Exp dankogai $
+ * $Id: base64.js,v 1.2 2011/12/27 14:34:49 dankogai Exp dankogai $
  *
- * History:
- *   dankogai's original: character-based
- *   drry's fix: split string to array then join
- *   new version: regexp-based
+ *  Licensed under the MIT license.
+ *  http://www.opensource.org/licenses/mit-license.php
+ *
  */
 
-(function(){
+(function(global){
+
+if (global.Base64) return;
 
 var b64chars 
     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
@@ -41,7 +42,7 @@ var toBase64 = function(bin){
     return b64;
 };
 
-var btoa = window.btoa || toBase64;
+var btoa = global.btoa || toBase64;
 
 var sub_fromBase64 = function(m){
         var n = (b64tab[ m.charAt(0) ] << 18)
@@ -66,7 +67,7 @@ var fromBase64 = function(b64){
     return bin;
 };
 
-var atob = window.atob || fromBase64;
+var atob = global.atob || fromBase64;
 
 var re_char_nonascii = /[^\x00-\x7F]/g;
 
@@ -104,7 +105,7 @@ var btou = function(bin){
     return bin.replace(re_bytes_nonascii, sub_bytes_nonascii);
 };
 
-if (!this['Base64']) Base64 = {
+global.Base64 = {
     fromBase64:fromBase64,
     toBase64:toBase64,
     atob:atob,
@@ -124,4 +125,4 @@ if (!this['Base64']) Base64 = {
     }
 };
 
-})();
+})(this);
