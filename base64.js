@@ -1,5 +1,5 @@
 /*
- * $Id: base64.js,v 1.4 2012/08/06 02:25:51 dankogai Exp dankogai $
+ * $Id: base64.js,v 1.5 2012/08/06 02:32:25 dankogai Exp dankogai $
  */
 
 (function(global){
@@ -157,8 +157,8 @@ var chunkStringFromCharCodeApply = function(arr){
   return string;
 };
 
-if (window.btoa){
-    var btoa = window.btoa;
+if (global.btoa){
+    var btoa = global.btoa;
     var convertUTF16StringToBase64 = function (uni){
         return btoa(convertUTF16StringToUTF8String(uni));
     };
@@ -170,8 +170,8 @@ else {
     };
 }
 
-if (window.atob){
-    var atob = window.atob;
+if (global.atob){
+    var atob = global.atob;
     var convertBase64ToUTF16String = function (b64){
         return convertUTF8StringToUTF16String(atob(b64));
     };
