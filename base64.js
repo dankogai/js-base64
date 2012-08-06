@@ -1,8 +1,8 @@
 /*
- * $Id: base64.js,v 1.3 2012/08/06 02:18:40 dankogai Exp dankogai $
+ * $Id: base64.js,v 1.4 2012/08/06 02:25:51 dankogai Exp dankogai $
  */
 
-(function(){
+(function(global){
 
 var b64chars
     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
@@ -183,7 +183,7 @@ else {
     };
 }
 
-window.Base64 = {
+global.Base64 = {
     convertUTF8ArrayToBase64:convertUTF8ArrayToBase64,
     convertByteArrayToBase64:convertUTF8ArrayToBase64,
     convertBase64ToUTF8Array:convertBase64ToUTF8Array,
@@ -223,4 +223,4 @@ window.Base64 = {
     }
 };
 
-})();
+})(this);
