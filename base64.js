@@ -1,5 +1,11 @@
 /*
- * $Id: base64.js,v 1.5 2012/08/06 02:32:25 dankogai Exp dankogai $
+ * $Id: base64.js,v 1.6 2012/08/06 03:04:26 dankogai Exp dankogai $
+ *
+ *  Licensed under the MIT license.
+ *  http://www.opensource.org/licenses/mit-license.php
+ *
+ *  References:
+ *    http://en.wikipedia.org/wiki/Base64
  */
 
 (function(global){
