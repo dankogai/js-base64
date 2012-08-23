@@ -1,5 +1,5 @@
 /*
- * $Id: dankogai.js,v 0.1 2012/08/23 09:27:48 dankogai Exp dankogai $
+ * $Id: dankogai.js,v 0.2 2012/08/23 19:14:37 dankogai Exp dankogai $
  *
  * use mocha to test me
  * http://visionmedia.github.com/mocha/
@@ -7,7 +7,7 @@
 var assert, Base64;
 if (this['window'] !== this) {
     assert = require("assert");
-    Base64 = require('../base64.js').Base64
+    Base64 = require('../base64.js').Base64;
 }
 var is = function (a, e, m) {
     return function () {

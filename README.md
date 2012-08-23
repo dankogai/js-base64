@@ -13,3 +13,16 @@ Yet another Base64 transcoder
     // note .decodeURI() is unnecessary since it accepts both flavors
     Base64.decode('5bCP6aO85by-');  // 小飼弾
 
+## String Extension for ES5
+
+    if (Base64.extendString) {
+        // you have to explicitly extend String.prototype
+        Base64.extendString();
+        // once extended, you can do the following
+        'dankogai'.toBase64();       // ZGFua29nYWk=
+        '小飼弾'.toBase64();         // 5bCP6aO85by+
+        '小飼弾'.toBase64(true);     // 5bCP6aO85by-
+        'ZGFua29nYWk='.fromBase64(); // dankogai
+        '5bCP6aO85by+'.fromBase64(); // 小飼弾
+        '5bCP6aO85by-'.fromBase64(); // 小飼弾
+    }

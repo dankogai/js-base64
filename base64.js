@@ -9,7 +9,13 @@
  */
 
 (function(global) {
-
+'use strict';
+// if node.js, we use Buffer
+var buffer;
+if (typeof module !== 'undefined' && module.exports) {
+    buffer = require('buffer').Buffer;
+}
+// tables
 var b64chars
     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 var b64tab = function(bin) {
@@ -17,7 +23,7 @@ var b64tab = function(bin) {
     for (var i = 0, l = bin.length; i < l; i++) t[bin.charAt(i)] = i;
     return t;
 }(b64chars);
-
+// encoder stuff
 var cb_utob = function(c) {
     var cc = c.charCodeAt(0);
     return cc < 0x80 ? c
@@ -46,25 +52,27 @@ var cb_encode = function(ccc) {
 var btoa = global.btoa || function(b) {
     return b.replace(/[\s\S]{1,3}/g, cb_encode);
 };
+var _encode = buffer
+    ? function (u) { return (new buffer(u)).toString('base64') } 
+    : function (u) { return btoa(utob(u)) }
+    ;
 var encode = function(u, urisafe) {
-    var result = btoa(utob(u));
-    return !urisafe ? result
-                    : result.replace(/[+\/]/g, function(m0) {
-                        return m0 == '+' ? '-' : '_';
-                    });
-
+    return !urisafe 
+        ? _encode(u)
+        : _encode(u).replace(/[+\/]/g, function(m0) {
+            return m0 == '+' ? '-' : '_';
+        });
 };
-
-var re_btou = /[\x00-\x7f]|[\xC0-\xDF][\x80-\xBF]|[\xE0-\xEF][\x80-\xBF]{2}/g;
+var encodeURI = function(u) { return encode(u, true) };
+// decoder stuff
+var re_btou = /[\xC0-\xDF][\x80-\xBF]|[\xE0-\xEF][\x80-\xBF]{2}/g;
 var cb_btou = function(ccc) {
     return String.fromCharCode(
-            ccc.length < 2 ? ccc.charCodeAt(0)
-        : ccc.length < 3 ? ((0x1f & ccc.charCodeAt(0)) << 6)
-                                | (0x3f & ccc.charCodeAt(1))
-        : ((0x0f & ccc.charCodeAt(0)) << 12)
-                                | ((0x3f & ccc.charCodeAt(1)) << 6)
-                                | (0x3f & ccc.charCodeAt(2))
-
+        ccc.length < 3 ? ((0x1f & ccc.charCodeAt(0)) << 6)
+                       | (0x3f & ccc.charCodeAt(1))
+                       : ((0x0f & ccc.charCodeAt(0)) << 12)
+                       | ((0x3f & ccc.charCodeAt(1)) << 6)
+                       |  (0x3f & ccc.charCodeAt(2))
     );
 };
 var btou = function(b) {
@@ -87,16 +95,17 @@ var cb_decode = function(cccc) {
 var atob = global.atob || function(a){
     return a.replace(/[\s\S]{1,4}/g, cb_decode);
 };
-var decode = function(a) {
-    return btou(atob(
-            a.replace(/[-_]/g, function(m0) {
-                return m0 == '-' ? '+' : '/';
-            })
-            .replace(/[^A-Za-z0-9\+\/]/g, '')
-        )
+var _decode = buffer
+    ? function(a) { return (new buffer(a, 'base64')).toString() }
+    : function(a) { return btou(atob(a)) }
+    ;
+var decode = function(a){
+    return _decode(
+        a.replace(/[-_]/g, function(m0) { return m0 == '-' ? '+' : '/';})
+         .replace(/[^A-Za-z0-9\+\/]/g, '')
     );
 };
-
+// export Base64
 global.Base64 = {
     atob: atob,
     btoa: btoa,
@@ -104,9 +113,22 @@ global.Base64 = {
     toBase64: encode,
     utob: utob,
     encode: encode,
-    encodeURI: function(u) { return encode(u, true) },
+    encodeURI: encodeURI,
     btou: btou,
     decode: decode
 };
-
+// if ES5 is available, make Base64.extendString() available
+if (typeof Object.defineProperty === 'function') {
+    global.Base64.extendString = function() {
+        Object.defineProperty(String.prototype, 'fromBase64', {
+            value: function() { return decode(this) },
+            enumerable: false
+        });
+        Object.defineProperty(String.prototype, 'toBase64', {
+            value: function(urisafe) { return encode(this, urisafe) },
+            enumerable: false
+        });
+    };
+}
+// that's it!
 })(this);
