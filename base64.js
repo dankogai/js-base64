@@ -1,5 +1,5 @@
 /*
- * $Id: base64.js,v 2.2 2012/08/23 20:16:03 dankogai Exp dankogai $
+ * $Id: base64.js,v 2.3 2012/08/23 21:23:09 dankogai Exp dankogai $
  *
  *  Licensed under the MIT license.
  *  http://www.opensource.org/licenses/mit-license.php
@@ -30,8 +30,8 @@ var cb_utob = function(c) {
         : cc < 0x800 ? String.fromCharCode(0xc0 | (cc >>> 6))
                      + String.fromCharCode(0x80 | (cc & 0x3f))
         : String.fromCharCode(0xe0 | ((cc >>> 12) & 0x0f))
-        + String.fromCharCode(0x80 | ((cc >>> 6) & 0x3f))
-        + String.fromCharCode(0x80 | (cc & 0x3f));
+        + String.fromCharCode(0x80 | ((cc >>>  6) & 0x3f))
+        + String.fromCharCode(0x80 | ( cc         & 0x3f));
 };
 var utob = function(u) {
     return u.replace(/[^\x00-\x7F]/g, cb_utob);
@@ -42,9 +42,9 @@ var cb_encode = function(ccc) {
             | ((ccc.length > 1 ? ccc.charCodeAt(1) : 0) << 8)
             | ((ccc.length > 2 ? ccc.charCodeAt(2) : 0)),
         chars = [
-            b64chars.charAt(ord >> 18),
-            b64chars.charAt((ord >> 12) & 63),
-            padlen >= 2 ? '=' : b64chars.charAt((ord >> 6) & 63),
+            b64chars.charAt( ord >>> 18),
+            b64chars.charAt((ord >>> 12) & 63),
+            padlen >= 2 ? '=' : b64chars.charAt((ord >>> 6) & 63),
             padlen >= 1 ? '=' : b64chars.charAt(ord & 63)
         ];
     return chars.join('');
@@ -69,7 +69,7 @@ var re_btou = /[\xC0-\xDF][\x80-\xBF]|[\xE0-\xEF][\x80-\xBF]{2}/g;
 var cb_btou = function(ccc) {
     return String.fromCharCode(
         ccc.length < 3 ? ((0x1f & ccc.charCodeAt(0)) << 6)
-                       | (0x3f & ccc.charCodeAt(1))
+                       |  (0x3f & ccc.charCodeAt(1))
                        : ((0x0f & ccc.charCodeAt(0)) << 12)
                        | ((0x3f & ccc.charCodeAt(1)) << 6)
                        |  (0x3f & ccc.charCodeAt(2))
@@ -79,15 +79,16 @@ var btou = function(b) {
     return b.replace(re_btou, cb_btou);
 };
 var cb_decode = function(cccc) {
-    var padlen = cccc.length % 4,
-        n = ((cccc.length > 0 ? b64tab[cccc.charAt(0)] : 0) << 18)
-          | ((cccc.length > 1 ? b64tab[cccc.charAt(1)] : 0) << 12)
-          | ((cccc.length > 2 ? b64tab[cccc.charAt(2)] : 0) << 6)
-          | ((cccc.length > 3 ? b64tab[cccc.charAt(3)] : 0)),
+    var len = cccc.length,
+        padlen = len % 4,
+        n = (len > 0 ? b64tab[cccc.charAt(0)] << 18 : 0)
+          | (len > 1 ? b64tab[cccc.charAt(1)] << 12 : 0)
+          | (len > 2 ? b64tab[cccc.charAt(2)] <<  6 : 0)
+          | (len > 3 ? b64tab[cccc.charAt(3)]       : 0),
         chars = [
-            String.fromCharCode(n >> 16),
-            String.fromCharCode((n >> 8) & 0xff),
-            String.fromCharCode(n & 0xff)
+            String.fromCharCode( n >>> 16),
+            String.fromCharCode((n >>>  8) & 0xff),
+            String.fromCharCode( n         & 0xff)
         ];
     chars.length -= [0, 0, 2, 1][padlen];
     return chars.join('');
