@@ -1,5 +1,5 @@
 /*
- * $Id: base64.js,v 1.6 2012/08/06 03:04:26 dankogai Exp dankogai $
+ * $Id: base64.js,v 1.7 2012/08/23 10:30:18 dankogai Exp dankogai $
  *
  *  Licensed under the MIT license.
  *  http://www.opensource.org/licenses/mit-license.php
@@ -137,7 +137,9 @@ var convertUTF8ArrayToUTF16String = function(bin){
 };
 
 var convertUTF8StringToUTF16String = function(bin){
-    return chunkStringFromCharCodeApply(convertUTF8ArrayToUTF16Array(stringToArray(bin)));
+    return chunkStringFromCharCodeApply(
+        convertUTF8ArrayToUTF16Array(stringToArray(bin))
+    );
 };
 
 var convertUTF16StringToUTF8Array = function(uni){
@@ -149,18 +151,21 @@ var convertUTF16ArrayToUTF8String = function(uni){
 };
 
 var convertUTF16StringToUTF8String = function(uni){
-    return chunkStringFromCharCodeApply(convertUTF16ArrayToUTF8Array(stringToArray(uni)));
+    return chunkStringFromCharCodeApply(
+        convertUTF16ArrayToUTF8Array(stringToArray(uni))
+    );
 };
 
-//
-// String.fromCharCode.apply will only handle arrays as big as 65536, after that
-// it'll return a truncated string with no warning.
-//
+/*
+ * String.fromCharCode.apply will only handle arrays as big as 65536, 
+ * after that it'll return a truncated string with no warning.
+ */
 var chunkStringFromCharCodeApply = function(arr){
-  var string = '';
-  while(arr.length > 0)
-    string += String.fromCharCode.apply(String, arr.splice(0, 65536));
-  return string;
+    var strs = [], i;
+    for (i = 0; i < arr.length; i += 65536){
+        strs.push(String.fromCharCode.apply(String, arr.slice(i, i+65536)));
+    }
+    return strs.join('');
 };
 
 if (global.btoa){

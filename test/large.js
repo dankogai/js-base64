@@ -1,5 +1,5 @@
 /*
- * $Id: large.js,v 0.1 2012/08/23 09:27:48 dankogai Exp dankogai $
+ * $Id: large.js,v 0.2 2012/08/23 10:30:08 dankogai Exp dankogai $
  *
  * use mocha to test me
  *   http://visionmedia.github.com/mocha/
@@ -22,7 +22,7 @@ var seed = function () {
     return a.join('');
 }();
 describe('Base64', function () {
-    for (var i = 0, str = seed; i < 12; str += str, i++) {
+    for (var i = 0, str = seed; i < 16; str += str, i++) {
         it(str.length, is(Base64.decode(Base64.encode(str)), str));
     }
 });
