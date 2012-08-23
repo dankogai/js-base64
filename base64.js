@@ -1,5 +1,5 @@
 /*
- * $Id: base64.js,v 2.1 2012/08/23 19:56:07 dankogai Exp dankogai $
+ * $Id: base64.js,v 2.2 2012/08/23 20:16:03 dankogai Exp dankogai $
  *
  *  Licensed under the MIT license.
  *  http://www.opensource.org/licenses/mit-license.php
@@ -119,15 +119,18 @@ global.Base64 = {
 };
 // if ES5 is available, make Base64.extendString() available
 if (typeof Object.defineProperty === 'function') {
-    global.Base64.extendString = function() {
-        Object.defineProperty(String.prototype, 'fromBase64', {
-            value: function() { return decode(this) },
-            enumerable: false
-        });
-        Object.defineProperty(String.prototype, 'toBase64', {
-            value: function(urisafe) { return encode(this, urisafe) },
-            enumerable: false
-        });
+    var noEnum = function(v){
+        return {value:v,enumerable:false,writable:true,configurable:true};
+    };
+    global.Base64.extendString = function () {
+        Object.defineProperty(
+            String.prototype, 'fromBase64', noEnum(function () {
+            return decode(this)
+        }));
+        Object.defineProperty(
+            String.prototype, 'toBase64',noEnum(function (urisafe) {
+                return encode(this, urisafe)
+        }));
     };
 }
 // that's it!
