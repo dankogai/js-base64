@@ -1,5 +1,5 @@
 /*
- * $Id: base64.js,v 2.3 2012/08/23 21:23:09 dankogai Exp dankogai $
+ * $Id: base64.js,v 2.4 2012/08/23 23:29:30 dankogai Exp dankogai $
  *
  *  Licensed under the MIT license.
  *  http://www.opensource.org/licenses/mit-license.php
@@ -94,7 +94,8 @@ var cb_decode = function(cccc) {
     return chars.join('');
 };
 var atob = global.atob || function(a){
-    return a.replace(/[\s\S]{1,4}/g, cb_decode);
+    return a.replace(/[^A-Za-z0-9\+\/]/g, '')
+            .replace(/[\s\S]{1,4}/g, cb_decode);
 };
 var _decode = buffer
     ? function(a) { return (new buffer(a, 'base64')).toString() }
@@ -103,7 +104,6 @@ var _decode = buffer
 var decode = function(a){
     return _decode(
         a.replace(/[-_]/g, function(m0) { return m0 == '-' ? '+' : '/';})
-         .replace(/[^A-Za-z0-9\+\/]/g, '')
     );
 };
 // export Base64
