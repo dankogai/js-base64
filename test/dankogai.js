@@ -1,5 +1,5 @@
 /*
- * $Id: dankogai.js,v 0.3 2012/08/24 02:31:22 dankogai Exp $
+ * $Id: dankogai.js,v 0.4 2012/08/24 05:23:18 dankogai Exp dankogai $
  *
  * use mocha to test me
  * http://visionmedia.github.com/mocha/
@@ -24,6 +24,12 @@ describe('basic', function () {
     it('ZGFu', is(Base64.decode('ZGFu'), 'dan' ));
 });
 
+describe('whitespace', function () {
+    it('Z A==', is(Base64.decode('ZA =='), 'd'   ));
+    it('ZG E=', is(Base64.decode('ZG E='), 'da'  ));
+    it('ZGF u', is(Base64.decode('ZGF u'), 'dan' ));
+});
+
 describe('null', function () {
     it('\\0',       is(Base64.encode('\0'),     'AA=='));
     it('\\0\\0',    is(Base64.encode('\0\0'),   'AAA='));
@@ -32,7 +38,6 @@ describe('null', function () {
     it('AAA=',      is(Base64.decode('AAA='), '\0\0'  ));
     it('AAAA',      is(Base64.decode('AAAA'), '\0\0\0'));
 });
-
 
 describe('Base64', function () {
     it('.encode', is(Base64.encode('小飼弾'), '5bCP6aO85by+'));
