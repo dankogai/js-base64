@@ -1,5 +1,5 @@
 /*
- * $Id: base64.js,v 2.4 2012/08/23 23:29:30 dankogai Exp dankogai $
+ * $Id: base64.js,v 2.5 2012/08/24 05:03:02 dankogai Exp dankogai $
  *
  *  Licensed under the MIT license.
  *  http://www.opensource.org/licenses/mit-license.php
@@ -15,7 +15,7 @@ var buffer;
 if (typeof module !== 'undefined' && module.exports) {
     buffer = require('buffer').Buffer;
 }
-// tables
+// constants
 var b64chars
     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 var b64tab = function(bin) {
@@ -23,15 +23,16 @@ var b64tab = function(bin) {
     for (var i = 0, l = bin.length; i < l; i++) t[bin.charAt(i)] = i;
     return t;
 }(b64chars);
+var fromCharCode = String.fromCharCode;
 // encoder stuff
 var cb_utob = function(c) {
     var cc = c.charCodeAt(0);
     return cc < 0x80 ? c
-        : cc < 0x800 ? String.fromCharCode(0xc0 | (cc >>> 6))
-                     + String.fromCharCode(0x80 | (cc & 0x3f))
-        : String.fromCharCode(0xe0 | ((cc >>> 12) & 0x0f))
-        + String.fromCharCode(0x80 | ((cc >>>  6) & 0x3f))
-        + String.fromCharCode(0x80 | ( cc         & 0x3f));
+        : cc < 0x800 ? fromCharCode(0xc0 | (cc >>> 6))
+                     + fromCharCode(0x80 | (cc & 0x3f))
+        : fromCharCode(0xe0 | ((cc >>> 12) & 0x0f))
+        + fromCharCode(0x80 | ((cc >>>  6) & 0x3f))
+        + fromCharCode(0x80 | ( cc         & 0x3f));
 };
 var utob = function(u) {
     return u.replace(/[^\x00-\x7F]/g, cb_utob);
@@ -67,7 +68,7 @@ var encodeURI = function(u) { return encode(u, true) };
 // decoder stuff
 var re_btou = /[\xC0-\xDF][\x80-\xBF]|[\xE0-\xEF][\x80-\xBF]{2}/g;
 var cb_btou = function(ccc) {
-    return String.fromCharCode(
+    return fromCharCode(
         ccc.length < 3 ? ((0x1f & ccc.charCodeAt(0)) << 6)
                        |  (0x3f & ccc.charCodeAt(1))
                        : ((0x0f & ccc.charCodeAt(0)) << 12)
@@ -86,9 +87,9 @@ var cb_decode = function(cccc) {
           | (len > 2 ? b64tab[cccc.charAt(2)] <<  6 : 0)
           | (len > 3 ? b64tab[cccc.charAt(3)]       : 0),
         chars = [
-            String.fromCharCode( n >>> 16),
-            String.fromCharCode((n >>>  8) & 0xff),
-            String.fromCharCode( n         & 0xff)
+            fromCharCode( n >>> 16),
+            fromCharCode((n >>>  8) & 0xff),
+            fromCharCode( n         & 0xff)
         ];
     chars.length -= [0, 0, 2, 1][padlen];
     return chars.join('');
@@ -103,7 +104,7 @@ var _decode = buffer
     ;
 var decode = function(a){
     return _decode(
-        a.replace(/[-_]/g, function(m0) { return m0 == '-' ? '+' : '/';})
+        a.replace(/[-_]/g, function(m0) { return m0 == '-' ? '+' : '/' })
     );
 };
 // export Base64
