@@ -1,3 +1,5 @@
+[![build status](https://secure.travis-ci.org/dankogai/js-base64.png)](http://travis-ci.org/dankogai/js-base64)
+
 # base64.js
 
 Yet another Base64 transcoder
