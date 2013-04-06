@@ -14,11 +14,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/dankogai/js-base64"
+    "url": "git://github.com/dankogai/js-base64.git"
   },
   "keywords": [
     "base64"
   ],
-  "author": "Dan Kogai (https://github.com/dankogai)",
-  "license": "BSD"
+  "author": "Dan Kogai",
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "gitHead": "8bfa436f733bec60c95c720e1d720c28b43ae0b2"
 }
