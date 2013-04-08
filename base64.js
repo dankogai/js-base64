@@ -28,16 +28,27 @@
     var fromCharCode = String.fromCharCode;
     // encoder stuff
     var cb_utob = function(c) {
-        var cc = c.charCodeAt(0);
-        return cc < 0x80 ? c
-            : cc < 0x800 ? fromCharCode(0xc0 | (cc >>> 6))
-            + fromCharCode(0x80 | (cc & 0x3f))
-            : fromCharCode(0xe0 | ((cc >>> 12) & 0x0f))
-            + fromCharCode(0x80 | ((cc >>>  6) & 0x3f))
-            + fromCharCode(0x80 | ( cc         & 0x3f));
+        if (c.length < 2) {
+            var cc = c.charCodeAt(0);
+            return cc < 0x80 ? c
+                : cc < 0x800 ? (fromCharCode(0xc0 | (cc >>> 6))
+                                + fromCharCode(0x80 | (cc & 0x3f)))
+                : (fromCharCode(0xe0 | ((cc >>> 12) & 0x0f))
+                   + fromCharCode(0x80 | ((cc >>>  6) & 0x3f))
+                   + fromCharCode(0x80 | ( cc         & 0x3f)));
+        } else {
+            var cc = 0x10000
+                + (c.charCodeAt(0) - 0xD800) * 0x400
+                + (c.charCodeAt(1) - 0xDC00);
+            return (fromCharCode(0xf0 | ((cc >>> 18) & 0x07))
+                    + fromCharCode(0x80 | ((cc >>> 12) & 0x3f))
+                    + fromCharCode(0x80 | ((cc >>>  6) & 0x3f))
+                    + fromCharCode(0x80 | ( cc         & 0x3f)));
+        }
     };
+    var re_utob = /[\uD800-\uDBFF][\uDC00-\uDFFFF]|[^\x00-\x7F]/g;
     var utob = function(u) {
-        return u.replace(/[^\x00-\x7F]/g, cb_utob);
+        return u.replace(re_utob, cb_utob);
     };
     var cb_encode = function(ccc) {
         var padlen = [0, 2, 1][ccc.length % 3],
@@ -64,19 +75,37 @@
             ? _encode(u)
             : _encode(u).replace(/[+\/]/g, function(m0) {
                 return m0 == '+' ? '-' : '_';
-            });
+            }).replace(/=/g, '');
     };
     var encodeURI = function(u) { return encode(u, true) };
     // decoder stuff
-    var re_btou = /[\xC0-\xDF][\x80-\xBF]|[\xE0-\xEF][\x80-\xBF]{2}/g;
-    var cb_btou = function(ccc) {
-        return fromCharCode(
-            ccc.length < 3 ? ((0x1f & ccc.charCodeAt(0)) << 6)
-                |  (0x3f & ccc.charCodeAt(1))
-                : ((0x0f & ccc.charCodeAt(0)) << 12)
-                | ((0x3f & ccc.charCodeAt(1)) << 6)
-                |  (0x3f & ccc.charCodeAt(2))
-        );
+    var re_btou = new RegExp([
+        '[\xC0-\xDF][\x80-\xBF]',
+        '[\xE0-\xEF][\x80-\xBF]{2}',
+        '[\xF0-\xF7][\x80-\xBF]{3}'
+    ].join('|'), 'g');
+    var cb_btou = function(cccc) {
+        var l = cccc.length;
+        if (l > 3) {
+            var cp = ((0x07 & cccc.charCodeAt(0)) << 18)
+                |    ((0x3f & cccc.charCodeAt(1)) << 12)
+                |    ((0x3f & cccc.charCodeAt(2)) <<  6)
+                |     (0x3f & cccc.charCodeAt(3)),
+            offset = cp - 0x10000;
+            return (fromCharCode((offset  >>> 10) + 0xD800)
+                    + fromCharCode((offset & 0x3FF) + 0xDC00));
+        } else if (l > 2) {
+            return fromCharCode(
+                ((0x0f & cccc.charCodeAt(0)) << 12)
+                    | ((0x3f & cccc.charCodeAt(1)) << 6)
+                    |  (0x3f & cccc.charCodeAt(2))
+            );
+        } else {
+            return  fromCharCode(
+                ((0x1f & cccc.charCodeAt(0)) << 6)
+                    |  (0x3f & cccc.charCodeAt(1))
+            );
+        }
     };
     var btou = function(b) {
         return b.replace(re_btou, cb_btou);
@@ -101,8 +130,7 @@
     };
     var _decode = buffer
         ? function(a) { return (new buffer(a, 'base64')).toString() }
-    : function(a) { return btou(atob(a)) }
-    ;
+    : function(a) { return btou(atob(a)) };
     var decode = function(a){
         return _decode(
             a.replace(/[-_]/g, function(m0) { return m0 == '-' ? '+' : '/' })
