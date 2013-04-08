@@ -1,8 +1,8 @@
 /*
- * $Id: base64.js,v 2.10 2013/04/08 09:37:27 dankogai Exp dankogai $
+ * $Id: base64.js,v 2.11 2013/04/08 12:27:14 dankogai Exp dankogai $
  *
  *  Licensed under the MIT license.
- *  http://www.opensource.org/licenses/mit-license.php
+ *    http://opensource.org/licenses/mit-license
  *
  *  References:
  *    http://en.wikipedia.org/wiki/Base64
@@ -11,7 +11,7 @@
 (function(global) {
     'use strict';
     if (global.Base64) return;
-    var version = "2.0.7";
+    var version = "2.1.1";
     // if node.js, we use Buffer
     var buffer;
     if (typeof module !== 'undefined' && module.exports) {
@@ -85,8 +85,8 @@
         '[\xF0-\xF7][\x80-\xBF]{3}'
     ].join('|'), 'g');
     var cb_btou = function(cccc) {
-        var l = cccc.length;
-        if (l > 3) {
+        switch(cccc.length) {
+        case 4:
             var cp = ((0x07 & cccc.charCodeAt(0)) << 18)
                 |    ((0x3f & cccc.charCodeAt(1)) << 12)
                 |    ((0x3f & cccc.charCodeAt(2)) <<  6)
@@ -94,13 +94,13 @@
             offset = cp - 0x10000;
             return (fromCharCode((offset  >>> 10) + 0xD800)
                     + fromCharCode((offset & 0x3FF) + 0xDC00));
-        } else if (l > 2) {
+        case 3:
             return fromCharCode(
                 ((0x0f & cccc.charCodeAt(0)) << 12)
                     | ((0x3f & cccc.charCodeAt(1)) << 6)
                     |  (0x3f & cccc.charCodeAt(2))
             );
-        } else {
+        default:
             return  fromCharCode(
                 ((0x1f & cccc.charCodeAt(0)) << 6)
                     |  (0x3f & cccc.charCodeAt(1))
@@ -163,6 +163,10 @@
             Object.defineProperty(
                 String.prototype, 'toBase64', noEnum(function (urisafe) {
                     return encode(this, urisafe)
+                }));
+            Object.defineProperty(
+                String.prototype, 'toBase64URI', noEnum(function () {
+                    return encode(this, true)
                 }));
         };
     }
