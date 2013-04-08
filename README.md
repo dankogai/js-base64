@@ -4,6 +4,18 @@
 
 Yet another Base64 transcoder
 
+## Usage
+
+### In Browser
+````html
+<script src="base64.js"></script>
+````
+### node.js
+````javascript
+var Base64 = require('./combinatorics.js').Base64;
+````
+
+
 ## SYNOPSIS
 
 ````javascript
@@ -17,7 +29,7 @@ Base64.decode('5bCP6aO85by+');  // 小飼弾
 Base64.decode('5bCP6aO85by-');  // 小飼弾
 ````
 
-## String Extension for ES5
+### String Extension for ES5
 
 ````javascript
 if (Base64.extendString) {
@@ -27,8 +39,13 @@ if (Base64.extendString) {
     'dankogai'.toBase64();       // ZGFua29nYWk=
     '小飼弾'.toBase64();         // 5bCP6aO85by+
     '小飼弾'.toBase64(true);     // 5bCP6aO85by-
+    '小飼弾'.toBase64URI();      // 5bCP6aO85by-
     'ZGFua29nYWk='.fromBase64(); // dankogai
     '5bCP6aO85by+'.fromBase64(); // 小飼弾
     '5bCP6aO85by-'.fromBase64(); // 小飼弾
 }
 ````
+
+## SEE ALSO
+
++ http://en.wikipedia.org/wiki/Base64
