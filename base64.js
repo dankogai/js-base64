@@ -1,5 +1,5 @@
 /*
- * $Id: base64.js,v 2.11 2013/04/08 12:27:14 dankogai Exp dankogai $
+ * $Id: base64.js,v 2.12 2013/05/06 07:54:20 dankogai Exp dankogai $
  *
  *  Licensed under the MIT license.
  *    http://opensource.org/licenses/mit-license
@@ -11,7 +11,7 @@
 (function(global) {
     'use strict';
     if (global.Base64) return;
-    var version = "2.1.1";
+    var version = "2.1.2";
     // if node.js, we use Buffer
     var buffer;
     if (typeof module !== 'undefined' && module.exports) {

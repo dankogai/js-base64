@@ -1,6 +1,6 @@
 {
   "name": "js-base64",
-  "version": "1.0.0",
+  "version": "2.1.2",
   "main": [
     "./base64.js"
   ],
