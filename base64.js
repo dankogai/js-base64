@@ -125,7 +125,9 @@
         chars.length -= [0, 0, 2, 1][padlen];
         return chars.join('');
     };
-    var atob = global.atob || function(a){
+    var atob = global.atob ? function(a) {
+       return global.atob(a);
+    } : function(a){
         return a.replace(/[\s\S]{1,4}/g, cb_decode);
     };
     var _decode = buffer
