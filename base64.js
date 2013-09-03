@@ -63,7 +63,9 @@
         ];
         return chars.join('');
     };
-    var btoa = global.btoa || function(b) {
+    var btoa = global.btoa ? function(b) {
+        return global.btoa(b);
+    } : function(b) {
         return b.replace(/[\s\S]{1,3}/g, cb_encode);
     };
     var _encode = buffer
@@ -126,7 +128,7 @@
         return chars.join('');
     };
     var atob = global.atob ? function(a) {
-       return global.atob(a);
+        return global.atob(a);
     } : function(a){
         return a.replace(/[\s\S]{1,4}/g, cb_decode);
     };
