@@ -10,7 +10,8 @@
 
 (function(global) {
     'use strict';
-    if (global.Base64) return;
+    // existing version for noConflict()
+    var _Base64 = global.Base64;
     var version = "2.1.2";
     // if node.js, we use Buffer
     var buffer;
@@ -141,6 +142,11 @@
                 .replace(/[^A-Za-z0-9\+\/]/g, '')
         );
     };
+    var noConflict = function() {
+        var Base64 = global.Base64;
+        global.Base64 = _Base64;
+        return Base64;
+    };
     // export Base64
     global.Base64 = {
         VERSION: version,
@@ -152,7 +158,8 @@
         encode: encode,
         encodeURI: encodeURI,
         btou: btou,
-        decode: decode
+        decode: decode,
+        noConflict: noConflict
     };
     // if ES5 is available, make Base64.extendString() available
     if (typeof Object.defineProperty === 'function') {
