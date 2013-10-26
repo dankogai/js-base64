@@ -6,7 +6,11 @@
   ],
   "ignore": [
     "old",
-    "test"
+    "test",
+    ".gitignore",
+    ".travis.yml",
+    "base64.html",
+    "package.json"
   ],
   "dependencies": {
   }
