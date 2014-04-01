@@ -183,3 +183,5 @@
     }
     // that's it!
 })(this);
+
+Base64 = global.Base64; // for normal export in Meteor.js
