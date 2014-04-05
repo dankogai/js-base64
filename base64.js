@@ -1,5 +1,5 @@
 /*
- * $Id: base64.js,v 2.12 2013/05/06 07:54:20 dankogai Exp dankogai $
+ * $Id: base64.js,v 2.15 2014/04/05 12:58:57 dankogai Exp dankogai $
  *
  *  Licensed under the MIT license.
  *    http://opensource.org/licenses/mit-license
@@ -12,7 +12,7 @@
     'use strict';
     // existing version for noConflict()
     var _Base64 = global.Base64;
-    var version = "2.1.4";
+    var version = "2.1.5";
     // if node.js, we use Buffer
     var buffer;
     if (typeof module !== 'undefined' && module.exports) {
@@ -184,4 +184,6 @@
     // that's it!
 })(this);
 
-Base64 = global.Base64; // for normal export in Meteor.js
+if (this['Meteor']) {
+    Base64 = global.Base64; // for normal export in Meteor.js
+}
