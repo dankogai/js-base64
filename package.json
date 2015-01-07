@@ -1,6 +1,6 @@
 {
   "name": "js-base64",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "description": "Yet another Base64 transcoder in pure-JS",
   "main": "base64.js",
   "directories": {
