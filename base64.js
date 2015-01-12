@@ -12,7 +12,7 @@
     'use strict';
     // existing version for noConflict()
     var _Base64 = global.Base64;
-    var version = "2.1.6";
+    var version = "2.1.7";
     // if node.js, we use Buffer
     var buffer;
     if (typeof module !== 'undefined' && module.exports) {
@@ -69,8 +69,10 @@
     } : function(b) {
         return b.replace(/[\s\S]{1,3}/g, cb_encode);
     };
-    var _encode = buffer
-        ? function (u) { return (new buffer(u)).toString('base64') } 
+    var _encode = buffer ? function (u) {
+        return (u.constructor === buffer.constructor ? u : new buffer(u))
+        .toString('base64') 
+    } 
     : function (u) { return btoa(utob(u)) }
     ;
     var encode = function(u, urisafe) {
@@ -133,8 +135,10 @@
     } : function(a){
         return a.replace(/[\s\S]{1,4}/g, cb_decode);
     };
-    var _decode = buffer
-        ? function(a) { return (new buffer(a, 'base64')).toString() }
+    var _decode = buffer ? function(a) {
+        return (a.constructor === buffer.constructor
+                ? a : new buffer(a, 'base64')).toString();
+    }
     : function(a) { return btou(atob(a)) };
     var decode = function(a){
         return _decode(
