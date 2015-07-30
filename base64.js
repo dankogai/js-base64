@@ -16,7 +16,9 @@
     // if node.js, we use Buffer
     var buffer;
     if (typeof module !== 'undefined' && module.exports) {
-        buffer = require('buffer').Buffer;
+        try {
+            buffer = require('buffer').Buffer;
+        } catch (err) {}
     }
     // constants
     var b64chars
