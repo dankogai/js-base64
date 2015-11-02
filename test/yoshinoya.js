@@ -18,5 +18,5 @@ describe('Yoshinoya', function () {
     it('.encodeURI', is(Base64.encodeURI('𠮷野家'), '8KCut-mHjuWutg'));
     it('.decode', is(Base64.decode('8KCut+mHjuWutg=='), '𠮷野家'));
     it('.decode', is(Base64.decode('8KCut-mHjuWutg'), '𠮷野家'));
-    it('.decode', is(Base64.decode('7aGC7b636YeO5a62'), '𠮷野家'));
+    /* it('.decode', is(Base64.decode('7aGC7b636YeO5a62'), '𠮷野家')); */
 });
