@@ -12,7 +12,7 @@ Yet another Base64 transcoder
 ````
 ### node.js
 ````javascript
-var Base64 = require('./base64.js').Base64;
+var Base64 = require('js-base64').Base64;
 ````
 
 
