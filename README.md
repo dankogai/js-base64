@@ -46,6 +46,16 @@ if (Base64.extendString) {
 }
 ````
 
+### TypeScript
+
+A basic TypeScript implementation was added to the [DefinitelyTyped repository](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/88fca07022ae6549a09965bf1316a1f5e34e471b/js-base64/js-base64.d.ts).
+
+**Install definition**
+
+```bash
+$ typings install --save --global dt~js-base64
+```
+
 ## SEE ALSO
 
 + http://en.wikipedia.org/wiki/Base64
