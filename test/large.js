@@ -23,6 +23,6 @@ var seed = function () {
 }();
 describe('Base64', function () {
     for (var i = 0, str = seed; i < 16; str += str, i++) {
-        it(str.length, is(Base64.decode(Base64.encode(str)), str));
+        it(''+str.length, is(Base64.decode(Base64.encode(str)), str));
     }
 });
