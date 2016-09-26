@@ -7,18 +7,27 @@ Yet another Base64 transcoder
 ## Usage
 
 ### In Browser
-````html
+
+```html
 <script src="base64.js"></script>
-````
+```
+
 ### node.js
-````javascript
+
+```javascript
 var Base64 = require('js-base64').Base64;
-````
+```
+
+### npm
+
+```javascript
+$ npm install --save js-base64
+```
 
 
 ## SYNOPSIS
 
-````javascript
+```javascript
 Base64.encode('dankogai');  // ZGFua29nYWk=
 Base64.encode('小飼弾');    // 5bCP6aO85by+
 Base64.encodeURI('小飼弾'); // 5bCP6aO85by-
@@ -27,11 +36,11 @@ Base64.decode('ZGFua29nYWk=');  // dankogai
 Base64.decode('5bCP6aO85by+');  // 小飼弾
 // note .decodeURI() is unnecessary since it accepts both flavors
 Base64.decode('5bCP6aO85by-');  // 小飼弾
-````
+```
 
 ### String Extension for ES5
 
-````javascript
+```javascript
 if (Base64.extendString) {
     // you have to explicitly extend String.prototype
     Base64.extendString();
@@ -44,16 +53,14 @@ if (Base64.extendString) {
     '5bCP6aO85by+'.fromBase64(); // 小飼弾
     '5bCP6aO85by-'.fromBase64(); // 小飼弾
 }
-````
+```
 
 ### TypeScript
 
-A basic TypeScript implementation was added to the [DefinitelyTyped repository](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/88fca07022ae6549a09965bf1316a1f5e34e471b/js-base64/js-base64.d.ts).
-
-**Install definition**
+TypeScript 2.0 type definition was added to the [DefinitelyTyped repository](https://github.com/DefinitelyTyped/DefinitelyTyped).
 
 ```bash
-$ typings install --save --global dt~js-base64
+$ npm install --save @types/js-base64
 ```
 
 ## SEE ALSO
