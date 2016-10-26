@@ -1,7 +1,7 @@
 {
   "name": "js-base64",
   "version": "2.1.9",
-  "license": "BSD",
+  "license": "BSD 3-Clause",
   "main": [
     "./base64.js"
   ],
