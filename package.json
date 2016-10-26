@@ -20,7 +20,7 @@
     "base64"
   ],
   "author": "Dan Kogai",
-  "license": "BSD",
+  "license": "BSD 3-Clause",
   "readmeFilename": "README.md",
   "gitHead": "8bfa436f733bec60c95c720e1d720c28b43ae0b2"
 }
