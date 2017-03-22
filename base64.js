@@ -198,7 +198,7 @@
 		// AMD. Register as an anonymous module.
 		define([], function(){ return global.Base64 });
 	}
-})(	typeof self !== 'undefined' ? self
+})(typeof self !== 'undefined' ? self
 	: typeof window !== 'undefined' ? window
 		: typeof global !== 'undefined' ? global
 			: this
