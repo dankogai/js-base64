@@ -14,10 +14,10 @@
     var _Base64 = global.Base64;
     var version = "2.1.9";
     // if node.js, we use Buffer
-    var buffer;
+    var Buffer;
     if (typeof module !== 'undefined' && module.exports) {
         try {
-            buffer = require('buffer').Buffer;
+            Buffer = require('buffer').Buffer;
         } catch (err) {}
     }
     // constants
@@ -71,8 +71,8 @@
     } : function(b) {
         return b.replace(/[\s\S]{1,3}/g, cb_encode);
     };
-    var _encode = buffer ? function (u) {
-        return (u.constructor === buffer.constructor ? u : new buffer(u))
+    var _encode = Buffer ? function (u) {
+        return (u.constructor === Buffer.constructor ? u : Buffer.from(u))
         .toString('base64')
     }
     : function (u) { return btoa(utob(u)) }
@@ -137,9 +137,9 @@
     } : function(a){
         return a.replace(/[\s\S]{1,4}/g, cb_decode);
     };
-    var _decode = buffer ? function(a) {
-        return (a.constructor === buffer.constructor
-                ? a : new buffer(a, 'base64')).toString();
+    var _decode = Buffer ? function(a) {
+        return (a.constructor === Buffer.constructor
+                ? a : Buffer.from(a, 'base64')).toString();
     }
     : function(a) { return btou(atob(a)) };
     var decode = function(a){
