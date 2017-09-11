@@ -197,5 +197,24 @@
                 }));
         };
     }
+    //
+    // export Base64 to the namespace
+    //
+    if (global['Meteor']) { // Meteor.js
+        Base64 = global.Base64;
+    }
+    // module.exports and AMD are mutually exclusive.
+    // module.exports has precedence.
+    if (typeof module !== 'undefined' && module.exports) {
+        module.exports.Base64 = global.Base64;
+    }
+    else if (typeof define === 'function' && define.amd) {		
+        // AMD. Register as an anonymous module.	
+        define([], function(){ return global.Base64 });
+    }
     // that's it!
-})(this);
+})(   typeof self   !== 'undefined' ? self
+    : typeof window !== 'undefined' ? window
+    : typeof global !== 'undefined' ? global
+    : this
+);
