@@ -203,8 +203,7 @@
     }
     if (typeof module !== 'undefined' && module.exports) {
         module.exports.Base64 = global.Base64;
-    }
-    if (typeof define === 'function' && define.amd) {
+    } else if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
         define([], function(){ return global.Base64 });
     }
