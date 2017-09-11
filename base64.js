@@ -198,18 +198,4 @@
         };
     }
     // that's it!
-    if (global['Meteor']) {
-        Base64 = global.Base64; // for normal export in Meteor.js
-    }
-    if (typeof module !== 'undefined' && module.exports) {
-        module.exports.Base64 = global.Base64;
-    }
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define([], function(){ return global.Base64 });
-    }
-})(typeof self !== 'undefined' ? self
- : typeof window !== 'undefined' ? window
- : typeof global !== 'undefined' ? global
- : this
-);
+})(this);
