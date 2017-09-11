@@ -2,11 +2,8 @@
  * use mocha to test me
  * http://visionmedia.github.com/mocha/
  */
-var assert, Base64;
-if (this['window'] !== this) {
-    assert = require("assert");
-    Base64 = require('../base64.js').Base64;
-}
+var assert = assert || require("assert");
+var Base64 = Base64 || require('../base64.js').Base64;
 var is = function (a, e, m) {
     return function () {
         assert.equal(a, e, m)
