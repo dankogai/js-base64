@@ -18,6 +18,12 @@ Yet another Base64 transcoder
 var Base64 = require('js-base64').Base64;
 ```
 
+## es6+
+
+```javascript
+import { Base64 } from 'js-base64';
+```
+
 ### npm
 
 ```javascript
