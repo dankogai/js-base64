@@ -22,5 +22,8 @@
   "author": "Dan Kogai",
   "license": "BSD-3-Clause",
   "readmeFilename": "README.md",
-  "gitHead": "8bfa436f733bec60c95c720e1d720c28b43ae0b2"
+  "gitHead": "8bfa436f733bec60c95c720e1d720c28b43ae0b2",
+  "dependencies": {
+    "buffer": "^5.0.8"
+  }
 }
