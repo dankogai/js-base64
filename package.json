@@ -9,6 +9,9 @@
   "scripts": {
     "test": "mocha"
   },
+  "dependencies": {
+    "buffer": "5.0.8"
+  },
   "devDependencies": {
     "mocha": "*"
   },
