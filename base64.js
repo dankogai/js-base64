@@ -7,8 +7,15 @@
  *  References:
  *    http://en.wikipedia.org/wiki/Base64
  */
-
-(function(global) {
+;(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(global) :
+    typeof define === 'function' && define.amd ? define(factory) :
+    global.moment = factory(global)
+}((   typeof self   !== 'undefined' ? self
+: typeof window !== 'undefined' ? window
+: typeof global !== 'undefined' ? global
+: this
+), function(global) {
     'use strict';
     // existing version for noConflict()
     var _Base64 = global.Base64;
@@ -213,8 +220,5 @@
         define([], function(){ return global.Base64 });
     }
     // that's it!
-})(   typeof self   !== 'undefined' ? self
-    : typeof window !== 'undefined' ? window
-    : typeof global !== 'undefined' ? global
-    : this
-);
+    return {Base64: global.Base64}
+}));
