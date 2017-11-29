@@ -1,6 +1,5 @@
-# node 8.5.0+ is needed to support es6 module 
 language: node_js
 node_js:
   - "node"
-  - "8.5.0"
+
 
