@@ -7,9 +7,11 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha --compilers js:babel-register"
   },
   "devDependencies": {
+    "babel-preset-es2015": "^6.24.1",
+    "babel-register": "^6.26.0",
     "mocha": "*"
   },
   "repository": {

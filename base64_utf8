@@ -1,11 +1,22 @@
-(function(global) {
+;(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(global) :
+    typeof define === 'function' && define.amd ? define(factory) :
+    global.moment = factory(global)
+}((   typeof self   !== 'undefined' ? self
+: typeof window !== 'undefined' ? window
+: typeof global !== 'undefined' ? global
+: this
+), function(global) {
     'use strict';
-    if (global.Base64) return;
-    var version = "2.1.1";
+    // existing version for noConflict()
+    var _Base64 = global.Base64;
+    var version = "2.3.2";
     // if node.js, we use Buffer
     var buffer;
     if (typeof module !== 'undefined' && module.exports) {
-        buffer = require('buffer').Buffer;
+        try {
+            buffer = require('buffer').Buffer;
+        } catch (err) {}
     }
     // constants
     var b64chars
@@ -53,17 +64,26 @@
         ];
         return chars.join('');
     };
-    var btoa = global.btoa || function(b) {
+    var btoa = global.btoa ? function(b) {
+        return global.btoa(b);
+    } : function(b) {
         return b.replace(/[\s\S]{1,3}/g, cb_encode);
     };
-    var _encode = buffer
-        ? function (u) { return _utf8_encode((new buffer(u)).toString('base64')) } 
-    : function (u) { return _utf8_encode(btoa(utob(u))) }
+    var _encode = buffer ?
+        buffer.from && buffer.from !== Uint8Array.from ? function (u) {
+            return (u.constructor === buffer.constructor ? u : buffer.from(u))
+                .toString('base64')
+        }
+        :  function (u) {
+            return (u.constructor === buffer.constructor ? u : new  buffer(u))
+                .toString('base64')
+        }
+        : function (u) { return btoa(utob(u)) }
     ;
     var encode = function(u, urisafe) {
-        return !urisafe 
-            ? _encode(u)
-            : _encode(u).replace(/[+\/]/g, function(m0) {
+        return !urisafe
+            ? _encode(String(u))
+            : _encode(String(u)).replace(/[+\/]/g, function(m0) {
                 return m0 == '+' ? '-' : '_';
             }).replace(/=/g, '');
     };
@@ -97,60 +117,6 @@
             );
         }
     };
-    var _utf8_encode = function ( string ) {
-		string = string.replace(/\r\n/g,"\n");
-		var utftext = "";
- 
-		for (var n = 0; n < string.length; n++) {
- 
-			var c = string.charCodeAt(n);
- 
-			if (c < 128) {
-				utftext += String.fromCharCode(c);
-			}
-			else if((c > 127) && (c < 2048)) {
-				utftext += String.fromCharCode((c >> 6) | 192);
-				utftext += String.fromCharCode((c & 63) | 128);
-			}
-			else {
-				utftext += String.fromCharCode((c >> 12) | 224);
-				utftext += String.fromCharCode(((c >> 6) & 63) | 128);
-				utftext += String.fromCharCode((c & 63) | 128);
-			}
- 
-		}
- 
-		return utftext;
-	};
-	var _utf8_decode = function (utftext) {
-		var string = "";
-		var i = 0;
-		var c = c1 = c2 = 0;
- 
-		while ( i < utftext.length ) {
- 
-			c = utftext.charCodeAt(i);
- 
-			if (c < 128) {
-				string += String.fromCharCode(c);
-				i++;
-			}
-			else if((c > 191) && (c < 224)) {
-				c2 = utftext.charCodeAt(i+1);
-				string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
-				i += 2;
-			}
-			else {
-				c2 = utftext.charCodeAt(i+1);
-				c3 = utftext.charCodeAt(i+2);
-				string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
-				i += 3;
-			}
- 
-		}
- 
-		return string;
-	};
     var btou = function(b) {
         return b.replace(re_btou, cb_btou);
     };
@@ -169,18 +135,31 @@
         chars.length -= [0, 0, 2, 1][padlen];
         return chars.join('');
     };
-    var atob = global.atob || function(a){
+    var atob = global.atob ? function(a) {
+        return global.atob(a);
+    } : function(a){
         return a.replace(/[\s\S]{1,4}/g, cb_decode);
     };
-    var _decode = buffer
-        ? function(a) { return (new buffer(a, 'base64')).toString() }
-    : function(a) { return btou(atob(a)) };
+    var _decode = buffer ?
+        buffer.from && buffer.from !== Uint8Array.from ? function(a) {
+            return (a.constructor === buffer.constructor
+                    ? a : buffer.from(a, 'base64')).toString();
+        }
+        : function(a) {
+            return (a.constructor === buffer.constructor
+                    ? a : new buffer(a, 'base64')).toString();
+        }
+        : function(a) { return btou(atob(a)) };
     var decode = function(a){
-    	a = _utf8_decode( a );
         return _decode(
-            a.replace(/[-_]/g, function(m0) { return m0 == '-' ? '+' : '/' })
+            String(a).replace(/[-_]/g, function(m0) { return m0 == '-' ? '+' : '/' })
                 .replace(/[^A-Za-z0-9\+\/]/g, '')
         );
+    };
+    var noConflict = function() {
+        var Base64 = global.Base64;
+        global.Base64 = _Base64;
+        return Base64;
     };
     // export Base64
     global.Base64 = {
@@ -193,7 +172,8 @@
         encode: encode,
         encodeURI: encodeURI,
         btou: btou,
-        decode: decode
+        decode: decode,
+        noConflict: noConflict
     };
     // if ES5 is available, make Base64.extendString() available
     if (typeof Object.defineProperty === 'function') {
@@ -215,5 +195,21 @@
                 }));
         };
     }
+    //
+    // export Base64 to the namespace
+    //
+    if (global['Meteor']) { // Meteor.js
+        Base64 = global.Base64;
+    }
+    // module.exports and AMD are mutually exclusive.
+    // module.exports has precedence.
+    if (typeof module !== 'undefined' && module.exports) {
+        module.exports.Base64 = global.Base64;
+    }
+    else if (typeof define === 'function' && define.amd) {		
+        // AMD. Register as an anonymous module.	
+        define([], function(){ return global.Base64 });
+    }
     // that's it!
-})(this);
+    return {Base64: global.Base64}
+}));
