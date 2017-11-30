@@ -19,7 +19,7 @@
     'use strict';
     // existing version for noConflict()
     var _Base64 = global.Base64;
-    var version = "2.3.2";
+    var version = "2.4.0";
     // if node.js, we use Buffer
     var buffer;
     if (typeof module !== 'undefined' && module.exports) {
@@ -215,8 +215,8 @@
     if (typeof module !== 'undefined' && module.exports) {
         module.exports.Base64 = global.Base64;
     }
-    else if (typeof define === 'function' && define.amd) {		
-        // AMD. Register as an anonymous module.	
+    else if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
         define([], function(){ return global.Base64 });
     }
     // that's it!
