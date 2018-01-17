@@ -8,12 +8,14 @@
  *    http://en.wikipedia.org/wiki/Base64
  */
 ;(function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(global) :
-    typeof define === 'function' && define.amd ? define(factory) :
-    global.moment = factory(global)
-}((   typeof self   !== 'undefined' ? self
-: typeof window !== 'undefined' ? window
-: typeof global !== 'undefined' ? global
+    typeof exports === 'object' && typeof module !== 'undefined'
+        ? module.exports = factory(global)
+        : typeof define === 'function' && define.amd
+        ? define(factory) : null
+}((
+    typeof self !== 'undefined' ? self
+        : typeof window !== 'undefined' ? window
+        : typeof global !== 'undefined' ? global
 : this
 ), function(global) {
     'use strict';
