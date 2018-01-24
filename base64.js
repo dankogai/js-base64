@@ -11,7 +11,7 @@
     typeof exports === 'object' && typeof module !== 'undefined'
         ? module.exports = factory(global)
         : typeof define === 'function' && define.amd
-        ? define(factory) : null
+        ? define(factory) : factory(global)
 }((
     typeof self !== 'undefined' ? self
         : typeof window !== 'undefined' ? window
