@@ -4,6 +4,21 @@
 
 Yet another Base64 transcoder
 
+## Install
+
+```javascript
+$ npm install --save js-base64
+```
+
+If you are using it on ES6 transpilers, you may also need:
+
+```javascript
+$ npm install --save babel-preset-es2015
+```
+
+Note `js-base64` itself is stand-alone so its `package.json` has no `dependencies`.  However, it is also tested on ES6 environment so `"babel-preset-es2015": "^6.24.1"` is on `devDependencies`.
+
+
 ## Usage
 
 ### In Browser
@@ -23,13 +38,6 @@ var Base64 = require('js-base64').Base64;
 ```javascript
 import { Base64 } from 'js-base64';
 ```
-
-### npm
-
-```javascript
-$ npm install --save js-base64
-```
-
 
 ## SYNOPSIS
 
