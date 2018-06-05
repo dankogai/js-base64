@@ -3,10 +3,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Test for base64.js</title>
+<title>Demo for base64.js</title>
 </head>
 <body>
-<h1>Test for base64.js</h1>
+<h1>Demo for base64.js</h1>
 <p>$Id: base64.html,v 1.1 2009/03/01 22:00:28 dankogai Exp dankogai $</p>
 <table width="640"><tbody>
 <tr><th width="50%">Text</th><th>Base64
@@ -14,7 +14,7 @@
 <tr>
 <th><textarea id="srctxt" cols="32" rows="4" onkeyup="doit()">
 </textarea></th>
-<th><textarea id="base64" cols=32" rows="4" onkeyup="
+<th><textarea id="base64" cols="32" rows="4" onkeyup="
     $('srctxt').value = Base64.decode(this.value);
     doit();
     if (1 /*@cc_on -1 @*/) $('data').src = 'data:text/plain;base64,' + this.value;
