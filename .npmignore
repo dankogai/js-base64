@@ -1,5 +1,5 @@
 .babelrc
 .eslintrc
 .travis.yml
-.*,v
+*,v
 *.bak
