@@ -13,10 +13,10 @@ $ npm install --save js-base64
 If you are using it on ES6 transpilers, you may also need:
 
 ```javascript
-$ npm install --save babel-preset-es2015
+$ npm install --save babel-preset-env
 ```
 
-Note `js-base64` itself is stand-alone so its `package.json` has no `dependencies`.  However, it is also tested on ES6 environment so `"babel-preset-es2015": "^6.24.1"` is on `devDependencies`.
+Note `js-base64` itself is stand-alone so its `package.json` has no `dependencies`.  However, it is also tested on ES6 environment so `"babel-preset-env": "^1.7.0"` is on `devDependencies`.
 
 
 ## Usage
