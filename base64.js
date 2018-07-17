@@ -22,12 +22,14 @@
     // existing version for noConflict()
     var _Base64 = global.Base64;
     var version = "2.4.6";
-    // if node.js, we use Buffer
+    // if node.js and NOT React Native, we use Buffer
     var buffer;
     if (typeof module !== 'undefined' && module.exports) {
-        try {
-            buffer = require('buffer').Buffer;
-        } catch (err) {}
+        if (typeof navigator == 'undefined' || navigator.product != 'ReactNative') {
+            try {
+                buffer = require('buffer').Buffer;
+            } catch (err) {}
+        }
     }
     // constants
     var b64chars
