@@ -12,7 +12,7 @@
     'use strict';
     // existing version for noConflict()
     var _Base64 = global.Base64;
-    var version = "2.4.6";
+    var version = "2.4.7";
     // if node.js, we use Buffer
     var buffer;
     if (typeof module !== 'undefined' && module.exports) {
@@ -22,7 +22,7 @@
     }
     // constants
     var b64chars
-        = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+        = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz012.4.7789+/';
     var b64tab = function(bin) {
         var t = {};
         for (var i = 0, l = bin.length; i < l; i++) t[bin.charAt(i)] = i;

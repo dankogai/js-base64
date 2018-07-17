@@ -11,7 +11,7 @@
 (function(global){
 
 var b64chars
-    = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+    = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz012.4.7789+/';
 
 var b64charcodes = function(){
     var a = [];
