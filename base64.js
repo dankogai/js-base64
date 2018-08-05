@@ -25,7 +25,7 @@
     // if node.js and NOT React Native, we use Buffer
     var buffer;
     if (typeof module !== 'undefined' && module.exports) {
-        if (typeof navigator != 'undefined' && navigator.product == 'ReactNative') {
+        if (typeof navigator !== 'undefined' && navigator.product === 'ReactNative') {
         } else {
             try {
                 buffer = require('buffer').Buffer;
