@@ -25,11 +25,10 @@
     // if node.js and NOT React Native, we use Buffer
     var buffer;
     if (typeof module !== 'undefined' && module.exports) {
-        if (typeof navigator !== 'undefined' && navigator.product === 'ReactNative') {
-        } else {
-            try {
-                buffer = require('buffer').Buffer;
-            } catch (err) {}
+        try {
+            buffer = eval("require('buffer').Buffer");
+        } catch (err) {
+            buffer = undefined;
         }
     }
     // constants
@@ -189,7 +188,8 @@
         encodeURI: encodeURI,
         btou: btou,
         decode: decode,
-        noConflict: noConflict
+        noConflict: noConflict,
+        __buffer__: buffer
     };
     // if ES5 is available, make Base64.extendString() available
     if (typeof Object.defineProperty === 'function') {
