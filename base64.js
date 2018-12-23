@@ -20,6 +20,7 @@
 ), function(global) {
     'use strict';
     // existing version for noConflict()
+    global = global || {};
     var _Base64 = global.Base64;
     var version = "2.5.0";
     // if node.js and NOT React Native, we use Buffer
