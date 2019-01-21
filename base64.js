@@ -22,7 +22,7 @@
     // existing version for noConflict()
     global = global || {};
     var _Base64 = global.Base64;
-    var version = "2.5.0";
+    var version = "2.5.1";
     // if node.js and NOT React Native, we use Buffer
     var buffer;
     if (typeof module !== 'undefined' && module.exports) {
