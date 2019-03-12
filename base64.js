@@ -25,9 +25,9 @@
     var version = "2.5.1";
     // if node.js and NOT React Native, we use Buffer
     var buffer;
-    if (typeof module !== 'undefined' && module.exports) {
+    if (typeof module !== 'undefined' && module.exports && (typeof navigator === "undefined" || navigator.product !== 'ReactNative')) {
         try {
-            buffer = eval("require('buffer').Buffer");
+            buffer = require('buffer').Buffer;
         } catch (err) {
             buffer = undefined;
         }
