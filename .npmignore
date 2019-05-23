@@ -3,3 +3,4 @@
 .travis.yml
 *,v
 *.bak
+test/**/*
