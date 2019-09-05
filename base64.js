@@ -49,8 +49,8 @@
                 : cc < 0x800 ? (fromCharCode(0xc0 | (cc >>> 6))
                                 + fromCharCode(0x80 | (cc & 0x3f)))
                 : (fromCharCode(0xe0 | ((cc >>> 12) & 0x0f))
-                   + fromCharCode(0x80 | ((cc >>>  6) & 0x3f))
-                   + fromCharCode(0x80 | ( cc         & 0x3f)));
+                    + fromCharCode(0x80 | ((cc >>>  6) & 0x3f))
+                    + fromCharCode(0x80 | ( cc         & 0x3f)));
         } else {
             var cc = 0x10000
                 + (c.charCodeAt(0) - 0xD800) * 0x400
@@ -83,21 +83,14 @@
     } : function(b) {
         return b.replace(/[\s\S]{1,3}/g, cb_encode);
     };
-    var _encode = buffer ?
-        buffer.from && Uint8Array && buffer.from !== Uint8Array.from
-        ? function (u) {
-            return (u.constructor === buffer.constructor ? u : buffer.from(u))
-                .toString('base64')
-        }
-        :  function (u) {
-            return (u.constructor === buffer.constructor ? u : new  buffer(u))
-                .toString('base64')
-        }
-        : function (u) { return btoa(utob(u)) }
-    ;
+    var _encode = function(u) {
+        const isUint8Array = Object.prototype.toString.call(u) === '[object Uint8Array]';
+        return isUint8Array ? u.toString('base64')
+            : btoa(utob(String(u)));
+    }
     var encode = function(u, urisafe) {
         return !urisafe
-            ? _encode(String(u))
+            ? _encode(u)
             : _encode(String(u)).replace(/[+\/]/g, function(m0) {
                 return m0 == '+' ? '-' : '_';
             }).replace(/=/g, '');
@@ -233,3 +226,4 @@
     // that's it!
     return {Base64: global.Base64}
 }));
+
