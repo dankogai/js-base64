@@ -22,7 +22,7 @@
     // existing version for noConflict()
     global = global || {};
     var _Base64 = global.Base64;
-    var version = "2.5.1";
+    var version = "2.5.2";
     // if node.js and NOT React Native, we use Buffer
     var buffer;
     if (typeof module !== 'undefined' && module.exports) {
@@ -84,7 +84,7 @@
         return b.replace(/[\s\S]{1,3}/g, cb_encode);
     };
     var _encode = function(u) {
-        const isUint8Array = Object.prototype.toString.call(u) === '[object Uint8Array]';
+        var isUint8Array = Object.prototype.toString.call(u) === '[object Uint8Array]';
         return isUint8Array ? u.toString('base64')
             : btoa(utob(String(u)));
     }
