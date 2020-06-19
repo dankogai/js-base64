@@ -23,15 +23,6 @@
     global = global || {};
     var _Base64 = global.Base64;
     var version = "2.5.2";
-    // if node.js and NOT React Native, we use Buffer
-    var buffer;
-    if (typeof module !== 'undefined' && module.exports) {
-        try {
-            buffer = eval("require('buffer').Buffer");
-        } catch (err) {
-            buffer = undefined;
-        }
-    }
     // constants
     var b64chars
         = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
@@ -78,9 +69,11 @@
         ];
         return chars.join('');
     };
-    var btoa = global.btoa ? function(b) {
-        return global.btoa(b);
-    } : function(b) {
+    var btoa = global.btoa && typeof global.btoa == 'function'
+        ? function(b){ return global.btoa(b) } : function(b) {
+        if (b.match(/[^\x00-\xFF]/)) throw new RangeError(
+            'The string contains invalid characters.'
+        );
         return b.replace(/[\s\S]{1,3}/g, cb_encode);
     };
     var _encode = function(u) {
@@ -139,25 +132,14 @@
         chars.length -= [0, 0, 2, 1][padlen];
         return chars.join('');
     };
-    var _atob = global.atob ? function(a) {
-        return global.atob(a);
-    } : function(a){
+    var _atob = global.atob && typeof global.atob == 'function'
+        ? function(a){ return global.atob(a) } : function(a){
         return a.replace(/\S{1,4}/g, cb_decode);
     };
     var atob = function(a) {
         return _atob(String(a).replace(/[^A-Za-z0-9\+\/]/g, ''));
     };
-    var _decode = buffer ?
-        buffer.from && Uint8Array && buffer.from !== Uint8Array.from
-        ? function(a) {
-            return (a.constructor === buffer.constructor
-                    ? a : buffer.from(a, 'base64')).toString();
-        }
-        : function(a) {
-            return (a.constructor === buffer.constructor
-                    ? a : new buffer(a, 'base64')).toString();
-        }
-        : function(a) { return btou(_atob(a)) };
+    var _decode = function(a) { return btou(_atob(a)) };
     var decode = function(a){
         return _decode(
             String(a).replace(/[-_]/g, function(m0) { return m0 == '-' ? '+' : '/' })
@@ -182,7 +164,6 @@
         btou: btou,
         decode: decode,
         noConflict: noConflict,
-        __buffer__: buffer
     };
     // if ES5 is available, make Base64.extendString() available
     if (typeof Object.defineProperty === 'function') {
