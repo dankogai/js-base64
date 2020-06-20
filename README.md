@@ -44,12 +44,20 @@ import { Base64 } from 'js-base64';
 ```javascript
 Base64.encode('dankogai'); // ZGFua29nYWk=
 Base64.btoa(  'dankogai'); // ZGFua29nYWk=
-Base64.encode('小飼弾');    // 5bCP6aO85by+
-Base64.encodeURI('小飼弾'); // 5bCP6aO85by-
-Base64.btoa(  '小飼弾');    // raises exception 
+Base64.fromUint8Array(     // ZGFua29nYWk=
+    new Uint8Array([100,97,110,107,111,103,97,105])
+);
+Base64.encode(   '小飼弾'); // 5bCP6aO85by+
+Base64.encodeURI('小飼弾'); // 5bCP6aO85by- which equals to Base64.encode('小飼弾', true)
+Base64.btoa(     '小飼弾'); // raises exception 
+```
 
+```javascript
 Base64.decode('ZGFua29nYWk=');  // dankogai
 Base64.atob(  'ZGFua29nYWk=');  // dankogai
+Base64.toUint8Array(            // new Uint8Array([100,97,110,107,111,103,97,105])
+    'ZGFua29nYWk='
+);
 Base64.decode('5bCP6aO85by+');  // 小飼弾
 // note .decodeURI() is unnecessary since it accepts both flavors
 Base64.decode('5bCP6aO85by-');  // 小飼弾
