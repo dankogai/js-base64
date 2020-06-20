@@ -77,18 +77,21 @@
         return b.replace(/[\s\S]{1,3}/g, cb_encode);
     };
     var _encode = function(u) {
-        var isUint8Array = Object.prototype.toString.call(u) === '[object Uint8Array]';
-        return isUint8Array ? u.toString('base64')
-            : btoa(utob(String(u)));
-    }
+        return btoa(utob(String(u)));
+    };
     var encode = function(u, urisafe) {
         return !urisafe
-            ? _encode(u)
+            ? _encode(String(u))
             : _encode(String(u)).replace(/[+\/]/g, function(m0) {
                 return m0 == '+' ? '-' : '_';
             }).replace(/=/g, '');
     };
     var encodeURI = function(u) { return encode(u, true) };
+    var fromUint8Array = function(a) {
+        return btoa(Array.from(a, function(c) {
+            return String.fromCharCode(c)
+        }).join(''));
+    };
     // decoder stuff
     var re_btou = /[\xC0-\xDF][\x80-\xBF]|[\xE0-\xEF][\x80-\xBF]{2}|[\xF0-\xF7][\x80-\xBF]{3}/g;
     var cb_btou = function(cccc) {
@@ -142,9 +145,15 @@
     var _decode = function(a) { return btou(_atob(a)) };
     var decode = function(a){
         return _decode(
-            String(a).replace(/[-_]/g, function(m0) { return m0 == '-' ? '+' : '/' })
-                .replace(/[^A-Za-z0-9\+\/]/g, '')
+            String(a).replace(/[-_]/g, function(m0) {
+                return m0 == '-' ? '+' : '/'
+            }).replace(/[^A-Za-z0-9\+\/]/g, '')
         );
+    };
+    var toUint8Array = function(a) {
+        return Uint8Array.from(atob(a), function(c) {
+            return c.charCodeAt(0);
+        });
     };
     var noConflict = function() {
         var Base64 = global.Base64;
@@ -164,6 +173,8 @@
         btou: btou,
         decode: decode,
         noConflict: noConflict,
+        fromUint8Array: fromUint8Array,
+        toUint8Array: toUint8Array
     };
     // if ES5 is available, make Base64.extendString() available
     if (typeof Object.defineProperty === 'function') {
@@ -203,4 +214,3 @@
     // that's it!
     return {Base64: global.Base64}
 }));
-
