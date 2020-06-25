@@ -42,3 +42,27 @@ describe('Base64', function () {
     it('.decode', is(Base64.decode('5bCP6aO85by+'), '小飼弾'));
     it('.decode', is(Base64.decode('5bCP6aO85by-'), '小飼弾'));
 });
+
+if (typeof Uint8Array === 'function') describe('fromBase64', function() {
+    it('dankogai', is(Base64.fromUint8Array(new Uint8Array([100,97,110,107,111,103,97,105])), Base64.encode('dankogai')));
+    it('dankoga', is(Base64.fromUint8Array(new Uint8Array([100,97,110,107,111,103,97])), Base64.encode('dankoga')));
+    it('dankog', is(Base64.fromUint8Array(new Uint8Array([100,97,110,107,111,103])), Base64.encode('dankog')));
+    it('danko', is(Base64.fromUint8Array(new Uint8Array([100,97,110,107,111])), Base64.encode('danko')));
+    it('dank', is(Base64.fromUint8Array(new Uint8Array([100,97,110,107])), Base64.encode('dank')));
+    it('dan', is(Base64.fromUint8Array(new Uint8Array([100,97,110])), Base64.encode('dan')));
+    it('da', is(Base64.fromUint8Array(new Uint8Array([100,97])), Base64.encode('da')));
+    it('d', is(Base64.fromUint8Array(new Uint8Array([100])), Base64.encode('d')));
+    it('', is(Base64.fromUint8Array(new Uint8Array([])), Base64.encode('')));
+});
+
+if (typeof Uint8Array === 'function') describe('toBase64', function() {
+    it('ZGFua29nYWk=', is(Base64.toUint8Array('ZGFua29nYWk=').toString(), '100,97,110,107,111,103,97,105'));
+    it('ZGFua29nYQ==', is(Base64.toUint8Array('ZGFua29nYQ==').toString(), '100,97,110,107,111,103,97'));
+    it('ZGFua29n', is(Base64.toUint8Array('ZGFua29n').toString(), '100,97,110,107,111,103'));
+    it('ZGFua28=', is(Base64.toUint8Array('ZGFua28=').toString(), '100,97,110,107,111'));
+    it('ZGFuaw==', is(Base64.toUint8Array('ZGFuaw==').toString(), '100,97,110,107'));
+    it('ZGFu', is(Base64.toUint8Array('ZGFu').toString(), '100,97,110'));
+    it('ZGE=', is(Base64.toUint8Array('ZGE=').toString(), '100,97'));
+    it('ZA==', is(Base64.toUint8Array('ZA==').toString(), '100'));
+    it('', is(Base64.toUint8Array('').toString(), ''));
+});
