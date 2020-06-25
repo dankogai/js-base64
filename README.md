@@ -47,6 +47,9 @@ Base64.btoa(  'dankogai'); // ZGFua29nYWk=
 Base64.fromUint8Array(     // ZGFua29nYWk=
     new Uint8Array([100,97,110,107,111,103,97,105])
 );
+Base64.fromUint8Array(     // ZGFua29nYW which is URI safe
+    new Uint8Array([100,97,110,107,111,103,97,105]), true
+);
 Base64.encode(   '小飼弾'); // 5bCP6aO85by+
 Base64.encodeURI('小飼弾'); // 5bCP6aO85by- which equals to Base64.encode('小飼弾', true)
 Base64.btoa(     '小飼弾'); // raises exception 
