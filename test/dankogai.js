@@ -43,7 +43,7 @@ describe('Base64', function () {
     it('.decode', is(Base64.decode('5bCP6aO85by-'), '小飼弾'));
 });
 
-if (typeof Uint8Array === 'function') describe('fromBase64', function() {
+if (typeof Uint8Array === 'function') describe('fromUint8Array', function() {
     it('dankogai', is(Base64.fromUint8Array(new Uint8Array([100,97,110,107,111,103,97,105])), Base64.encode('dankogai')));
     it('dankoga', is(Base64.fromUint8Array(new Uint8Array([100,97,110,107,111,103,97])), Base64.encode('dankoga')));
     it('dankog', is(Base64.fromUint8Array(new Uint8Array([100,97,110,107,111,103])), Base64.encode('dankog')));
@@ -55,7 +55,7 @@ if (typeof Uint8Array === 'function') describe('fromBase64', function() {
     it('', is(Base64.fromUint8Array(new Uint8Array([])), Base64.encode('')));
 });
 
-if (typeof Uint8Array === 'function') describe('toBase64', function() {
+if (typeof Uint8Array === 'function') describe('toUint8Array', function() {
     it('ZGFua29nYWk=', is(Base64.toUint8Array('ZGFua29nYWk=').toString(), '100,97,110,107,111,103,97,105'));
     it('ZGFua29nYQ==', is(Base64.toUint8Array('ZGFua29nYQ==').toString(), '100,97,110,107,111,103,97'));
     it('ZGFua29n', is(Base64.toUint8Array('ZGFua29n').toString(), '100,97,110,107,111,103'));

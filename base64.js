@@ -155,16 +155,17 @@
         return _atob(String(a).replace(/[^A-Za-z0-9\+\/]/g, ''));
     };
     var _decode = function(a) { return btou(_atob(a)) };
+    var _fromURI = function(a) {
+        return String(a).replace(/[-_]/g, function(m0) {
+            return m0 == '-' ? '+' : '/'
+        }).replace(/[^A-Za-z0-9\+\/]/g, '');
+    };
     var decode = function(a){
-        return _decode(
-            String(a).replace(/[-_]/g, function(m0) {
-                return m0 == '-' ? '+' : '/'
-            }).replace(/[^A-Za-z0-9\+\/]/g, '')
-        );
+        return _decode(_fromURI(a));
     };
     var toUint8Array;
     if (global.Uint8Array) toUint8Array = function(a) {
-        return Uint8Array.from(atob(a), function(c) {
+        return Uint8Array.from(atob(_fromURI(a)), function(c) {
             return c.charCodeAt(0);
         });
     };
