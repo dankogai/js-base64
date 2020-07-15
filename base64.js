@@ -1,4 +1,4 @@
-/*
+/**
  *  base64.js
  *
  *  Licensed under the BSD 3-Clause License.
@@ -6,171 +6,154 @@
  *
  *  References:
  *    http://en.wikipedia.org/wiki/Base64
+ * 
+ * @author Dan Kogai (https://github.com/dankogai)
  */
 ;(function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined'
         ? module.exports = factory(global)
         : typeof define === 'function' && define.amd
         ? define(factory) : factory(global)
-}((
-    typeof self !== 'undefined' ? self
+}(( typeof self !== 'undefined' ? self
         : typeof window !== 'undefined' ? window
         : typeof global !== 'undefined' ? global
-: this
+        : this
 ), function(global) {
     'use strict';
-    // existing version for noConflict()
-    global = global || {};
-    var _Base64 = global.Base64;
-    var version = "2.6.3";
-    // constants
-    var b64chars
+    global = global || {}; // existing version for noConflict()
+    const _Base64 = global.Base64;
+    const version = '3.0.0';
+    const _textdecoder = new TextDecoder();
+    const _textencoder = new TextEncoder();
+    const _b64chars
         = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
-    var b64tab = function(bin) {
-        var t = {};
-        for (var i = 0, l = bin.length; i < l; i++) t[bin.charAt(i)] = i;
-        return t;
-    }(b64chars);
-    var fromCharCode = String.fromCharCode;
-    // encoder stuff
-    var cb_utob = function(c) {
-        if (c.length < 2) {
-            var cc = c.charCodeAt(0);
-            return cc < 0x80 ? c
-                : cc < 0x800 ? (fromCharCode(0xc0 | (cc >>> 6))
-                                + fromCharCode(0x80 | (cc & 0x3f)))
-                : (fromCharCode(0xe0 | ((cc >>> 12) & 0x0f))
-                    + fromCharCode(0x80 | ((cc >>>  6) & 0x3f))
-                    + fromCharCode(0x80 | ( cc         & 0x3f)));
-        } else {
-            var cc = 0x10000
-                + (c.charCodeAt(0) - 0xD800) * 0x400
-                + (c.charCodeAt(1) - 0xDC00);
-            return (fromCharCode(0xf0 | ((cc >>> 18) & 0x07))
-                    + fromCharCode(0x80 | ((cc >>> 12) & 0x3f))
-                    + fromCharCode(0x80 | ((cc >>>  6) & 0x3f))
-                    + fromCharCode(0x80 | ( cc         & 0x3f)));
+    const _b64tab = ((bin) => {
+        let tab = {}, i = 0;
+        for (const c of bin) tab[c] = i++;
+        return tab;
+    })(_b64chars);
+    const _fromCharCode = String.fromCharCode;
+    const _mkUriSafe =  (src) => src
+            .replace(/[+\/]/g, (m0) => m0 == '+' ? '-' : '_')
+            .replace(/=/g, '');
+    /**
+    * converts a Uint8Array to a Base64 string
+    * @param {Uint8Array} src
+    * @param {Boolean} urisafe URL-and-filename-safe a la RFC4648
+    * @returns {String} Base64 string
+    */
+    const fromUint8Array = (src, urisafe) => {
+        let b64 = '';
+        for (let i = 0, l = src.length; i < l; i += 3) {
+            const a0 = src[i], a1 = src[i+1], a2 = src[i+2];
+            const ord = a0 << 16 | a1 << 8 | a2;
+            b64 +=    _b64chars.charAt( ord >>> 18)
+                +     _b64chars.charAt((ord >>> 12) & 63)
+                + ( typeof a1 != 'undefined'
+                    ? _b64chars.charAt((ord >>>  6) & 63) : '=')
+                + ( typeof a2 != 'undefined'
+                    ? _b64chars.charAt( ord         & 63) : '=');
         }
+        return urisafe ? _mkUriSafe(b64) : b64;
     };
-    var re_utob = /[\uD800-\uDBFF][\uDC00-\uDFFFF]|[^\x00-\x7F]/g;
-    var utob = function(u) {
-        return u.replace(re_utob, cb_utob);
+    /**
+    * converts a UTF-8-encoded string to a Base64 string
+    * @param {String} src the string to convert
+    * @param {Boolean} rfc4648 if `true` make the result URL-safe
+    * @returns {String} Base64 string
+    */
+    const encode = (src, rfc4648) => {
+        const b64 = fromUint8Array(_textencoder.encode(src));
+        return rfc4648 ? _mkUriSafe(b64) : b64;
     };
-    var cb_encode = function(ccc) {
-        var padlen = [0, 2, 1][ccc.length % 3],
-        ord = ccc.charCodeAt(0) << 16
-            | ((ccc.length > 1 ? ccc.charCodeAt(1) : 0) << 8)
-            | ((ccc.length > 2 ? ccc.charCodeAt(2) : 0)),
-        chars = [
-            b64chars.charAt( ord >>> 18),
-            b64chars.charAt((ord >>> 12) & 63),
-            padlen >= 2 ? '=' : b64chars.charAt((ord >>> 6) & 63),
-            padlen >= 1 ? '=' : b64chars.charAt(ord & 63)
-        ];
-        return chars.join('');
-    };
-    var btoa = global.btoa && typeof global.btoa == 'function'
-        ? function(b){ return global.btoa(b) } : function(b) {
-        if (b.match(/[^\x00-\xFF]/)) throw new RangeError(
+    /**
+    * converts a UTF-8-encoded string to URL-safe Base64 RFC4648
+    * @param {String} src the string to convert
+    * @returns {String} Base64 string
+    */
+    const encodeURI = (src) => encode(src, true);
+    /**
+    * 100% compatibile with `window.btoa` of web browsers
+    * @param {String} src binary string
+    * @returns {String} Base64-encoded string
+    */
+    const btoa = global.btoa && typeof global.btoa == 'function'
+        ? global.btoa.bind(global) : (src) => {
+        if (src.match(/[^\x00-\xFF]/)) throw new RangeError(
             'The string contains invalid characters.'
         );
-        return b.replace(/[\s\S]{1,3}/g, cb_encode);
+        return fromUint8Array(
+            Uint8Array.from(src,c => c.charCodeAt(0))
+        );
     };
-    var _encode = function(u) {
-        return btoa(utob(String(u)));
-    };
-    var mkUriSafe = function (b64) {
-        return b64.replace(/[+\/]/g, function(m0) {
-            return m0 == '+' ? '-' : '_';
-        }).replace(/=/g, '');
-    };
-    var encode = function(u, urisafe) {
-        return urisafe ? mkUriSafe(_encode(u)) : _encode(u);
-    };
-    var encodeURI = function(u) { return encode(u, true) };
-    var fromUint8Array;
-    if (global.Uint8Array) fromUint8Array = function(a, urisafe) {
-        // return btoa(fromCharCode.apply(null, a));
-        var b64 = '';
-        for (var i = 0, l = a.length; i < l; i += 3) {
-            var a0 = a[i], a1 = a[i+1], a2 = a[i+2];
-            var ord = a0 << 16 | a1 << 8 | a2;
-            b64 +=    b64chars.charAt( ord >>> 18)
-                +     b64chars.charAt((ord >>> 12) & 63)
-                + ( typeof a1 != 'undefined'
-                    ? b64chars.charAt((ord >>>  6) & 63) : '=')
-                + ( typeof a2 != 'undefined'
-                    ? b64chars.charAt( ord         & 63) : '=');
+    /**
+     * @deprecated since 3.0.0
+     * @param {string} src UTF-8 string
+     * @returns {string} UTF-16 string
+     */
+    const utob = (src) => {
+        let result = '';
+        for (const c of _textencoder.encode(src)) {
+            result += _fromCharCode(c)
         }
-        return urisafe ? mkUriSafe(b64) : b64;
+        return result;
     };
-    // decoder stuff
-    var re_btou = /[\xC0-\xDF][\x80-\xBF]|[\xE0-\xEF][\x80-\xBF]{2}|[\xF0-\xF7][\x80-\xBF]{3}/g;
-    var cb_btou = function(cccc) {
-        switch(cccc.length) {
-        case 4:
-            var cp = ((0x07 & cccc.charCodeAt(0)) << 18)
-                |    ((0x3f & cccc.charCodeAt(1)) << 12)
-                |    ((0x3f & cccc.charCodeAt(2)) <<  6)
-                |     (0x3f & cccc.charCodeAt(3)),
-            offset = cp - 0x10000;
-            return (fromCharCode((offset  >>> 10) + 0xD800)
-                    + fromCharCode((offset & 0x3FF) + 0xDC00));
-        case 3:
-            return fromCharCode(
-                ((0x0f & cccc.charCodeAt(0)) << 12)
-                    | ((0x3f & cccc.charCodeAt(1)) << 6)
-                    |  (0x3f & cccc.charCodeAt(2))
-            );
-        default:
-            return  fromCharCode(
-                ((0x1f & cccc.charCodeAt(0)) << 6)
-                    |  (0x3f & cccc.charCodeAt(1))
-            );
-        }
-    };
-    var btou = function(b) {
-        return b.replace(re_btou, cb_btou);
-    };
-    var cb_decode = function(cccc) {
-        var len = cccc.length,
+    /**
+     * @deprecated since 3.0.0
+     * @param {string} src UTF-16 string
+     * @returns {string} UTF-8 string
+     */
+    const btou = (src) =>  _textdecoder.decode(
+        Uint8Array.from(src, c => c.charCodeAt(0))
+    );
+    const _cb_decode = (cccc) => {
+        let len = cccc.length,
         padlen = len % 4,
-        n = (len > 0 ? b64tab[cccc.charAt(0)] << 18 : 0)
-            | (len > 1 ? b64tab[cccc.charAt(1)] << 12 : 0)
-            | (len > 2 ? b64tab[cccc.charAt(2)] <<  6 : 0)
-            | (len > 3 ? b64tab[cccc.charAt(3)]       : 0),
+        n =   (len > 0 ? _b64tab[cccc.charAt(0)] << 18 : 0)
+            | (len > 1 ? _b64tab[cccc.charAt(1)] << 12 : 0)
+            | (len > 2 ? _b64tab[cccc.charAt(2)] <<  6 : 0)
+            | (len > 3 ? _b64tab[cccc.charAt(3)]       : 0),
         chars = [
-            fromCharCode( n >>> 16),
-            fromCharCode((n >>>  8) & 0xff),
-            fromCharCode( n         & 0xff)
+            _fromCharCode( n >>> 16),
+            _fromCharCode((n >>>  8) & 0xff),
+            _fromCharCode( n         & 0xff)
         ];
         chars.length -= [0, 0, 2, 1][padlen];
         return chars.join('');
     };
-    var _atob = global.atob && typeof global.atob == 'function'
-        ? function(a){ return global.atob(a) } : function(a){
-        return a.replace(/\S{1,4}/g, cb_decode);
+    /**
+    * 100% compatibile with `window.atob` of web browsers
+    * @param {String} src Base64-encoded string
+    * @returns {String} binary string
+    */
+    const atob = global.atob && typeof global.atob == 'function'
+        ? global.atob.bind(global)  : (a) => {
+        return String(a)
+            .replace(/[^A-Za-z0-9\+\/]/g, '')
+            .replace(/\S{1,4}/g, _cb_decode);
     };
-    var atob = function(a) {
-        return _atob(String(a).replace(/[^A-Za-z0-9\+\/]/g, ''));
+    const _decode = (a) => btou(atob(a));
+    const _fromURI = (a) => {
+        return String(a)
+            .replace(/[-_]/g, (m0) => m0 == '-' ? '+' : '/')
+            .replace(/[^A-Za-z0-9\+\/]/g, '');
     };
-    var _decode = function(a) { return btou(_atob(a)) };
-    var _fromURI = function(a) {
-        return String(a).replace(/[-_]/g, function(m0) {
-            return m0 == '-' ? '+' : '/'
-        }).replace(/[^A-Za-z0-9\+\/]/g, '');
+    /**
+    * converts a Base64 string to a UTF-8 string
+    * @param {String} src Base64 string.  Both normal and URL-safe are supported
+    * @returns {String} UTF-8 string
+    */
+    const decode = (src) =>  _decode(_fromURI(src));
+    /**
+    * converts a Base64 string to a Uint8Array
+    * @param {String} src Base64 string.  Both normal and URL-safe are supported
+    * @returns {Uint8Array} UTF-8 string
+    */
+    const toUint8Array = (a) =>  {
+        return Uint8Array.from(atob(_fromURI(a)), c => c.charCodeAt(0));
     };
-    var decode = function(a){
-        return _decode(_fromURI(a));
-    };
-    var toUint8Array;
-    if (global.Uint8Array) toUint8Array = function(a) {
-        return Uint8Array.from(atob(_fromURI(a)), function(c) {
-            return c.charCodeAt(0);
-        });
-    };
-    var noConflict = function() {
-        var Base64 = global.Base64;
+    const noConflict = () => {
+        let Base64 = global.Base64;
         global.Base64 = _Base64;
         return Base64;
     };
@@ -184,31 +167,58 @@
         utob: utob,
         encode: encode,
         encodeURI: encodeURI,
+        encodeURL: encodeURI,
         btou: btou,
         decode: decode,
         noConflict: noConflict,
         fromUint8Array: fromUint8Array,
         toUint8Array: toUint8Array
     };
-    // if ES5 is available, make Base64.extendString() available
-    if (typeof Object.defineProperty === 'function') {
-        var noEnum = function(v){
-            return {value:v,enumerable:false,writable:true,configurable:true};
+    // make Base64.extendString() available
+    const _noEnum = (v) => {
+        return {
+            value:v, enumerable:false, writable:true, configurable:true
         };
-        global.Base64.extendString = function () {
-            Object.defineProperty(
-                String.prototype, 'fromBase64', noEnum(function () {
-                    return decode(this)
-                }));
-            Object.defineProperty(
-                String.prototype, 'toBase64', noEnum(function (urisafe) {
-                    return encode(this, urisafe)
-                }));
-            Object.defineProperty(
-                String.prototype, 'toBase64URI', noEnum(function () {
-                    return encode(this, true)
-                }));
-        };
+    };
+    // make Base64.extendString() available
+    global.Base64.extendString = function() {
+        const _add = (name, body) => Object.defineProperty(
+            String.prototype, name, _noEnum(body)
+        );
+        _add('fromBase64', function() {
+            return decode(this);
+        });
+        _add('toBase64', function(rfc4648) {
+            return encode(this, rfc4648);
+        });
+        _add('toBase64URI', function() {
+            return encode(this, true);
+        });
+        _add('toBase64URL', function() {
+            return encode(this, true);
+        });
+        _add('toUint8Array', function() {
+            return toUint8Array(this);
+        });
+    };
+    // make Base64.extendUint8Array() available
+    global.Base64.extendUint8Array = function() {
+        const _add = (name, body) => Object.defineProperty(
+            Uint8Array.prototype, name, _noEnum(body)
+        );
+        _add('toBase64', function(rfc4648) {
+            return fromUint8Array(this, rfc4648);
+        });
+        _add('toBase64URI', function() {
+            return fromUint8Array(this, true);
+        });
+        _add('toBase64URL', function() {
+            return fromUint8Array(this, true);
+        });
+    };
+    global.Base64.extendBuiltins = () => {
+        global.Base64.extendString();
+        global.Base64.extendUint8Array();
     }
     //
     // export Base64 to the namespace
@@ -226,5 +236,5 @@
         define([], function(){ return global.Base64 });
     }
     // that's it!
-    return {Base64: global.Base64}
+    return {Base64: global.Base64};
 }));

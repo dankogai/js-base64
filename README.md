@@ -4,6 +4,16 @@
 
 Yet another Base64 transcoder
 
+## HEADS UP: ES2015 support required since version 3
+
+Version 3 is completely rewritten with ES2015 features like arrow functions, `TextDecoder` and `TextEncoder`.  All modern browsers and node 12 or up are supported.  Your codes should run unchanged.
+
+The hardest part of maintaing this module was not Base64 features, but cross-platform support (eg. nodejs vs web browsers).  By making ES2015 mandatory virtually all codes are common (except `atob()` and `btoa()`).
+
+If you need to support legacy browsers like IE, use version 2.
+
+Ironically ES6 `export` is not used to keep the API compatible.
+
 ## Usage
 
 ### Install
@@ -18,18 +28,15 @@ If you are using it on ES6 transpilers, you may also need:
 $ npm install --save babel-preset-env
 ```
 
-Note `js-base64` itself is stand-alone so its `package.json` has no `dependencies`.  However, it is also tested on ES6 environment so `"babel-preset-env": "^1.7.0"` is on `devDependencies`.
-
-
 ### In Browser
 
-* Locally
+Locally…
 
 ```html
 <script src="base64.js"></script>
 ```
 
-* Directly from CDN.  In which case you don't even need to install.
+… or Directly from CDN.  In which case you don't even need to install.
 
 ```html
 <!-- the latest -->
@@ -38,16 +45,16 @@ Note `js-base64` itself is stand-alone so its `package.json` has no `dependencie
 
 ```html
 <!-- with version fixed -->
-<script src="https://cdn.jsdelivr.net/npm/js-base64@2.6.3/base64.min.js">
+<script src="https://cdn.jsdelivr.net/npm/js-base64@3.0.0/base64.min.js">
 ```
 
 ### node.js
 
 ```javascript
-var Base64 = require('js-base64').Base64;
+const Base64 = require('js-base64').Base64;
 ```
 
-## es6+
+## As a ES6 Module (via babel, et al.)
 
 ```javascript
 import { Base64 } from 'js-base64';
@@ -84,19 +91,30 @@ Base64.atob(  '5bCP6aO85by+');  // 'å°é£¼å¼¾' which is nonsense
 ### String Extension for ES5
 
 ```javascript
-if (Base64.extendString) {
-    // you have to explicitly extend String.prototype
-    Base64.extendString();
-    // once extended, you can do the following
-    'dankogai'.toBase64();        // ZGFua29nYWk=
-    '小飼弾'.toBase64();           // 5bCP6aO85by+
-    '小飼弾'.toBase64(true);       // 5bCP6aO85by-
-    '小飼弾'.toBase64URI();        // 5bCP6aO85by-
-    'ZGFua29nYWk='.fromBase64();  // dankogai
-    '5bCP6aO85by+'.fromBase64();  // 小飼弾
-    '5bCP6aO85by-'.fromBase64();  // 小飼弾
-}
+// you have to explicitly extend String.prototype
+Base64.extendString();
+// once extended, you can do the following
+'dankogai'.toBase64();        // ZGFua29nYWk=
+'小飼弾'.toBase64();           // 5bCP6aO85by+
+'小飼弾'.toBase64(true);       // 5bCP6aO85by-
+'小飼弾'.toBase64URI();        // 5bCP6aO85by-
+'小飼弾'.toBase64URL();        // 5bCP6aO85by- an alias of .toBase64URI()
+'ZGFua29nYWk='.fromBase64();  // dankogai
+'5bCP6aO85by+'.fromBase64();  // 小飼弾
+'5bCP6aO85by-'.fromBase64();  // 小飼弾
 ```
+
+```javascript
+// you have to explicitly extend String.prototype
+Base64.extendString();
+// once extended, you can do the following
+const u8s =  new Uint8Array([100,97,110,107,111,103,97,105]);
+u8s.toBase64();     // 'ZGFua29nYWk='
+u8s.toBase64URI();  // 'ZGFua29nYWk'
+u8s.toBase64URL();  // 'ZGFua29nYWk' an alias of .toBase64URI()
+```
+
+You can extend both via `Base64.extend
 
 ### TypeScript
 
@@ -117,6 +135,7 @@ var pngBase64 =
 
 Which is a Base64-encoded 1x1 transparent PNG, **DO NOT USE** `Base64.decode(pngBase64)`.  Use `Base64.atob(pngBase64)` instead.  `Base64.decode()` decodes to UTF-8 string while `Base64.atob()` decodes to bytes, which is compatible to browser built-in `atob()` (Which is absent in node.js).  The same rule applies to the opposite direction.
 
+Or even better, `Base64.toUint8Array(pngBase64)`.
 
 ## SEE ALSO
 
