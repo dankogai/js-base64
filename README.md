@@ -102,6 +102,7 @@ Base64.extendString();
 'ZGFua29nYWk='.fromBase64();  // dankogai
 '5bCP6aO85by+'.fromBase64();  // 小飼弾
 '5bCP6aO85by-'.fromBase64();  // 小飼弾
+'5bCP6aO85by-'.toUint8Array();// new Uint8Array([100,97,110,107,111,103,97,105])
 ```
 
 ```javascript
@@ -114,7 +115,7 @@ u8s.toBase64URI();  // 'ZGFua29nYWk'
 u8s.toBase64URL();  // 'ZGFua29nYWk' an alias of .toBase64URI()
 ```
 
-You can extend both via `Base64.extend
+You can extend both via `Base64.extendBuiltin()`.
 
 ### TypeScript
 
