@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -6,7 +7,6 @@
   </head>
   <body>
     <div id="mocha"></div>
-
     <script src="https://cdn.rawgit.com/jquery/jquery/3.5.1/dist/jquery.min.js"></script>
     <script src="https://cdn.rawgit.com/Automattic/expect.js/0.3.1/index.js"></script>
     <script src="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.js"></script>
@@ -16,10 +16,10 @@
     <script src="../base64.js"></script>
     <script>
       var assert = function(expr, msg) {
-        if (!expr) throw new Error(msg || 'failed');
+          if (!expr) throw new Error(msg || 'failed');
       };
       assert.equal = function(a, b, msg) {
-        if (a !== b) throw new Error(msg || ('failed : '+a+','+b));
+          if (a !== b) throw new Error(msg || ('failed : '+a+','+b));
       };
     </script>
     <script src="./dankogai.js"></script>
@@ -29,12 +29,10 @@
     <script src="./atob.js"></script>
     <script>
       $(function() {
-        mocha.run();
+          mocha.run();
       });
     </script>
-</head>
-<body>
-  $Id: index.html,v 0.3 2017/09/11 08:43:43 dankogai Exp dankogai $
-  <div id="mocha"></div>
-</body>
+    $Id: index.html,v 0.5 2020/07/15 18:18:13 dankogai Exp dankogai $
+    <div id="mocha"></div>
+  </body>
 </html>
