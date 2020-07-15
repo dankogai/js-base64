@@ -4,7 +4,9 @@
 
 Yet another Base64 transcoder
 
-## Install
+## Usage
+
+### Install
 
 ```javascript
 $ npm install --save js-base64
@@ -19,12 +21,24 @@ $ npm install --save babel-preset-env
 Note `js-base64` itself is stand-alone so its `package.json` has no `dependencies`.  However, it is also tested on ES6 environment so `"babel-preset-env": "^1.7.0"` is on `devDependencies`.
 
 
-## Usage
-
 ### In Browser
+
+* Locally
 
 ```html
 <script src="base64.js"></script>
+```
+
+* Directly from CDN.  In which case you don't even need to install.
+
+```html
+<!-- the latest -->
+<script src="https://cdn.jsdelivr.net/npm/js-base64/base64.min.js">
+```
+
+```html
+<!-- with version fixed -->
+<script src="https://cdn.jsdelivr.net/npm/js-base64@2.6.3/base64.min.js">
 ```
 
 ### node.js
