@@ -12,7 +12,13 @@ The hardest part of maintaing this module was not Base64 features, but cross-pla
 
 If you need to support legacy browsers like IE, use version 2.
 
+[text-encoding-shim]: https://www.npmjs.com/package/text-encoding-shim
+
 Ironically ES6 `export` is not used to keep the API compatible.
+
+### Old MS Edge workaround
+
+MS Edge before 79 MS Edge before 79 (before Chromium) lacks `TextEncoder` and `TextDecoder`. You can polyfill them by loading [text-encoding-shim] ahead of `base64.js`.
 
 ## Usage
 
@@ -39,13 +45,13 @@ Locally…
 … or Directly from CDN.  In which case you don't even need to install.
 
 ```html
+<!-- 
+    MS Edge before 79 (before Chromium) lacks TextEncoder and TextDecoder.
+    You can polyfill them by loading text-encoding-shim before base64
+-->
+<script src="https://cdn.jsdelivr.net/npm/text-encoding-shim@1.0.5/index.min.js">
 <!-- the latest -->
-<script src="https://cdn.jsdelivr.net/npm/js-base64/base64.min.js">
-```
-
-```html
-<!-- with version fixed -->
-<script src="https://cdn.jsdelivr.net/npm/js-base64@3.0.0/base64.min.js">
+<script src="https://cdn.jsdelivr.net/npm/js-base64@3.0.1/base64.min.js">
 ```
 
 ### node.js

@@ -23,15 +23,15 @@
     global = global || {}; // existing version for noConflict()
     const _Base64 = global.Base64;
     const version = '3.0.0';
-    const _textdecoder = new TextDecoder();
-    const _textencoder = new TextEncoder();
-    const _b64chars
+        const _b64chars
         = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
     const _b64tab = ((bin) => {
         let tab = {}, i = 0;
         for (const c of bin) tab[c] = i++;
         return tab;
     })(_b64chars);
+    const _textencode = (o => o.encode.bind(o))(new TextEncoder());
+    const _textdecode = (o => o.decode.bind(o))(new TextDecoder());
     const _fromCharCode = String.fromCharCode;
     const _mkUriSafe =  (src) => src
             .replace(/[+\/]/g, (m0) => m0 == '+' ? '-' : '_')
@@ -63,7 +63,7 @@
     * @returns {String} Base64 string
     */
     const encode = (src, rfc4648) => {
-        const b64 = fromUint8Array(_textencoder.encode(src));
+        const b64 = fromUint8Array(_textencode(src));
         return rfc4648 ? _mkUriSafe(b64) : b64;
     };
     /**
@@ -93,7 +93,7 @@
      */
     const utob = (src) => {
         let result = '';
-        for (const c of _textencoder.encode(src)) {
+        for (const c of _textencode(src)) {
             result += _fromCharCode(c)
         }
         return result;
@@ -103,7 +103,7 @@
      * @param {string} src UTF-16 string
      * @returns {string} UTF-8 string
      */
-    const btou = (src) =>  _textdecoder.decode(
+    const btou = (src) =>  _textdecode(
         Uint8Array.from(src, c => c.charCodeAt(0))
     );
     const _cb_decode = (cccc) => {

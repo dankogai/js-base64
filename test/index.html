@@ -10,6 +10,9 @@
     <script src="https://cdn.rawgit.com/jquery/jquery/3.5.1/dist/jquery.min.js"></script>
     <script src="https://cdn.rawgit.com/Automattic/expect.js/0.3.1/index.js"></script>
     <script src="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/text-encoding-shim@1.0.5/index.min.js">
+    <!-- polyfills TextEncoder and TextDecoder. MS Edge before 79 needs it -->
+    </script>
     <script>
       mocha.setup('bdd');
     </script>
@@ -32,7 +35,7 @@
           mocha.run();
       });
     </script>
-    $Id: index.html,v 0.5 2020/07/15 18:18:13 dankogai Exp dankogai $
+    $Id: index.html,v 0.6 2020/07/15 19:28:44 dankogai Exp dankogai $
     <div id="mocha"></div>
   </body>
 </html>
