@@ -22,7 +22,7 @@
     'use strict';
     global = global || {}; // existing version for noConflict()
     const _Base64 = global.Base64;
-    const version = '3.0.2';
+    const version = '3.0.4';
         const _b64chars
         = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
     const _b64tab = ((bin) => {
