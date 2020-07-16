@@ -30,10 +30,8 @@
         for (const c of bin) tab[c] = i++;
         return tab;
     })(_b64chars);
-    const _textencode = (o => o.encode.bind(o))(new TextEncoder());
-    const _textdecode = (o => o.decode.bind(o))(new TextDecoder());
     const _fromCharCode = String.fromCharCode;
-    const _mkUriSafe =  (src) => src
+    const _mkUriSafe =  (src) => String(src)
             .replace(/[+\/]/g, (m0) => m0 == '+' ? '-' : '_')
             .replace(/=/g, '');
     /**
@@ -57,22 +55,6 @@
         return urisafe ? _mkUriSafe(b64) : b64;
     };
     /**
-    * converts a UTF-8-encoded string to a Base64 string
-    * @param {String} src the string to convert
-    * @param {Boolean} rfc4648 if `true` make the result URL-safe
-    * @returns {String} Base64 string
-    */
-    const encode = (src, rfc4648) => {
-        const b64 = fromUint8Array(_textencode(src));
-        return rfc4648 ? _mkUriSafe(b64) : b64;
-    };
-    /**
-    * converts a UTF-8-encoded string to URL-safe Base64 RFC4648
-    * @param {String} src the string to convert
-    * @returns {String} Base64 string
-    */
-    const encodeURI = (src) => encode(src, true);
-    /**
     * 100% compatibile with `window.btoa` of web browsers
     * @param {String} src binary string
     * @returns {String} Base64-encoded string
@@ -91,21 +73,29 @@
      * @param {string} src UTF-8 string
      * @returns {string} UTF-16 string
      */
-    const utob = (src) => {
-        let result = '';
-        for (const c of _textencode(src)) {
-            result += _fromCharCode(c)
-        }
-        return result;
+    const utob = (src) => unescape(encodeURIComponent(src));
+     /**
+    * converts a UTF-8-encoded string to a Base64 string
+    * @param {String} src the string to convert
+    * @param {Boolean} rfc4648 if `true` make the result URL-safe
+    * @returns {String} Base64 string
+    */
+    const encode = (src, rfc4648) => {
+        const b64 = btoa(utob(src));
+        return rfc4648 ? _mkUriSafe(b64) : b64;
     };
+    /**
+    * converts a UTF-8-encoded string to URL-safe Base64 RFC4648
+    * @param {String} src the string to convert
+    * @returns {String} Base64 string
+    */
+   const encodeURI = (src) => encode(src, true);
     /**
      * @deprecated since 3.0.0
      * @param {string} src UTF-16 string
      * @returns {string} UTF-8 string
      */
-    const btou = (src) =>  _textdecode(
-        Uint8Array.from(src, c => c.charCodeAt(0))
-    );
+    const btou = (src) => decodeURIComponent(escape(src));
     const _cb_decode = (cccc) => {
         let len = cccc.length,
         padlen = len % 4,

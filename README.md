@@ -56,8 +56,7 @@ Locally…
 … or Directly from CDN.  In which case you don't even need to install.
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/js-base64@3.0.2/textencoding.min.js">
-<script src="https://cdn.jsdelivr.net/npm/js-base64@3.0.2/base64.min.js">
+<script src="https://cdn.jsdelivr.net/npm/js-base64@3.0.3/base64.min.js">
 ```
 
 ### node.js
