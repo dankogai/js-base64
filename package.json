@@ -1,14 +1,15 @@
 {
   "name": "js-base64",
-  "version": "3.0.4",
+  "version": "3.1.0",
   "description": "Yet another Base64 transcoder in pure-JS",
   "main": "base64.js",
   "directories": {
     "test": "test"
   },
-  "scripts": {
-    "test": "mocha --require @babel/register",
-    "build": "babel base64.js -o base64-es5.js"
+    "scripts": {
+    "makecjs": "util/makecjs > base64.js",
+    "test": "npm run makecjs && mocha --require @babel/register",
+    "transpile": "babel base64.js -o base64-es5.js"
   },
   "devDependencies": {
       "@babel/cli": "^7.10.0",

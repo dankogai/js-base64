@@ -11,9 +11,6 @@ Version 3 is completely rewritten with ES2015 features like arrow functions.  Al
 The hardest part of maintaing this module was not Base64 features, but cross-platform support (eg. nodejs vs web browsers).  By making ES2015 mandatory virtually all codes are common (except `atob()` and `btoa()`).
 
 If you need to support legacy browsers like IE, use version 2 or transpile.
-
-Ironically ES6 `export` is not used to keep the API compatible.
-
 ## Usage
 
 ### Install
@@ -27,7 +24,7 @@ $ npm install --save js-base64
 Since `base64.js` is now written in ES2015 (aka ES6), It no longer runs on IE.  Yet you can still transpile it to ES5 and the resulting script does run on IE.  just
 
 ```shell
-$ npm run build
+$ npm run transpile
 ```
 
 which does
@@ -47,7 +44,7 @@ Locally…
 … or Directly from CDN.  In which case you don't even need to install.
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/js-base64@3.0.4/base64.min.js">
+<script src="https://cdn.jsdelivr.net/npm/js-base64@3.1.0/base64.min.js">
 ```
 
 ### node.js
@@ -56,10 +53,20 @@ Locally…
 const Base64 = require('js-base64').Base64;
 ```
 
-## As a ES6 Module (via babel, et al.)
+## As a ES6 Module
+
+locally…
 
 ```javascript
 import { Base64 } from 'js-base64';
+```
+
+or even remotely.
+
+```html
+<script type="module">
+import { Base64 } from 'https://cdn.jsdelivr.net/npm/js-base64@3.1.0/base64.min.mjs';
+</script>
 ```
 
 ## SYNOPSIS
