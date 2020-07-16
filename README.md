@@ -65,7 +65,8 @@ or even remotely.
 
 ```html
 <script type="module">
-import { Base64 } from 'https://cdn.jsdelivr.net/npm/js-base64@3.1.0/base64.min.mjs';
+// note jsdelivr.net does not automatically minify .mjs
+import { Base64 } from 'https://cdn.jsdelivr.net/npm/js-base64@3.1.0/base64.mjs';
 </script>
 ```
 
