@@ -8,9 +8,10 @@ Yet another Base64 transcoder
 
 Version 3 is completely rewritten with ES2015 features like arrow functions.  All modern browsers and node 12 or up are directly supported.  Your codes should run unchanged.  IE is no longer supported directly but you can transpile the script to use it (see below).
 
-The hardest part of maintaing this module was not Base64 features, but cross-platform support (eg. nodejs vs web browsers).  By making ES2015 mandatory virtually all codes are common (except `atob()` and `btoa()`).
+The hardest part of maintaining this module was not Base64 features, but cross-platform support (eg. nodejs vs web browsers).  By making ES2015 mandatory virtually all codes are common (except `atob()` and `btoa()`).
 
 If you need to support legacy browsers like IE, use version 2 or transpile.
+
 ## Usage
 
 ### Install
@@ -44,7 +45,7 @@ Locally…
 … or Directly from CDN.  In which case you don't even need to install.
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/js-base64@3.1.1/base64.min.js">
+<script src="https://cdn.jsdelivr.net/npm/js-base64@3.1.1/base64-es5.js">
 ```
 
 ### node.js
