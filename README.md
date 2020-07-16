@@ -44,7 +44,7 @@ Locally…
 … or Directly from CDN.  In which case you don't even need to install.
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/js-base64@3.1.0/base64.min.js">
+<script src="https://cdn.jsdelivr.net/npm/js-base64@3.1.1/base64.min.js">
 ```
 
 ### node.js
@@ -66,7 +66,7 @@ or even remotely.
 ```html
 <script type="module">
 // note jsdelivr.net does not automatically minify .mjs
-import { Base64 } from 'https://cdn.jsdelivr.net/npm/js-base64@3.1.0/base64.mjs';
+import { Base64 } from 'https://cdn.jsdelivr.net/npm/js-base64@3.1.1/base64.mjs';
 </script>
 ```
 
