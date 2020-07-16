@@ -42,7 +42,7 @@ const fromUint8Array = (src, urisafe) => {
     return urisafe ? _mkUriSafe(b64) : b64;
 };
 /**
- * 100% compatibile with `window.btoa` of web browsers
+ * 100% compatible with `window.btoa` of web browsers
  * @param {String} src binary string
  * @returns {String} Base64-encoded string
  */
@@ -100,7 +100,7 @@ const _cb_decode = (cccc) => {
     return chars.join('');
 };
 /**
- * 100% compatibile with `window.atob` of web browsers
+ * 100% compatible with `window.atob` of web browsers
  * @param {String} src Base64-encoded string
  * @returns {String} binary string
  */
