@@ -3,30 +3,30 @@
   "version": "3.1.0",
   "description": "Yet another Base64 transcoder in pure-JS",
   "main": "base64.js",
+  "module": "base64.mjs",
   "directories": {
     "test": "test"
   },
-    "scripts": {
+  "scripts": {
     "makecjs": "util/makecjs > base64.js",
     "test": "npm run makecjs && mocha --require @babel/register",
     "transpile": "babel base64.js -o base64-es5.js"
   },
   "devDependencies": {
-      "@babel/cli": "^7.10.0",
-      "@babel/core": "^7.10.0",
-      "@babel/register": "^7.10.0",
-      "@babel/preset-env": "^7.10.0",
-      "mocha": "^8.0.0"
+    "@babel/cli": "^7.10.0",
+    "@babel/core": "^7.10.0",
+    "@babel/register": "^7.10.0",
+    "@babel/preset-env": "^7.10.0",
+    "mocha": "^8.0.0"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/dankogai/js-base64.git"
   },
   "keywords": [
-      "base64", "binary"
+    "base64",
+    "binary"
   ],
   "author": "Dan Kogai",
-  "license": "BSD-3-Clause",
-  "readmeFilename": "README.md",
-  "gitHead": "8bfa436f733bec60c95c720e1d720c28b43ae0b2"
+  "license": "BSD-3-Clause"
 }
