@@ -22,7 +22,7 @@
     "url": "git://github.com/dankogai/js-base64.git"
   },
   "keywords": [
-    "base64"
+      "base64", "binary"
   ],
   "author": "Dan Kogai",
   "license": "BSD-3-Clause",
