@@ -6,17 +6,13 @@ Yet another Base64 transcoder
 
 ## HEADS UP: ES2015 support required since version 3
 
-Version 3 is completely rewritten with ES2015 features like arrow functions, `TextDecoder` and `TextEncoder`.  All modern browsers and node 12 or up are directly supported.  Your codes should run unchanged.  IE is no longer supported directly but you can transpile the script to use it (see below).
+Version 3 is completely rewritten with ES2015 features like arrow functions.  All modern browsers and node 12 or up are directly supported.  Your codes should run unchanged.  IE is no longer supported directly but you can transpile the script to use it (see below).
 
 The hardest part of maintaing this module was not Base64 features, but cross-platform support (eg. nodejs vs web browsers).  By making ES2015 mandatory virtually all codes are common (except `atob()` and `btoa()`).
 
-If you need to support legacy browsers like IE, use version 2.
+If you need to support legacy browsers like IE, use version 2 or transpile.
 
 Ironically ES6 `export` is not used to keep the API compatible.
-
-### Old MS Edge workaround
-
-MS Edge before 79 MS Edge before 79 (before Chromium) lacks `TextEncoder` and `TextDecoder`.  `textencoding.js` is provided to polyfill those missing constructors.  Load it ahead of `base64.js` .
 
 ## Usage
 
@@ -45,11 +41,6 @@ $ babel base64.js -o base64-es5.js
 Locally…
 
 ```html
-<!-- 
-    MS Edge before 79 (before Chromium) lacks TextEncoder and TextDecoder.
-    You can polyfill them by loading textencoding.js before base64.js
--->
-<script src="textencoding.js"></script>
 <script src="base64.js"></script>
 ```
 
