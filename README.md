@@ -20,20 +20,6 @@ If you need to support legacy browsers like IE, use version 2 or transpile.
 $ npm install --save js-base64
 ```
 
-### Transpile to ES5
-
-Since `base64.js` is now written in ES2015 (aka ES6), It no longer runs on IE.  Yet you can still transpile it to ES5 and the resulting script does run on IE.  just
-
-```shell
-$ npm run transpile
-```
-
-which does
-
-```shell
-$ babel base64.js -o base64-es5.js
-```
-
 ### In Browser
 
 Locally…
