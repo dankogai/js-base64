@@ -217,7 +217,7 @@ const gBase64 = {
         global.Base64 = _Base64;
         return Base64;
     };
-    global.Base64 = gBase64.gBase64 = gBase64;
+    global.Base64 = gBase64.Base64 = gBase64;
     //
     // export Base64 to the namespace
     //
@@ -228,8 +228,6 @@ const gBase64 = {
     // module.exports has precedence.
     if (typeof module !== 'undefined' && module.exports) {
         module.exports = gBase64;
-        module.exports.encode = encode;
-        module.exports.decode = decode;
     }
     else if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
