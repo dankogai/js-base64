@@ -6,7 +6,7 @@ Yet another Base64 transcoder
 
 ## HEADS UP: ES2015 support required since version 3
 
-Version 3 is completely rewritten with ES2015 features like arrow functions.  All modern browsers and node 12 or up are directly supported.  Your codes should run unchanged.  IE is no longer supported directly but you can transpile the script to use it (see below).
+Version 3 is completely rewritten with ES2015 features like arrow functions.  All modern browsers and node.js are directly supported.  Your codes should run unchanged.  IE is no longer supported directly but you can transpile the script to use it (see below).
 
 The hardest part of maintaining this module was not Base64 features, but cross-platform support (eg. nodejs vs web browsers).  By making ES2015 mandatory virtually all codes are common (except `atob()` and `btoa()`).
 
