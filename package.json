@@ -4,17 +4,16 @@
   "description": "Yet another Base64 transcoder in pure-JS",
   "main": "base64.js",
   "module": "base64.mjs",
-  "browser": "base64-es5.js",
   "files": [
     "base64.js",
-    "base64.mjs"
+    "base64.mjs",
+    "esm.mjs"
   ],
   "scripts": {
-    "makecjs": "util/makecjs > base64.js",
+    "makecjs": "util/makecjs",
     "test": "npm run makecjs && mocha --require @babel/register"
   },
   "devDependencies": {
-    "@babel/cli": "^7.10.0",
     "@babel/core": "^7.10.0",
     "@babel/register": "^7.10.0",
     "@babel/preset-env": "^7.10.0",
