@@ -212,12 +212,12 @@ const gBase64 = {
     extendBuiltins: extendBuiltins
 }
 
-    global.Base64 = gBase64;
     gBase64.noConflict = () => {
         let Base64 = gBase64;
         global.Base64 = _Base64;
         return Base64;
     };
+    global.Base64 = gBase64.gBase64 = gBase64;
     //
     // export Base64 to the namespace
     //
@@ -227,7 +227,7 @@ const gBase64 = {
     // module.exports and AMD are mutually exclusive.
     // module.exports has precedence.
     if (typeof module !== 'undefined' && module.exports) {
-        module.exports.Base64 = gBase64;
+        module.exports = gBase64;
     }
     else if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
