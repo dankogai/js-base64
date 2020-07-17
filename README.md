@@ -119,7 +119,7 @@ u8s.toBase64URL();  // 'ZGFua29nYWk' an alias of .toBase64URI()
 
 ```javascript
 // extend all at once
-Base64.extendBuiltin()
+Base64.extendBuiltins()
 ```
 
 ### TypeScript

@@ -15,8 +15,9 @@
   },
   "devDependencies": {
     "@babel/core": "^7.10.0",
-    "@babel/register": "^7.10.0",
+    "@babel/plugin-proposal-export-namespace-from": "^7.10.4",
     "@babel/preset-env": "^7.10.0",
+    "@babel/register": "^7.10.0",
     "mocha": "^8.0.0"
   },
   "repository": "git+https://github.com/dankogai/js-base64.git",
