@@ -15,7 +15,7 @@
 ), function(global) {
     'use strict';
     global = global || {}; // existing version for noConflict()
-    const _Base64 = global.Base64;
+    let _Base64 = global.Base64; // !!! not const !!!
 
 /**
  *  base64.mjs
@@ -213,7 +213,7 @@ const gBase64 = {
 }
 
     gBase64.noConflict = () => {
-        let Base64 = gBase64;
+        let Base64 = global.Base64;
         global.Base64 = _Base64;
         return Base64;
     };

@@ -15,7 +15,7 @@ const header = `
 ), function(global) {
     'use strict';
     global = global || {}; // existing version for noConflict()
-    const _Base64 = global.Base64;
+    let _Base64 = global.Base64; // !!! not const !!!
 `;
 const footer = `
     gBase64.noConflict = () => {
