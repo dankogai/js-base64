@@ -228,6 +228,8 @@ const gBase64 = {
     // module.exports has precedence.
     if (typeof module !== 'undefined' && module.exports) {
         module.exports = gBase64;
+        module.exports.encode = encode;
+        module.exports.decode = decode;
     }
     else if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
