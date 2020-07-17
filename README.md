@@ -83,7 +83,9 @@ Base64.decode(      '5bCP6aO85by+');// 小飼弾
 Base64.decode(      '5bCP6aO85by-');// 小飼弾
 ```
 
-### String Extension for ES5
+### Built-in Extensions
+
+By default `Base64` leaves built-in prototypes untouched.  But you can extend them as below.
 
 ```javascript
 // you have to explicitly extend String.prototype
@@ -109,7 +111,9 @@ u8s.toBase64URI();  // 'ZGFua29nYWk'
 u8s.toBase64URL();  // 'ZGFua29nYWk' an alias of .toBase64URI()
 ```
 
-You can extend both via `Base64.extendBuiltin()`.
+```javascript
+Base64.extendBuiltin()  // extend all at once
+```
 
 ### TypeScript
 
