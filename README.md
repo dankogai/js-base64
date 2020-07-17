@@ -48,7 +48,7 @@ locally…
 import { Base64 } from 'js-base64';
 
 // or if you prefer no Base64 namespace
-import { encode, decode } from 'js-base64/esm.mjs';
+import { encode, decode } from 'js-base64';
 ```
 
 or even remotely.
