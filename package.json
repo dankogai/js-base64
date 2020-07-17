@@ -6,11 +6,10 @@
   "module": "base64.mjs",
   "files": [
     "base64.js",
-    "base64.mjs",
-    "esm.mjs"
+    "base64.mjs"
   ],
   "scripts": {
-    "makecjs": "util/makecjs",
+    "makecjs": "util/makecjs > base64.js",
     "test": "npm run makecjs && mocha --require @babel/register"
   },
   "devDependencies": {

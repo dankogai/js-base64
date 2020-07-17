@@ -16,7 +16,6 @@
     'use strict';
     global = global || {}; // existing version for noConflict()
     const _Base64 = global.Base64;
-    const gBase64 = {}
 
 /**
  *  base64.mjs
@@ -176,7 +175,6 @@ const extendString = function() {
         return toUint8Array(this);
     });
 };
-// make Base64.extendUint8Array() available
 const extendUint8Array = function() {
     const _add = (name, body) => Object.defineProperty(
         Uint8Array.prototype, name, _noEnum(body)
@@ -195,24 +193,24 @@ const extendBuiltins = () => {
     extendString();
     extendUint8Array();
 }
-
-gBase64.VERSION = version;
-gBase64.atob = _atob;
-gBase64.btoa = _btoa;
-gBase64.fromBase64 = decode;
-gBase64.toBase64 = encode;
-gBase64.utob = utob;
-gBase64.encode = encode;
-gBase64.encodeURI = encodeURI;
-gBase64.encodeURL = encodeURI;
-gBase64.btou = btou;
-gBase64.decode = decode;
-gBase64.fromUint8Array = fromUint8Array;
-gBase64.toUint8Array = toUint8Array;
-gBase64.extendString = extendString;
-gBase64.extendUint8Array = extendUint8Array;
-gBase64.extendBuiltins = extendBuiltins;
-
+const gBase64 = {
+    VERSION: version,
+    atob: _atob,
+    btoa: _btoa,
+    fromBase64: decode,
+    toBase64: encode,
+    encode: encode,
+    encodeURI: encodeURI,
+    encodeURL: encodeURI,
+    utob: utob,
+    btou: btou,
+    decode: decode,
+    fromUint8Array: fromUint8Array,
+    toUint8Array: toUint8Array,
+    extendString: extendString,
+    extendUint8Array: extendUint8Array,
+    extendBuiltins: extendBuiltins
+}
 
     global.Base64 = gBase64;
     gBase64.noConflict = () => {
@@ -238,4 +236,5 @@ gBase64.extendBuiltins = extendBuiltins;
     // that's it!
     return {Base64: gBase64};
 }));
+
 

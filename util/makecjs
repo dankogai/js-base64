@@ -16,7 +16,6 @@ const header = `
     'use strict';
     global = global || {}; // existing version for noConflict()
     const _Base64 = global.Base64;
-    const gBase64 = {}
 `;
 const footer = `
     global.Base64 = gBase64;
@@ -45,19 +44,15 @@ const footer = `
 }));
 `;
 
-const fs = require("fs");
-
-const mjs = "./esm.mjs";
-const js = "./base64.js";
-
-const data = fs.readFileSync(mjs, "utf8");
-const body = data.replace(
-  /\bexport {([^{}\s]+)( as ([^{}\s]+))?}/g,
-  (_, $0, $1, $2) => ($2 ? `gBase64.${$2} = ${$0}` : `gBase64.${$0} = ${$0}`)
-);
-const result = `
+const mjs = './base64.mjs';
+require('fs').readFile(mjs, 'utf8', (err,data) => {
+    if (err) {
+        return console.log(err);
+    }
+    const body = data.replace(/\n\/\/ makecjs:CUT \/\/.+$/s, '');
+    console.log(`
 ${header}
 ${body}
 ${footer}
-`;
-fs.writeFileSync(js, result);
+`);
+});
