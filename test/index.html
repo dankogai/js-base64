@@ -13,7 +13,6 @@
     <script>
       mocha.setup('bdd');
     </script>
-    <script src="../base64.js"></script>
     <script>
       var assert = function(expr, msg) {
           if (!expr) throw new Error(msg || 'failed');
@@ -25,6 +24,19 @@
           if (a === b) throw new Error(msg || ('failed : '+a+','+b));
       };
     </script>
+    <!-- test Base64.noConflict() -->
+    <script>
+      Base64 = 'unimplemented'; /* assign a value */
+    </script>
+    <script src="../base64.js">/* load */</script>
+    <script>
+      (function(){
+          Base64.noConflict(); /* restore the value */
+          assert.equal(Base64, 'unimplemented', '.noConflict() failed!');
+      })();
+    </script>
+    <script src="../base64.js">/* and load again */</script>
+    <!-- end test -->
     <script src="./dankogai.js"></script>
     <script src="./es5.js"></script>
     <script src="./large.js"></script>
