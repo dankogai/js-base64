@@ -1,3 +1,4 @@
 {
-    "presets": ["@babel/env"]
+  "presets": ["@babel/env"],
+  "plugins": ["@babel/proposal-export-namespace-from"]
 }

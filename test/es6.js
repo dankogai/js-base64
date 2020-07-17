@@ -4,7 +4,7 @@
  * use mocha to test me
  * http://visionmedia.github.com/mocha/
  */
-import {Base64} from '../base64'
+import {Base64} from '../base64.mjs'
 
 var assert = assert || require("assert");
 var is = function (a, e, m) {
