@@ -47,13 +47,13 @@ const fromUint8Array = (src, urisafe) => {
  * @returns {String} Base64-encoded string
  */
 const _btoa = typeof btoa === 'function'
-      ? btoa
-      : (src) => {
-          if (src.match(/[^\x00-\xFF]/)) throw new RangeError(
+      ? (s) => btoa(s)
+      : (s) => {
+          if (s.match(/[^\x00-\xFF]/)) throw new RangeError(
               'The string contains invalid characters.'
           );
           return fromUint8Array(
-              Uint8Array.from(src,c => c.charCodeAt(0))
+              Uint8Array.from(s,c => c.charCodeAt(0))
           );
       };
 /**
@@ -105,7 +105,7 @@ const _cb_decode = (cccc) => {
  * @returns {String} binary string
  */
 const _atob = typeof atob === 'function'
-      ?  atob
+      ?  (a) => atob(a)
       :  (a) => {
           return String(a)
               .replace(/[^A-Za-z0-9\+\/]/g, '')
