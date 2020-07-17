@@ -97,7 +97,7 @@ Base64.extendString();
 'ZGFua29nYWk='.fromBase64();  // dankogai
 '5bCP6aO85by+'.fromBase64();  // 小飼弾
 '5bCP6aO85by-'.fromBase64();  // 小飼弾
-'5bCP6aO85by-'.toUint8Array();// new Uint8Array([100,97,110,107,111,103,97,105])
+'5bCP6aO85by-'.toUint8Array();// u8s above
 ```
 
 ```javascript
