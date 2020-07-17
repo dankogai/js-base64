@@ -21,12 +21,16 @@
       assert.equal = function(a, b, msg) {
           if (a !== b) throw new Error(msg || ('failed : '+a+','+b));
       };
+      assert.notEqual = function(a, b, msg) {
+          if (a === b) throw new Error(msg || ('failed : '+a+','+b));
+      };
     </script>
     <script src="./dankogai.js"></script>
     <script src="./es5.js"></script>
     <script src="./large.js"></script>
     <script src="./yoshinoya.js"></script>
     <script src="./atob.js"></script>
+    <script src="./umd.js"></script>
     <script>
       $(function() {
           mocha.run();
