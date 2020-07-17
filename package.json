@@ -11,8 +11,7 @@
   ],
   "scripts": {
     "makecjs": "util/makecjs > base64.js",
-    "test": "npm run makecjs && mocha --require @babel/register",
-    "transpile": "babel base64.js -o base64-es5.js"
+    "test": "npm run makecjs && mocha --require @babel/register"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.0",
