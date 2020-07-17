@@ -59,7 +59,7 @@ or even remotely.
 import { Base64 } from 'https://cdn.jsdelivr.net/npm/js-base64@3.1.3/base64.mjs';
 
 // or if you prefer no Base64 namespace
-import { encode, decode } from 'https://cdn.jsdelivr.net/npm/js-base64@3.1.3/esm.mjs';
+import { encode, decode } from 'https://cdn.jsdelivr.net/npm/js-base64@3.1.3/base64.mjs';
 </script>
 ```
 
