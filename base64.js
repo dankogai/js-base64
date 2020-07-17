@@ -212,12 +212,7 @@ const gBase64 = {
     extendBuiltins: extendBuiltins
 }
 
-    gBase64.noConflict = () => {
-        let Base64 = global.Base64;
-        global.Base64 = _Base64;
-        return Base64;
-    };
-    global.Base64 = gBase64.Base64 = gBase64;
+    gBase64.Base64 = gBase64;
     //
     // export Base64 to the namespace
     //
@@ -232,6 +227,14 @@ const gBase64 = {
     else if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
         define([], function(){ return gBase64 });
+    }
+    else { // cf. https://github.com/dankogai/js-base64/issues/119
+        gBase64.noConflict = () => {
+             let Base64 = global.Base64;
+             global.Base64 = _Base64;
+             return Base64;
+        };
+        global.Base64 = gBase64;
     }
     // that's it!
     return {Base64: gBase64};
