@@ -40,7 +40,7 @@
  * 
  * @author Dan Kogai (https://github.com/dankogai)
  */      
-const version = '3.2.3';
+const version = '3.2.4';
 const _b64chars
       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 const _b64tab = ((bin) => {
