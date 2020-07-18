@@ -12,13 +12,13 @@ The hardest part of maintaining this module was not Base64 features, but cross-p
 
 If you need to support legacy browsers like IE, use version 2 or transpile.
 
-## Usage
-
-### Install
+## Install
 
 ```shell
 $ npm install --save js-base64
 ```
+
+## Usage
 
 ### In Browser
 
@@ -34,13 +34,17 @@ Locally…
 <script src="https://cdn.jsdelivr.net/npm/js-base64@3.2.4/base64.min.js"></script>
 ```
 
-### node.js
+This good old way loads `Base64` in the global context (`window`).  Though `Base64.noConflict()` is made available, you should consider using ES6 Module to avoid tainting `window`.
+
+### node.js (commonjs)
 
 ```javascript
 const Base64 = require('js-base64').Base64;
 ```
 
-## As a ES6 Module
+Unlike the case above, the global context is no longer modified.
+
+### As a ES6 Module
 
 locally…
 
