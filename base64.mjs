@@ -24,10 +24,10 @@ const _mkUriSafe =  (src) => String(src)
 /**
  * converts a Uint8Array to a Base64 string
  * @param {Uint8Array} src
- * @param {Boolean} urisafe URL-and-filename-safe a la RFC4648
+ * @param {Boolean} [rfc4648] URL-and-filename-safe a la RFC4648
  * @returns {String} Base64 string
  */
-const fromUint8Array = (src, urisafe) => {
+const fromUint8Array = (src, rfc4648=false) => {
     let b64 = '';
     for (let i = 0, l = src.length; i < l; i += 3) {
         const a0 = src[i], a1 = src[i+1], a2 = src[i+2];
@@ -39,7 +39,7 @@ const fromUint8Array = (src, urisafe) => {
             + ( typeof a2 != 'undefined'
                 ? _b64chars.charAt( ord         & 63) : '=');
     }
-    return urisafe ? _mkUriSafe(b64) : b64;
+    return rfc4648 ? _mkUriSafe(b64) : b64;
 };
 /**
  * 100% compatible with `window.btoa` of web browsers
@@ -65,10 +65,10 @@ const utob = (src) => unescape(encodeURIComponent(src));
 /**
  * converts a UTF-8-encoded string to a Base64 string
  * @param {String} src the string to convert
- * @param {Boolean} rfc4648 if `true` make the result URL-safe
+ * @param {Boolean} [rfc4648] if `true` make the result URL-safe
  * @returns {String} Base64 string
  */
-const encode = (src, rfc4648) => {
+const encode = (src, rfc4648=false) => {
     const b64 = _btoa(utob(src));
     return rfc4648 ? _mkUriSafe(b64) : b64;
 };
@@ -112,7 +112,7 @@ const _atob = typeof atob === 'function'
               .replace(/\S{1,4}/g, _cb_decode);
       };
 const _decode = (a) => btou(_atob(a));
-const _fromURI = (a) => {
+const _unURI = (a) => {
     return String(a)
         .replace(/[-_]/g, (m0) => m0 == '-' ? '+' : '/')
         .replace(/[^A-Za-z0-9\+\/]/g, '');
@@ -122,14 +122,14 @@ const _fromURI = (a) => {
  * @param {String} src Base64 string.  Both normal and URL-safe are supported
  * @returns {String} UTF-8 string
  */
-const decode = (src) =>  _decode(_fromURI(src));
+const decode = (src) =>  _decode(_unURI(src));
 /**
  * converts a Base64 string to a Uint8Array
  * @param {String} src Base64 string.  Both normal and URL-safe are supported
  * @returns {Uint8Array} UTF-8 string
  */
 const toUint8Array = (a) =>  {
-    return Uint8Array.from(_atob(_fromURI(a)), c => c.charCodeAt(0));
+    return Uint8Array.from(_atob(_unURI(a)), c => c.charCodeAt(0));
 };
 const _noEnum = (v) => {
     return {
