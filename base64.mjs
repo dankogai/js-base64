@@ -9,7 +9,7 @@
  *
  * @author Dan Kogai (https://github.com/dankogai)
  */
-const version = '3.2.4';
+const version = '3.3.0';
 const _b64chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 const _b64tab = ((chars) => {
     let tab = {}, i = 0;
@@ -18,12 +18,11 @@ const _b64tab = ((chars) => {
     return tab;
 })(_b64chars);
 const _fromCharCode = String.fromCharCode;
-const _mkUriSafe = (src) => String(src)
+const _mkUriSafe = (src) => src
     .replace(/[+\/]/g, (m0) => m0 == '+' ? '-' : '_')
     .replace(/=/g, '');
 /**
  * converts a Uint8Array to a Base64 string
- * @param {Uint8Array} src
  * @param {Boolean} [rfc4648] URL-and-filename-safe a la RFC4648
  * @returns {String} Base64 string
  */
@@ -55,13 +54,11 @@ const _btoa = typeof btoa === 'function'
     };
 /**
  * @deprecated since 3.0.0
- * @param {string} src UTF-8 string
  * @returns {string} UTF-16 string
  */
 const utob = (src) => unescape(encodeURIComponent(src));
 /**
  * converts a UTF-8-encoded string to a Base64 string
- * @param {String} src the string to convert
  * @param {Boolean} [rfc4648] if `true` make the result URL-safe
  * @returns {String} Base64 string
  */
@@ -71,7 +68,6 @@ const encode = (src, rfc4648 = false) => {
 };
 /**
  * converts a UTF-8-encoded string to URL-safe Base64 RFC4648
- * @param {String} src the string to convert
  * @returns {String} Base64 string
  */
 const encodeURI = (src) => encode(src, true);
@@ -107,7 +103,7 @@ const _atob = typeof atob === 'function'
     };
 const _decode = (a) => btou(_atob(a));
 const _unURI = (a) => {
-    return String(a)
+    return a
         .replace(/[-_]/g, (m0) => m0 == '-' ? '+' : '/')
         .replace(/[^A-Za-z0-9\+\/]/g, '');
 };
@@ -119,8 +115,6 @@ const _unURI = (a) => {
 const decode = (src) => _decode(_unURI(src));
 /**
  * converts a Base64 string to a Uint8Array
- * @param {String} src Base64 string.  Both normal and URL-safe are supported
- * @returns {Uint8Array} UTF-8 string
  */
 const toUint8Array = (a) => {
     return Uint8Array.from(_atob(_unURI(a)), c => c.charCodeAt(0));

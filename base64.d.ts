@@ -9,10 +9,9 @@
  *
  * @author Dan Kogai (https://github.com/dankogai)
  */
-declare const version = "3.2.4";
+declare const version = "3.3.0";
 /**
  * converts a Uint8Array to a Base64 string
- * @param {Uint8Array} src
  * @param {Boolean} [rfc4648] URL-and-filename-safe a la RFC4648
  * @returns {String} Base64 string
  */
@@ -25,64 +24,59 @@ declare const fromUint8Array: (src: Uint8Array, rfc4648?: boolean) => string;
 declare const _btoa: (s: string) => string;
 /**
  * @deprecated since 3.0.0
- * @param {string} src UTF-8 string
  * @returns {string} UTF-16 string
  */
-declare const utob: (src: any) => string;
+declare const utob: (src: string) => string;
 /**
  * converts a UTF-8-encoded string to a Base64 string
- * @param {String} src the string to convert
  * @param {Boolean} [rfc4648] if `true` make the result URL-safe
  * @returns {String} Base64 string
  */
-declare const encode: (src: any, rfc4648?: boolean) => string;
+declare const encode: (src: string, rfc4648?: boolean) => string;
 /**
  * converts a UTF-8-encoded string to URL-safe Base64 RFC4648
- * @param {String} src the string to convert
  * @returns {String} Base64 string
  */
-declare const encodeURI: (src: any) => string;
+declare const encodeURI: (src: string) => string;
 /**
  * @deprecated since 3.0.0
  * @param {string} src UTF-16 string
  * @returns {string} UTF-8 string
  */
-declare const btou: (src: any) => string;
+declare const btou: (src: string) => string;
 /**
  * 100% compatible with `window.atob` of web browsers
  * @param {String} src Base64-encoded string
  * @returns {String} binary string
  */
-declare const _atob: (a: any) => string;
+declare const _atob: (a: string) => string;
 /**
  * converts a Base64 string to a UTF-8 string
  * @param {String} src Base64 string.  Both normal and URL-safe are supported
  * @returns {String} UTF-8 string
  */
-declare const decode: (src: any) => string;
+declare const decode: (src: string) => string;
 /**
  * converts a Base64 string to a Uint8Array
- * @param {String} src Base64 string.  Both normal and URL-safe are supported
- * @returns {Uint8Array} UTF-8 string
  */
-declare const toUint8Array: (a: any) => Uint8Array;
+declare const toUint8Array: (a: string) => Uint8Array;
 declare const extendString: () => void;
 declare const extendUint8Array: () => void;
 declare const extendBuiltins: () => void;
 declare const gBase64: {
     VERSION: string;
-    atob: (a: any) => string;
+    atob: (a: string) => string;
     btoa: (s: string) => string;
-    fromBase64: (src: any) => string;
-    toBase64: (src: any, rfc4648?: boolean) => string;
-    encode: (src: any, rfc4648?: boolean) => string;
-    encodeURI: (src: any) => string;
-    encodeURL: (src: any) => string;
-    utob: (src: any) => string;
-    btou: (src: any) => string;
-    decode: (src: any) => string;
+    fromBase64: (src: string) => string;
+    toBase64: (src: string, rfc4648?: boolean) => string;
+    encode: (src: string, rfc4648?: boolean) => string;
+    encodeURI: (src: string) => string;
+    encodeURL: (src: string) => string;
+    utob: (src: string) => string;
+    btou: (src: string) => string;
+    decode: (src: string) => string;
     fromUint8Array: (src: Uint8Array, rfc4648?: boolean) => string;
-    toUint8Array: (a: any) => Uint8Array;
+    toUint8Array: (a: string) => Uint8Array;
     extendString: () => void;
     extendUint8Array: () => void;
     extendBuiltins: () => void;

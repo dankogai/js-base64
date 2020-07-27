@@ -9,7 +9,7 @@
  * 
  * @author Dan Kogai (https://github.com/dankogai)
  */
-const version = '3.2.4';
+const version = '3.3.0';
 const _b64chars
     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 const _b64tab = ((chars) => {

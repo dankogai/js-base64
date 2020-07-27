@@ -12,7 +12,7 @@ exports.Base64 = exports.extendBuiltins = exports.extendUint8Array = exports.ext
  *
  * @author Dan Kogai (https://github.com/dankogai)
  */
-var version = '3.2.4';
+var version = '3.3.0';
 exports.VERSION = version;
 var _b64chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 var _b64tab = (function (chars) {
@@ -24,12 +24,11 @@ var _b64tab = (function (chars) {
     return tab;
 })(_b64chars);
 var _fromCharCode = String.fromCharCode;
-var _mkUriSafe = function (src) { return String(src)
+var _mkUriSafe = function (src) { return src
     .replace(/[+\/]/g, function (m0) { return m0 == '+' ? '-' : '_'; })
     .replace(/=/g, ''); };
 /**
  * converts a Uint8Array to a Base64 string
- * @param {Uint8Array} src
  * @param {Boolean} [rfc4648] URL-and-filename-safe a la RFC4648
  * @returns {String} Base64 string
  */
@@ -64,14 +63,12 @@ var _btoa = typeof btoa === 'function'
 exports.btoa = _btoa;
 /**
  * @deprecated since 3.0.0
- * @param {string} src UTF-8 string
  * @returns {string} UTF-16 string
  */
 var utob = function (src) { return unescape(encodeURIComponent(src)); };
 exports.utob = utob;
 /**
  * converts a UTF-8-encoded string to a Base64 string
- * @param {String} src the string to convert
  * @param {Boolean} [rfc4648] if `true` make the result URL-safe
  * @returns {String} Base64 string
  */
@@ -84,7 +81,6 @@ exports.toBase64 = encode;
 exports.encode = encode;
 /**
  * converts a UTF-8-encoded string to URL-safe Base64 RFC4648
- * @param {String} src the string to convert
  * @returns {String} Base64 string
  */
 var encodeURI = function (src) { return encode(src, true); };
@@ -124,7 +120,7 @@ var _atob = typeof atob === 'function'
 exports.atob = _atob;
 var _decode = function (a) { return btou(_atob(a)); };
 var _unURI = function (a) {
-    return String(a)
+    return a
         .replace(/[-_]/g, function (m0) { return m0 == '-' ? '+' : '/'; })
         .replace(/[^A-Za-z0-9\+\/]/g, '');
 };
@@ -138,8 +134,6 @@ exports.fromBase64 = decode;
 exports.decode = decode;
 /**
  * converts a Base64 string to a Uint8Array
- * @param {String} src Base64 string.  Both normal and URL-safe are supported
- * @returns {Uint8Array} UTF-8 string
  */
 var toUint8Array = function (a) {
     return Uint8Array.from(_atob(_unURI(a)), function (c) { return c.charCodeAt(0); });
