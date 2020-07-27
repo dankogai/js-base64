@@ -9,7 +9,7 @@ $(MJS): $(TS)
 	tsc --target es6 $(TS) && mv $(JS) $(MJS)
 
 $(JS): $(TS)
-	tsc -d --target es5 $(TS)
+	util/makecjs $(MJS) > $(JS)
 
 test: $(MJS) $(JS)
 	mocha --require esm
