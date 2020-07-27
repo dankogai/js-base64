@@ -6,7 +6,7 @@ DTS=base64.d.ts
 all: $(MJS) $(JS)
 
 $(MJS): $(TS)
-	tsc --target es6 $(TS) && mv $(JS) $(MJS)
+	tsc -d --target es6 $(TS) && mv $(JS) $(MJS)
 
 $(JS): $(TS)
 	util/makecjs $(MJS) > $(JS)
