@@ -128,14 +128,6 @@ u8s.toBase64URL();  // 'ZGFua29nYWk' an alias of .toBase64URI()
 Base64.extendBuiltins()
 ```
 
-### TypeScript
-
-TypeScript 2.0 type definition was added to the [DefinitelyTyped repository](https://github.com/DefinitelyTyped/DefinitelyTyped).
-
-```bash
-$ npm install --save @types/js-base64
-```
-
 ## `.decode()` vs `.atob` (and `.encode()` vs `btoa()`)
 
 Suppose you have:
