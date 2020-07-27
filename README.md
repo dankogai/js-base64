@@ -4,7 +4,7 @@
 
 Yet another Base64 transcoder
 
-## HEADS UP: switch to TypeScript since version 3.5
+## HEADS UP: switch to TypeScript since version 3.3
 
 In version 3.0 `js-base64` switch to ES2015 module.  That made it easy to switch to TypeScript(just renaming `base64.mjs` to `base64.ts` was almost enough).  Now `base64.js` and `base64.mjs` are compiled from `base64.ts`.  That also restored ES5 compatibility.
 
