@@ -4,15 +4,19 @@
   "description": "Yet another Base64 transcoder in pure-JS",
   "main": "base64.js",
   "module": "base64.mjs",
+  "types": "base64.d.js",
   "files": [
     "base64.js",
-    "base64.mjs"
+    "base64.mjs",
+    "base64.ts",
+    "base64.d.ts"
   ],
   "scripts": {
-    "makecjs": "util/makecjs > base64.js",
-    "test": "npm run makecjs && mocha --require esm"
+    "test": "make test"
   },
   "devDependencies": {
+    "typescript" : "^3.9.7",
+    "@types/node" : "^14.0.26",
     "esm": "^3.2.25",
     "mocha": "^8.0.0"
   },

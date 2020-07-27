@@ -6,15 +6,15 @@
  *
  *  References:
  *    http://en.wikipedia.org/wiki/Base64
- *
+ * 
  * @author Dan Kogai (https://github.com/dankogai)
  */
 const version = '3.2.4';
-const _b64chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+const _b64chars
+    = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 const _b64tab = ((chars) => {
     let tab = {}, i = 0;
-    for (const c of chars)
-        tab[c] = i++;
+    for (const c of chars) tab[c] = i++;
     return tab;
 })(_b64chars);
 const _fromCharCode = String.fromCharCode;
@@ -27,7 +27,7 @@ const _mkUriSafe = (src) => String(src)
  * @param {Boolean} [rfc4648] URL-and-filename-safe a la RFC4648
  * @returns {String} Base64 string
  */
-const fromUint8Array = (src, rfc4648 = false) => {
+const fromUint8Array = (src: Uint8Array, rfc4648 = false) => {
     let b64 = '';
     for (let i = 0, l = src.length; i < l; i += 3) {
         const a0 = src[i], a1 = src[i + 1], a2 = src[i + 2];
@@ -47,11 +47,14 @@ const fromUint8Array = (src, rfc4648 = false) => {
  * @returns {String} Base64-encoded string
  */
 const _btoa = typeof btoa === 'function'
-    ? (s) => btoa(s)
-    : (s) => {
-        if (s.match(/[^\x00-\xFF]/))
-            throw new RangeError('The string contains invalid characters.');
-        return fromUint8Array(Uint8Array.from(s, c => c.charCodeAt(0)));
+    ? (s: string) => btoa(s)
+    : (s: string) => {
+        if (s.match(/[^\x00-\xFF]/)) throw new RangeError(
+            'The string contains invalid characters.'
+        );
+        return fromUint8Array(
+            Uint8Array.from(s, c => c.charCodeAt(0))
+        );
     };
 /**
  * @deprecated since 3.0.0
@@ -82,14 +85,17 @@ const encodeURI = (src) => encode(src, true);
  */
 const btou = (src) => decodeURIComponent(escape(src));
 const _cb_decode = (cccc) => {
-    let len = cccc.length, padlen = len % 4, n = (len > 0 ? _b64tab[cccc.charAt(0)] << 18 : 0)
-        | (len > 1 ? _b64tab[cccc.charAt(1)] << 12 : 0)
-        | (len > 2 ? _b64tab[cccc.charAt(2)] << 6 : 0)
-        | (len > 3 ? _b64tab[cccc.charAt(3)] : 0), chars = [
-        _fromCharCode(n >>> 16),
-        _fromCharCode((n >>> 8) & 0xff),
-        _fromCharCode(n & 0xff)
-    ];
+    let len = cccc.length,
+        padlen = len % 4,
+        n = (len > 0 ? _b64tab[cccc.charAt(0)] << 18 : 0)
+            | (len > 1 ? _b64tab[cccc.charAt(1)] << 12 : 0)
+            | (len > 2 ? _b64tab[cccc.charAt(2)] << 6 : 0)
+            | (len > 3 ? _b64tab[cccc.charAt(3)] : 0),
+        chars = [
+            _fromCharCode(n >>> 16),
+            _fromCharCode((n >>> 8) & 0xff),
+            _fromCharCode(n & 0xff)
+        ];
     chars.length -= [0, 0, 2, 1][padlen];
     return chars.join('');
 };
@@ -131,7 +137,9 @@ const _noEnum = (v) => {
     };
 };
 const extendString = function () {
-    const _add = (name, body) => Object.defineProperty(String.prototype, name, _noEnum(body));
+    const _add = (name, body) => Object.defineProperty(
+        String.prototype, name, _noEnum(body)
+    );
     _add('fromBase64', function () {
         return decode(this);
     });
@@ -149,7 +157,9 @@ const extendString = function () {
     });
 };
 const extendUint8Array = function () {
-    const _add = (name, body) => Object.defineProperty(Uint8Array.prototype, name, _noEnum(body));
+    const _add = (name, body) => Object.defineProperty(
+        Uint8Array.prototype, name, _noEnum(body)
+    );
     _add('toBase64', function (rfc4648) {
         return fromUint8Array(this, rfc4648);
     });
@@ -163,7 +173,7 @@ const extendUint8Array = function () {
 const extendBuiltins = () => {
     extendString();
     extendUint8Array();
-};
+}
 const gBase64 = {
     VERSION: version,
     atob: _atob,
@@ -181,7 +191,7 @@ const gBase64 = {
     extendString: extendString,
     extendUint8Array: extendUint8Array,
     extendBuiltins: extendBuiltins
-};
+}
 // makecjs:CUT //
 export { version as VERSION };
 export { _atob as atob };
