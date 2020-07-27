@@ -8,7 +8,6 @@
   "files": [
     "base64.js",
     "base64.mjs",
-    "base64.ts",
     "base64.d.ts"
   ],
   "scripts": {
