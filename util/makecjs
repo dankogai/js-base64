@@ -7,7 +7,7 @@ const header = `
     typeof exports === 'object' && typeof module !== 'undefined'
         ? module.exports = factory()
         : typeof define === 'function' && define.amd
-        ? define(factory) : 
+        ? define(factory) :
         // cf. https://github.com/dankogai/js-base64/issues/119
         (function() {
             // existing version for noConflict()
@@ -38,7 +38,7 @@ const footer = `
 }));
 `;
 
-require('fs').readFile(process.argv[2], 'utf8', (err,data) => {
+require('fs').readFile(process.argv[2], 'utf8', (err, data) => {
     if (err) {
         return console.log(err);
     }

@@ -6,7 +6,7 @@ Yet another Base64 transcoder
 
 ## HEADS UP: switch to TypeScript since version 3.3
 
-In version 3.0 `js-base64` switch to ES2015 module.  That made it easy to switch to TypeScript(just renaming `base64.mjs` to `base64.ts` was almost enough).  Now `base64.js` and `base64.mjs` are compiled from `base64.ts`.  That also restored ES5 compatibility.
+In version 3.0 `js-base64` switch to ES2015 module.  That made it easy to switch to TypeScript(just renaming `base64.mjs` to `base64.ts` was almost enough).  Now `base64.mjs` is compiled from `base64.ts` then `base64.js` is generated from `base64.mjs`.
 
 ## Install
 
@@ -27,7 +27,7 @@ Locally…
 … or Directly from CDN.  In which case you don't even need to install.
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/js-base64@3.3.0/base64.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-base64@3.3.1/base64.min.js"></script>
 ```
 
 This good old way loads `Base64` in the global context (`window`).  Though `Base64.noConflict()` is made available, you should consider using ES6 Module to avoid tainting `window`.
@@ -58,14 +58,14 @@ or even remotely.
 ```html
 <script type="module">
 // note jsdelivr.net does not automatically minify .mjs
-import { Base64 } from 'https://cdn.jsdelivr.net/npm/js-base64@3.3.0/base64.mjs';
+import { Base64 } from 'https://cdn.jsdelivr.net/npm/js-base64@3.3.1/base64.mjs';
 </script>
 ```
 
 ```html
 <script type="module">
 // or if you prefer no Base64 namespace
-import { encode, decode } from 'https://cdn.jsdelivr.net/npm/js-base64@3.3.0/base64.mjs';
+import { encode, decode } from 'https://cdn.jsdelivr.net/npm/js-base64@3.3.1/base64.mjs';
 </script>
 ```
 

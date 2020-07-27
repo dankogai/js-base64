@@ -9,7 +9,7 @@
  *
  * @author Dan Kogai (https://github.com/dankogai)
  */
-declare const version = "3.3.0";
+declare const version = "3.3.1";
 /**
  * converts a Uint8Array to a Base64 string
  * @param {Boolean} [rfc4648] URL-and-filename-safe a la RFC4648
