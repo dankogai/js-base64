@@ -18,12 +18,11 @@ const _b64tab = ((chars) => {
     return tab;
 })(_b64chars);
 const _fromCharCode = String.fromCharCode;
-const _mkUriSafe = (src) => String(src)
+const _mkUriSafe = (src: string) => src
     .replace(/[+\/]/g, (m0) => m0 == '+' ? '-' : '_')
     .replace(/=/g, '');
 /**
  * converts a Uint8Array to a Base64 string
- * @param {Uint8Array} src
  * @param {Boolean} [rfc4648] URL-and-filename-safe a la RFC4648
  * @returns {String} Base64 string
  */
@@ -58,33 +57,30 @@ const _btoa = typeof btoa === 'function'
     };
 /**
  * @deprecated since 3.0.0
- * @param {string} src UTF-8 string
  * @returns {string} UTF-16 string
  */
-const utob = (src) => unescape(encodeURIComponent(src));
+const utob = (src: string) => unescape(encodeURIComponent(src));
 /**
  * converts a UTF-8-encoded string to a Base64 string
- * @param {String} src the string to convert
  * @param {Boolean} [rfc4648] if `true` make the result URL-safe
  * @returns {String} Base64 string
  */
-const encode = (src, rfc4648 = false) => {
+const encode = (src: string, rfc4648 = false) => {
     const b64 = _btoa(utob(src));
     return rfc4648 ? _mkUriSafe(b64) : b64;
 };
 /**
  * converts a UTF-8-encoded string to URL-safe Base64 RFC4648
- * @param {String} src the string to convert
  * @returns {String} Base64 string
  */
-const encodeURI = (src) => encode(src, true);
+const encodeURI = (src: string) => encode(src, true);
 /**
  * @deprecated since 3.0.0
  * @param {string} src UTF-16 string
  * @returns {string} UTF-8 string
  */
-const btou = (src) => decodeURIComponent(escape(src));
-const _cb_decode = (cccc) => {
+const btou = (src: string) => decodeURIComponent(escape(src));
+const _cb_decode = (cccc: string) => {
     let len = cccc.length,
         padlen = len % 4,
         n = (len > 0 ? _b64tab[cccc.charAt(0)] << 18 : 0)
@@ -105,15 +101,15 @@ const _cb_decode = (cccc) => {
  * @returns {String} binary string
  */
 const _atob = typeof atob === 'function'
-    ? (a) => atob(a)
-    : (a) => {
+    ? (a: string) => atob(a)
+    : (a: string) => {
         return String(a)
             .replace(/[^A-Za-z0-9\+\/]/g, '')
             .replace(/\S{1,4}/g, _cb_decode);
     };
-const _decode = (a) => btou(_atob(a));
-const _unURI = (a) => {
-    return String(a)
+const _decode = (a: string) => btou(_atob(a));
+const _unURI = (a: string) => {
+    return a
         .replace(/[-_]/g, (m0) => m0 == '-' ? '+' : '/')
         .replace(/[^A-Za-z0-9\+\/]/g, '');
 };
@@ -122,13 +118,11 @@ const _unURI = (a) => {
  * @param {String} src Base64 string.  Both normal and URL-safe are supported
  * @returns {String} UTF-8 string
  */
-const decode = (src) => _decode(_unURI(src));
+const decode = (src: string) => _decode(_unURI(src));
 /**
  * converts a Base64 string to a Uint8Array
- * @param {String} src Base64 string.  Both normal and URL-safe are supported
- * @returns {Uint8Array} UTF-8 string
  */
-const toUint8Array = (a) => {
+const toUint8Array = (a: string) => {
     return Uint8Array.from(_atob(_unURI(a)), c => c.charCodeAt(0));
 };
 const _noEnum = (v) => {
