@@ -4,13 +4,9 @@
 
 Yet another Base64 transcoder
 
-## HEADS UP: ES2015 support required since version 3
+## HEADS UP: switch to TypeScript since version 3.5
 
-Version 3 is completely rewritten with ES2015 features like arrow functions.  All modern browsers and node.js are directly supported.  Your codes should run unchanged.  IE is no longer supported directly but you can transpile the script to use it (see below).
-
-The hardest part of maintaining this module was not Base64 features, but cross-platform support (eg. nodejs vs web browsers).  By making ES2015 mandatory virtually all codes are common (except `atob()` and `btoa()`).
-
-If you need to support legacy browsers like IE, use version 2 or transpile.
+In version 3.0 `js-base64` switch to ES2015 module.  That made it easy to switch to TypeScript(just renaming `base64.mjs` to `base64.ts` was almost enough).  Now `base64.js` and `base64.mjs` are compiled from `base64.ts`.  That also restored ES5 compatibility.
 
 ## Install
 
