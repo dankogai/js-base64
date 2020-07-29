@@ -95,11 +95,8 @@ const _cb_decode = (cccc) => {
  */
 const _atob = typeof atob === 'function'
     ? (a) => atob(a)
-    : (a) => {
-        return String(a)
-            .replace(/[^A-Za-z0-9\+\/]/g, '')
-            .replace(/\S{1,4}/g, _cb_decode);
-    };
+    : (a) => a.replace(/[^A-Za-z0-9\+\/]/g, '')
+        .replace(/\S{1,4}/g, _cb_decode);
 const _decode = (a) => btou(_atob(a));
 const _unURI = (a) => {
     return a
