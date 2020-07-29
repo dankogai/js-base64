@@ -51,7 +51,7 @@ const _b64tab = ((chars) => {
 const _fromCharCode = String.fromCharCode;
 const _mkUriSafe = (src) => src
     .replace(/[+\/]/g, (m0) => m0 == '+' ? '-' : '_')
-    .replace(/=/g, '');
+    .replace(/=+$/m, '');
 /**
  * converts a Uint8Array to a Base64 string
  * @param {Boolean} [rfc4648] URL-and-filename-safe a la RFC4648
