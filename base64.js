@@ -40,7 +40,7 @@
  *
  * @author Dan Kogai (https://github.com/dankogai)
  */
-const version = '3.3.2';
+const version = '3.3.3';
 /**
  * @deprecated use lowercase `version`.
  */

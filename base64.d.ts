@@ -9,11 +9,11 @@
  *
  * @author Dan Kogai (https://github.com/dankogai)
  */
-declare const version = "3.3.2";
+declare const version = "3.3.3";
 /**
  * @deprecated use lowercase `version`.
  */
-declare const VERSION = "3.3.2";
+declare const VERSION = "3.3.3";
 /**
  * converts a Uint8Array to a Base64 string.
  * @param {Boolean} [rfc4648] URL-and-filename-safe a la RFC4648
