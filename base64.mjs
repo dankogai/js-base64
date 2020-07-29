@@ -10,6 +10,10 @@
  * @author Dan Kogai (https://github.com/dankogai)
  */
 const version = '3.3.2';
+/**
+ * @deprecated use lowercase `version`.
+ */
+const VERSION = version;
 const _b64chars = [
     ...'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 ];
@@ -52,7 +56,7 @@ const _btoa = typeof btoa === 'function'
         return fromUint8Array(Uint8Array.from(s, c => c.charCodeAt(0)));
     };
 /**
- * @deprecated since 3.0.0
+ * @deprecated should have been internal use only.
  * @param {string} src UTF-8 string
  * @returns {string} UTF-16 string
  */
@@ -72,7 +76,7 @@ const encode = (src, rfc4648 = false) => {
  */
 const encodeURI = (src) => encode(src, true);
 /**
- * @deprecated since 3.0.0
+ * @deprecated should have been internal use only.
  * @param {string} src UTF-16 string
  * @returns {string} UTF-8 string
  */
@@ -156,7 +160,8 @@ const extendBuiltins = () => {
     extendUint8Array();
 };
 const gBase64 = {
-    VERSION: version,
+    version: version,
+    VERSION: VERSION,
     atob: _atob,
     btoa: _btoa,
     fromBase64: decode,
@@ -174,7 +179,8 @@ const gBase64 = {
     extendBuiltins: extendBuiltins
 };
 // makecjs:CUT //
-export { version as VERSION };
+export { version };
+export { VERSION };
 export { _atob as atob };
 export { _btoa as btoa };
 export { decode as fromBase64 };

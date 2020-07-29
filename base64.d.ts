@@ -11,6 +11,10 @@
  */
 declare const version = "3.3.2";
 /**
+ * @deprecated use lowercase `version`.
+ */
+declare const VERSION = "3.3.2";
+/**
  * converts a Uint8Array to a Base64 string.
  * @param {Boolean} [rfc4648] URL-and-filename-safe a la RFC4648
  * @returns {String} Base64 string
@@ -23,7 +27,7 @@ declare const fromUint8Array: (src: Uint8Array, rfc4648?: boolean) => string;
  */
 declare const _btoa: (s: string) => string;
 /**
- * @deprecated since 3.0.0
+ * @deprecated should have been internal use only.
  * @param {string} src UTF-8 string
  * @returns {string} UTF-16 string
  */
@@ -40,7 +44,7 @@ declare const encode: (src: string, rfc4648?: boolean) => string;
  */
 declare const encodeURI: (src: string) => string;
 /**
- * @deprecated since 3.0.0
+ * @deprecated should have been internal use only.
  * @param {string} src UTF-16 string
  * @returns {string} UTF-8 string
  */
@@ -65,6 +69,7 @@ declare const extendString: () => void;
 declare const extendUint8Array: () => void;
 declare const extendBuiltins: () => void;
 declare const gBase64: {
+    version: string;
     VERSION: string;
     atob: (a: string) => string;
     btoa: (s: string) => string;
@@ -82,7 +87,8 @@ declare const gBase64: {
     extendUint8Array: () => void;
     extendBuiltins: () => void;
 };
-export { version as VERSION };
+export { version };
+export { VERSION };
 export { _atob as atob };
 export { _btoa as btoa };
 export { decode as fromBase64 };
