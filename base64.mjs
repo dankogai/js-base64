@@ -10,11 +10,12 @@
  * @author Dan Kogai (https://github.com/dankogai)
  */
 const version = '3.3.2';
-const _b64chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+const _b64chars = [
+    ...'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+];
 const _b64tab = ((chars) => {
-    let tab = {}, i = 0;
-    for (const c of chars)
-        tab[c] = i++;
+    let tab = {};
+    _b64chars.forEach((c, i) => tab[c] = i);
     return tab;
 })(_b64chars);
 const _fromCharCode = String.fromCharCode;
@@ -29,14 +30,12 @@ const _mkUriSafe = (src) => src
 const fromUint8Array = (src, rfc4648 = false) => {
     let b64 = '';
     for (let i = 0, l = src.length; i < l; i += 3) {
-        const a0 = src[i], a1 = src[i + 1], a2 = src[i + 2];
-        const ord = a0 << 16 | a1 << 8 | a2;
-        b64 += _b64chars.charAt(ord >>> 18)
-            + _b64chars.charAt((ord >>> 12) & 63)
-            + (typeof a1 != 'undefined'
-                ? _b64chars.charAt((ord >>> 6) & 63) : '=')
-            + (typeof a2 != 'undefined'
-                ? _b64chars.charAt(ord & 63) : '=');
+        const [a0, a1, a2] = [src[i], src[i + 1], src[i + 2]];
+        const ord = (a0 << 16) | (a1 << 8) | a2;
+        b64 += _b64chars[ord >>> 18];
+        b64 += _b64chars[(ord >>> 12) & 63];
+        b64 += typeof a1 !== 'undefined' ? _b64chars[(ord >>> 6) & 63] : '=';
+        b64 += typeof a2 !== 'undefined' ? _b64chars[ord & 63] : '=';
     }
     return rfc4648 ? _mkUriSafe(b64) : b64;
 };
