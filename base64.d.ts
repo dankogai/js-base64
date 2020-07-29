@@ -11,30 +11,31 @@
  */
 declare const version = "3.3.2";
 /**
- * converts a Uint8Array to a Base64 string
+ * converts a Uint8Array to a Base64 string.
  * @param {Boolean} [rfc4648] URL-and-filename-safe a la RFC4648
  * @returns {String} Base64 string
  */
 declare const fromUint8Array: (src: Uint8Array, rfc4648?: boolean) => string;
 /**
- * 100% compatible with `window.btoa` of web browsers
+ * does what `window.btoa` of web browsers does.
  * @param {String} src binary string
  * @returns {String} Base64-encoded string
  */
 declare const _btoa: (s: string) => string;
 /**
  * @deprecated since 3.0.0
+ * @param {string} src UTF-8 string
  * @returns {string} UTF-16 string
  */
 declare const utob: (src: string) => string;
 /**
- * converts a UTF-8-encoded string to a Base64 string
+ * converts a UTF-8-encoded string to a Base64 string.
  * @param {Boolean} [rfc4648] if `true` make the result URL-safe
  * @returns {String} Base64 string
  */
 declare const encode: (src: string, rfc4648?: boolean) => string;
 /**
- * converts a UTF-8-encoded string to URL-safe Base64 RFC4648
+ * converts a UTF-8-encoded string to URL-safe Base64 RFC4648.
  * @returns {String} Base64 string
  */
 declare const encodeURI: (src: string) => string;
@@ -45,19 +46,19 @@ declare const encodeURI: (src: string) => string;
  */
 declare const btou: (src: string) => string;
 /**
- * 100% compatible with `window.atob` of web browsers
+ * does what `window.atob` of web browsers does.
  * @param {String} src Base64-encoded string
  * @returns {String} binary string
  */
 declare const _atob: (a: string) => string;
 /**
- * converts a Base64 string to a UTF-8 string
+ * converts a Base64 string to a UTF-8 string.
  * @param {String} src Base64 string.  Both normal and URL-safe are supported
  * @returns {String} UTF-8 string
  */
 declare const decode: (src: string) => string;
 /**
- * converts a Base64 string to a Uint8Array
+ * converts a Base64 string to a Uint8Array.
  */
 declare const toUint8Array: (a: string) => Uint8Array;
 declare const extendString: () => void;

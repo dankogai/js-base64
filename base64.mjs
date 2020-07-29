@@ -23,7 +23,7 @@ const _mkUriSafe = (src) => src
     .replace(/[+\/]/g, (m0) => m0 == '+' ? '-' : '_')
     .replace(/=+$/m, '');
 /**
- * converts a Uint8Array to a Base64 string
+ * converts a Uint8Array to a Base64 string.
  * @param {Boolean} [rfc4648] URL-and-filename-safe a la RFC4648
  * @returns {String} Base64 string
  */
@@ -32,7 +32,7 @@ const fromUint8Array = (src, rfc4648 = false) => {
     for (let i = 0, l = src.length; i < l; i += 3) {
         const [a0, a1, a2] = [src[i], src[i + 1], src[i + 2]];
         const ord = (a0 << 16) | (a1 << 8) | a2;
-        b64 += _b64chars[ord >>> 18];
+        b64 += _b64chars[(ord >>> 18)];
         b64 += _b64chars[(ord >>> 12) & 63];
         b64 += typeof a1 !== 'undefined' ? _b64chars[(ord >>> 6) & 63] : '=';
         b64 += typeof a2 !== 'undefined' ? _b64chars[ord & 63] : '=';
@@ -40,7 +40,7 @@ const fromUint8Array = (src, rfc4648 = false) => {
     return rfc4648 ? _mkUriSafe(b64) : b64;
 };
 /**
- * 100% compatible with `window.btoa` of web browsers
+ * does what `window.btoa` of web browsers does.
  * @param {String} src binary string
  * @returns {String} Base64-encoded string
  */
@@ -53,11 +53,12 @@ const _btoa = typeof btoa === 'function'
     };
 /**
  * @deprecated since 3.0.0
+ * @param {string} src UTF-8 string
  * @returns {string} UTF-16 string
  */
 const utob = (src) => unescape(encodeURIComponent(src));
 /**
- * converts a UTF-8-encoded string to a Base64 string
+ * converts a UTF-8-encoded string to a Base64 string.
  * @param {Boolean} [rfc4648] if `true` make the result URL-safe
  * @returns {String} Base64 string
  */
@@ -66,7 +67,7 @@ const encode = (src, rfc4648 = false) => {
     return rfc4648 ? _mkUriSafe(b64) : b64;
 };
 /**
- * converts a UTF-8-encoded string to URL-safe Base64 RFC4648
+ * converts a UTF-8-encoded string to URL-safe Base64 RFC4648.
  * @returns {String} Base64 string
  */
 const encodeURI = (src) => encode(src, true);
@@ -89,7 +90,7 @@ const _cb_decode = (cccc) => {
     return chars.join('');
 };
 /**
- * 100% compatible with `window.atob` of web browsers
+ * does what `window.atob` of web browsers does.
  * @param {String} src Base64-encoded string
  * @returns {String} binary string
  */
@@ -104,13 +105,13 @@ const _unURI = (a) => {
         .replace(/[^A-Za-z0-9\+\/]/g, '');
 };
 /**
- * converts a Base64 string to a UTF-8 string
+ * converts a Base64 string to a UTF-8 string.
  * @param {String} src Base64 string.  Both normal and URL-safe are supported
  * @returns {String} UTF-8 string
  */
 const decode = (src) => _decode(_unURI(src));
 /**
- * converts a Base64 string to a Uint8Array
+ * converts a Base64 string to a Uint8Array.
  */
 const toUint8Array = (a) => {
     return Uint8Array.from(_atob(_unURI(a)), c => c.charCodeAt(0));
