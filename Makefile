@@ -15,7 +15,7 @@ $(JS): $(PJ) $(MJS)
 	util/makecjs $(MJS) > $(JS)
 
 $(ES5): $(PJ) $(JS)
-	mv $(JS) $(ES6) && tsc --allowJS --outFile $(ES5) $(ES6)
+	cp $(JS) $(ES6) && tsc --allowJS --outFile $(ES5) $(ES6)
 
 test: $(PJ) $(MJS) $(JS)
 	mocha --require esm

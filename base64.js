@@ -203,7 +203,7 @@ const gBase64 = {
     //
     // export Base64 to the namespace
     //
-    // ES5 does not have Object.assign yet that may make transpilers unhappy.
+    // ES5 is yet to have Object.assign() that may make transpilers unhappy.
     // gBase64.Base64 = Object.assign({}, gBase64);
     gBase64.Base64 = {};
     Object.keys(gBase64).forEach(k => gBase64.Base64[k] = gBase64[k]);
