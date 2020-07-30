@@ -11,7 +11,7 @@ import { type } from "os";
  * 
  * @author Dan Kogai (https://github.com/dankogai)
  */
-const version = '3.3.3';
+const version = '3.4.0';
 /**
  * @deprecated use lowercase `version`.
  */
