@@ -9,11 +9,11 @@
  *
  * @author Dan Kogai (https://github.com/dankogai)
  */
-declare const version = "3.4.0";
+declare const version = "3.4.1";
 /**
  * @deprecated use lowercase `version`.
  */
-declare const VERSION = "3.4.0";
+declare const VERSION = "3.4.1";
 /**
  * does what `window.btoa` of web browsers does.
  * @param {String} src binary string
