@@ -11,7 +11,7 @@
     "base64.d.ts"
   ],
   "scripts": {
-    "test": "make test"
+    "test": "make clean && make test"
   },
   "devDependencies": {
     "typescript": "^3.9.7",
