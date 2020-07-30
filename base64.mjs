@@ -28,9 +28,10 @@ const _mkUriSafe = (src) => src
     .replace(/=+$/m, '');
 /**
  * converts a Uint8Array to a Base64 string.
- * @param {Boolean} [rfc4648] URL-and-filename-safe a la RFC4648
- * @returns {String} Base64 string
+ * @param {boolean} [rfc4648] URL-and-filename-safe a la RFC4648
+ * @returns {string} Base64 string
  */
+// const fromUint8Array = fromArrayBufferView;
 const fromUint8Array = (src, rfc4648 = false) => {
     let b64 = '';
     for (let i = 0, l = src.length; i < l; i += 3) {
@@ -46,15 +47,16 @@ const fromUint8Array = (src, rfc4648 = false) => {
 /**
  * does what `window.btoa` of web browsers does.
  * @param {String} src binary string
- * @returns {String} Base64-encoded string
+ * @returns {string} Base64-encoded string
  */
-const _btoa = typeof btoa === 'function'
-    ? (s) => btoa(s)
-    : (s) => {
-        if (s.match(/[^\x00-\xFF]/))
-            throw new RangeError('The string contains invalid characters.');
-        return fromUint8Array(Uint8Array.from(s, c => c.charCodeAt(0)));
-    };
+const _btoa = typeof btoa === 'function' ? (s) => btoa(s)
+    : typeof Buffer === 'function'
+        ? (s) => Buffer.from(s, 'binary').toString('base64')
+        : (s) => {
+            if (s.match(/[^\x00-\xFF]/))
+                throw new RangeError('The string contains invalid characters.');
+            return fromUint8Array(Uint8Array.from(s, c => c.charCodeAt(0)));
+        };
 /**
  * @deprecated should have been internal use only.
  * @param {string} src UTF-8 string
@@ -62,17 +64,20 @@ const _btoa = typeof btoa === 'function'
  */
 const utob = (src) => unescape(encodeURIComponent(src));
 /**
- * converts a UTF-8-encoded string to a Base64 string.
- * @param {Boolean} [rfc4648] if `true` make the result URL-safe
- * @returns {String} Base64 string
+ *
  */
-const encode = (src, rfc4648 = false) => {
-    const b64 = _btoa(utob(src));
-    return rfc4648 ? _mkUriSafe(b64) : b64;
-};
+const _encode = typeof Buffer === 'function'
+    ? (s) => Buffer.from(s, 'utf8').toString('base64')
+    : (s) => _btoa(utob(s));
+/**
+ * converts a UTF-8-encoded string to a Base64 string.
+ * @param {boolean} [rfc4648] if `true` make the result URL-safe
+ * @returns {string} Base64 string
+ */
+const encode = (src, rfc4648 = false) => rfc4648 ? _mkUriSafe(_encode(src)) : _encode(src);
 /**
  * converts a UTF-8-encoded string to URL-safe Base64 RFC4648.
- * @returns {String} Base64 string
+ * @returns {string} Base64 string
  */
 const encodeURI = (src) => encode(src, true);
 /**
@@ -96,13 +101,16 @@ const _cb_decode = (cccc) => {
 /**
  * does what `window.atob` of web browsers does.
  * @param {String} src Base64-encoded string
- * @returns {String} binary string
+ * @returns {string} binary string
  */
-const _atob = typeof atob === 'function'
-    ? (a) => atob(a)
-    : (a) => a.replace(/[^A-Za-z0-9\+\/]/g, '')
-        .replace(/\S{1,4}/g, _cb_decode);
-const _decode = (a) => btou(_atob(a));
+const _atob = typeof atob === 'function' ? (a) => atob(a)
+    : typeof Buffer === 'function'
+        ? (a) => Buffer.from(a, 'base64').toString('binary')
+        : (a) => a.replace(/[^A-Za-z0-9\+\/]/g, '') /* polyfill */
+            .replace(/\S{1,4}/g, _cb_decode);
+const _decode = typeof Buffer === 'function'
+    ? (a) => Buffer.from(a, 'base64').toString('utf8')
+    : (a) => btou(_atob(a));
 const _unURI = (a) => {
     return a
         .replace(/[-_]/g, (m0) => m0 == '-' ? '+' : '/')
@@ -111,7 +119,7 @@ const _unURI = (a) => {
 /**
  * converts a Base64 string to a UTF-8 string.
  * @param {String} src Base64 string.  Both normal and URL-safe are supported
- * @returns {String} UTF-8 string
+ * @returns {string} UTF-8 string
  */
 const decode = (src) => _decode(_unURI(src));
 /**

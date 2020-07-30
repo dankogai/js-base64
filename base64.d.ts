@@ -16,14 +16,14 @@ declare const version = "3.3.3";
 declare const VERSION = "3.3.3";
 /**
  * converts a Uint8Array to a Base64 string.
- * @param {Boolean} [rfc4648] URL-and-filename-safe a la RFC4648
- * @returns {String} Base64 string
+ * @param {boolean} [rfc4648] URL-and-filename-safe a la RFC4648
+ * @returns {string} Base64 string
  */
 declare const fromUint8Array: (src: Uint8Array, rfc4648?: boolean) => string;
 /**
  * does what `window.btoa` of web browsers does.
  * @param {String} src binary string
- * @returns {String} Base64-encoded string
+ * @returns {string} Base64-encoded string
  */
 declare const _btoa: (s: string) => string;
 /**
@@ -34,13 +34,13 @@ declare const _btoa: (s: string) => string;
 declare const utob: (src: string) => string;
 /**
  * converts a UTF-8-encoded string to a Base64 string.
- * @param {Boolean} [rfc4648] if `true` make the result URL-safe
- * @returns {String} Base64 string
+ * @param {boolean} [rfc4648] if `true` make the result URL-safe
+ * @returns {string} Base64 string
  */
 declare const encode: (src: string, rfc4648?: boolean) => string;
 /**
  * converts a UTF-8-encoded string to URL-safe Base64 RFC4648.
- * @returns {String} Base64 string
+ * @returns {string} Base64 string
  */
 declare const encodeURI: (src: string) => string;
 /**
@@ -52,13 +52,13 @@ declare const btou: (src: string) => string;
 /**
  * does what `window.atob` of web browsers does.
  * @param {String} src Base64-encoded string
- * @returns {String} binary string
+ * @returns {string} binary string
  */
 declare const _atob: (a: string) => string;
 /**
  * converts a Base64 string to a UTF-8 string.
  * @param {String} src Base64 string.  Both normal and URL-safe are supported
- * @returns {String} UTF-8 string
+ * @returns {string} UTF-8 string
  */
 declare const decode: (src: string) => string;
 /**
