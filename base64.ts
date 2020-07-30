@@ -16,14 +16,6 @@ const version = '3.4.0';
  * @deprecated use lowercase `version`.
  */
 const VERSION = version;
-const _b64chars = [
-    ...'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-];
-const _b64tab = ((chars) => {
-    let tab = {};
-    _b64chars.forEach((c, i) => tab[c] = i);
-    return tab;
-})(_b64chars);
 const _hasBuffer = typeof Buffer === 'function';
 const _hasatob = typeof atob === 'function';
 const _hasbtoa = typeof btoa === 'function';
@@ -101,21 +93,6 @@ const encodeURI = (src: string) => encode(src, true);
  * @returns {string} UTF-8 string
  */
 const btou = (src: string) => decodeURIComponent(escape(src));
-const _cb_decode = (cccc: string) => {
-    let len = cccc.length,
-        padlen = len % 4,
-        n = (len > 0 ? _b64tab[cccc.charAt(0)] << 18 : 0)
-            | (len > 1 ? _b64tab[cccc.charAt(1)] << 12 : 0)
-            | (len > 2 ? _b64tab[cccc.charAt(2)] << 6 : 0)
-            | (len > 3 ? _b64tab[cccc.charAt(3)] : 0),
-        chars = [
-            _fromCharCode(n >>> 16),
-            _fromCharCode((n >>> 8) & 0xff),
-            _fromCharCode(n & 0xff)
-        ];
-    chars.length -= [0, 0, 2, 1][padlen];
-    return chars.join('');
-};
 /**
  * does what `window.atob` of web browsers does.
  * @param {String} src Base64-encoded string
@@ -123,7 +100,9 @@ const _cb_decode = (cccc: string) => {
  */
 const _atob = _hasatob ? (a: string) => atob(_tidyB64(a))
     : _hasBuffer ? (a: string) => Buffer.from(a, 'base64').toString('binary')
-        : (a: string) => _tidyB64(a).replace(/\S{1,4}/g, _cb_decode);
+        : (a: string) => { 
+            throw ReferenceError('neither `atob` nor `Buffer` is available ')
+         };
 const _decode = _hasBuffer
     ? (a: string) => Buffer.from(a, 'base64').toString('utf8')
     : (a: string) => btou(_atob(a));
