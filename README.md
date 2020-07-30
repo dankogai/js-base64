@@ -2,7 +2,9 @@
 
 # base64.js
 
-Yet another Base64 transcoder
+Yet another [Base64] transcoder.
+
+[Base64]: http://en.wikipedia.org/wiki/Base64
 
 ## HEADS UP: switch to TypeScript since version 3.3
 
@@ -32,15 +34,7 @@ Locally…
 
 This good old way loads `Base64` in the global context (`window`).  Though `Base64.noConflict()` is made available, you should consider using ES6 Module to avoid tainting `window`.
 
-### node.js (commonjs)
-
-```javascript
-const Base64 = require('js-base64').Base64;
-```
-
-Unlike the case above, the global context is no longer modified.
-
-### As a ES6 Module
+### As an ES6 Module
 
 locally…
 
@@ -68,6 +62,24 @@ import { Base64 } from 'https://cdn.jsdelivr.net/npm/js-base64@3.3.3/base64.mjs'
 import { encode, decode } from 'https://cdn.jsdelivr.net/npm/js-base64@3.3.3/base64.mjs';
 </script>
 ```
+
+### node.js (commonjs)
+
+```javascript
+const {Base64} = require('js-base64');
+```
+
+Unlike the case above, the global context is no longer modified.
+
+You can also use [esm] to `import` instead of `require`.
+
+[esm]: https://github.com/standard-things/esm
+
+```javascript
+require=require('esm')(module);
+import {Base64} from 'js-base64';
+```
+
 
 ## SYNOPSIS
 
@@ -141,6 +153,10 @@ Which is a Base64-encoded 1x1 transparent PNG, **DO NOT USE** `Base64.decode(png
 
 Or even better, `Base64.toUint8Array(pngBase64)`.
 
-## SEE ALSO
+### If you really, really need an ES5 version
 
-+ http://en.wikipedia.org/wiki/Base64
+You can transpiles to an ES5 that runs on IE11.  Do the following in your shell.
+
+```shell
+$ make base64.es5.js
+```
