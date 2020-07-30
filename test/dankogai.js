@@ -22,7 +22,7 @@ describe('basic', function () {
 });
 
 describe('whitespace', function () {
-    it('Z A==', is(Base64.decode('ZA =='), 'd'   ));
+    it('Z A==', is(Base64.decode('Z A=='), 'd'   ));
     it('ZG E=', is(Base64.decode('ZG E='), 'da'  ));
     it('ZGF u', is(Base64.decode('ZGF u'), 'dan' ));
 });
@@ -43,6 +43,7 @@ describe('Base64', function () {
     it('.decode', is(Base64.decode('5bCP6aO85by-'), '小飼弾'));
 });
 
+
 if (typeof Uint8Array === 'function') describe('fromUint8Array', function() {
     it('dankogai', is(Base64.fromUint8Array(new Uint8Array([100,97,110,107,111,103,97,105])), Base64.encode('dankogai')));
     it('dankoga', is(Base64.fromUint8Array(new Uint8Array([100,97,110,107,111,103,97])), Base64.encode('dankoga')));
@@ -56,13 +57,16 @@ if (typeof Uint8Array === 'function') describe('fromUint8Array', function() {
 });
 
 if (typeof Uint8Array === 'function') describe('toUint8Array', function() {
-    it('ZGFua29nYWk=', is(Base64.toUint8Array('ZGFua29nYWk=').toString(), '100,97,110,107,111,103,97,105'));
-    it('ZGFua29nYQ==', is(Base64.toUint8Array('ZGFua29nYQ==').toString(), '100,97,110,107,111,103,97'));
-    it('ZGFua29n', is(Base64.toUint8Array('ZGFua29n').toString(), '100,97,110,107,111,103'));
-    it('ZGFua28=', is(Base64.toUint8Array('ZGFua28=').toString(), '100,97,110,107,111'));
-    it('ZGFuaw==', is(Base64.toUint8Array('ZGFuaw==').toString(), '100,97,110,107'));
-    it('ZGFu', is(Base64.toUint8Array('ZGFu').toString(), '100,97,110'));
-    it('ZGE=', is(Base64.toUint8Array('ZGE=').toString(), '100,97'));
-    it('ZA==', is(Base64.toUint8Array('ZA==').toString(), '100'));
-    it('', is(Base64.toUint8Array('').toString(), ''));
+    var _2str = function(a) {
+        return Array.prototype.slice.call(a, 0).toString();
+    }
+    it('ZGFua29nYWk=', is(_2str(Base64.toUint8Array('ZGFua29nYWk=')), '100,97,110,107,111,103,97,105'));
+    it('ZGFua29nYQ==', is(_2str(Base64.toUint8Array('ZGFua29nYQ==')), '100,97,110,107,111,103,97'));
+    it('ZGFua29n', is(_2str(Base64.toUint8Array('ZGFua29n')), '100,97,110,107,111,103'));
+    it('ZGFua28=', is(_2str(Base64.toUint8Array('ZGFua28=')), '100,97,110,107,111'));
+    it('ZGFuaw==', is(_2str(Base64.toUint8Array('ZGFuaw==')), '100,97,110,107'));
+    it('ZGFu', is(_2str(Base64.toUint8Array('ZGFu')), '100,97,110'));
+    it('ZGE=', is(_2str(Base64.toUint8Array('ZGE=')), '100,97'));
+    it('ZA==', is(_2str(Base64.toUint8Array('ZA==')), '100'));
+    it('', is(_2str(Base64.toUint8Array('')), ''));
 });

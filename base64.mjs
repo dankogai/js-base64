@@ -22,41 +22,47 @@ const _b64tab = ((chars) => {
     _b64chars.forEach((c, i) => tab[c] = i);
     return tab;
 })(_b64chars);
-const _fromCharCode = String.fromCharCode;
+const _hasBuffer = typeof Buffer === 'function';
+const _hasatob = typeof atob === 'function';
+const _hasbtoa = typeof btoa === 'function';
+const _fromCharCode = String.fromCharCode.bind(String);
+const _U8Afrom = typeof Uint8Array.from === 'function'
+    ? Uint8Array.from.bind(Uint8Array)
+    : (it, fn = (x) => x) => new Uint8Array(Array.prototype.slice.call(it, 0).map(fn));
 const _mkUriSafe = (src) => src
     .replace(/[+\/]/g, (m0) => m0 == '+' ? '-' : '_')
     .replace(/=+$/m, '');
-/**
- * converts a Uint8Array to a Base64 string.
- * @param {boolean} [rfc4648] URL-and-filename-safe a la RFC4648
- * @returns {string} Base64 string
- */
-// const fromUint8Array = fromArrayBufferView;
-const fromUint8Array = (src, rfc4648 = false) => {
-    let b64 = '';
-    for (let i = 0, l = src.length; i < l; i += 3) {
-        const [a0, a1, a2] = [src[i], src[i + 1], src[i + 2]];
-        const ord = (a0 << 16) | (a1 << 8) | a2;
-        b64 += _b64chars[(ord >>> 18)];
-        b64 += _b64chars[(ord >>> 12) & 63];
-        b64 += typeof a1 !== 'undefined' ? _b64chars[(ord >>> 6) & 63] : '=';
-        b64 += typeof a2 !== 'undefined' ? _b64chars[ord & 63] : '=';
-    }
-    return rfc4648 ? _mkUriSafe(b64) : b64;
-};
+const _tidyB64 = (s) => s.replace(/[^A-Za-z0-9\+\/]/g, '');
 /**
  * does what `window.btoa` of web browsers does.
  * @param {String} src binary string
  * @returns {string} Base64-encoded string
  */
-const _btoa = typeof btoa === 'function' ? (s) => btoa(s)
-    : typeof Buffer === 'function'
+const _btoa = _hasbtoa ? (s) => btoa(s)
+    : _hasBuffer
         ? (s) => Buffer.from(s, 'binary').toString('base64')
         : (s) => {
             if (s.match(/[^\x00-\xFF]/))
                 throw new RangeError('The string contains invalid characters.');
-            return fromUint8Array(Uint8Array.from(s, c => c.charCodeAt(0)));
+            return fromUint8Array(_U8Afrom(s, c => c.charCodeAt(0)));
         };
+const _fromUint8Array = _hasBuffer
+    ? (u8a) => Buffer.from(u8a).toString('base64')
+    : (u8a) => {
+        // cf. https://stackoverflow.com/questions/12710001/how-to-convert-uint8-array-to-base64-encoded-string/12713326#12713326
+        const maxargs = 0x1000;
+        let strs = [];
+        for (let i = 0, l = u8a.length; i < l; i += maxargs) {
+            strs.push(_fromCharCode.apply(null, u8a.subarray(i, i + maxargs)));
+        }
+        return btoa(strs.join(''));
+    };
+/**
+ * converts a Uint8Array to a Base64 string.
+ * @param {boolean} [rfc4648] URL-and-filename-safe a la RFC4648
+ * @returns {string} Base64 string
+ */
+const fromUint8Array = (u8a, rfc4648 = false) => rfc4648 ? _mkUriSafe(_fromUint8Array(u8a)) : _fromUint8Array(u8a);
 /**
  * @deprecated should have been internal use only.
  * @param {string} src UTF-8 string
@@ -66,7 +72,7 @@ const utob = (src) => unescape(encodeURIComponent(src));
 /**
  *
  */
-const _encode = typeof Buffer === 'function'
+const _encode = _hasBuffer
     ? (s) => Buffer.from(s, 'utf8').toString('base64')
     : (s) => _btoa(utob(s));
 /**
@@ -103,19 +109,13 @@ const _cb_decode = (cccc) => {
  * @param {String} src Base64-encoded string
  * @returns {string} binary string
  */
-const _atob = typeof atob === 'function' ? (a) => atob(a)
-    : typeof Buffer === 'function'
-        ? (a) => Buffer.from(a, 'base64').toString('binary')
-        : (a) => a.replace(/[^A-Za-z0-9\+\/]/g, '') /* polyfill */
-            .replace(/\S{1,4}/g, _cb_decode);
-const _decode = typeof Buffer === 'function'
+const _atob = _hasatob ? (a) => atob(_tidyB64(a))
+    : _hasBuffer ? (a) => Buffer.from(a, 'base64').toString('binary')
+        : (a) => _tidyB64(a).replace(/\S{1,4}/g, _cb_decode);
+const _decode = _hasBuffer
     ? (a) => Buffer.from(a, 'base64').toString('utf8')
     : (a) => btou(_atob(a));
-const _unURI = (a) => {
-    return a
-        .replace(/[-_]/g, (m0) => m0 == '-' ? '+' : '/')
-        .replace(/[^A-Za-z0-9\+\/]/g, '');
-};
+const _unURI = (a) => _tidyB64(a.replace(/[-_]/g, (m0) => m0 == '-' ? '+' : '/'));
 /**
  * converts a Base64 string to a UTF-8 string.
  * @param {String} src Base64 string.  Both normal and URL-safe are supported
@@ -125,9 +125,9 @@ const decode = (src) => _decode(_unURI(src));
 /**
  * converts a Base64 string to a Uint8Array.
  */
-const toUint8Array = (a) => {
-    return Uint8Array.from(_atob(_unURI(a)), c => c.charCodeAt(0));
-};
+const toUint8Array = _hasBuffer
+    ? (a) => _U8Afrom(Buffer.from(_unURI(a), 'base64'))
+    : (a) => _U8Afrom(_atob(_unURI(a)), c => c.charCodeAt(0));
 const _noEnum = (v) => {
     return {
         value: v, enumerable: false, writable: true, configurable: true

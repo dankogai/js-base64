@@ -15,17 +15,17 @@ declare const version = "3.3.3";
  */
 declare const VERSION = "3.3.3";
 /**
- * converts a Uint8Array to a Base64 string.
- * @param {boolean} [rfc4648] URL-and-filename-safe a la RFC4648
- * @returns {string} Base64 string
- */
-declare const fromUint8Array: (src: Uint8Array, rfc4648?: boolean) => string;
-/**
  * does what `window.btoa` of web browsers does.
  * @param {String} src binary string
  * @returns {string} Base64-encoded string
  */
 declare const _btoa: (s: string) => string;
+/**
+ * converts a Uint8Array to a Base64 string.
+ * @param {boolean} [rfc4648] URL-and-filename-safe a la RFC4648
+ * @returns {string} Base64 string
+ */
+declare const fromUint8Array: (u8a: Uint8Array, rfc4648?: boolean) => string;
 /**
  * @deprecated should have been internal use only.
  * @param {string} src UTF-8 string
@@ -64,7 +64,7 @@ declare const decode: (src: string) => string;
 /**
  * converts a Base64 string to a Uint8Array.
  */
-declare const toUint8Array: (a: string) => Uint8Array;
+declare const toUint8Array: (a: string) => any;
 declare const extendString: () => void;
 declare const extendUint8Array: () => void;
 declare const extendBuiltins: () => void;
@@ -81,8 +81,8 @@ declare const gBase64: {
     utob: (src: string) => string;
     btou: (src: string) => string;
     decode: (src: string) => string;
-    fromUint8Array: (src: Uint8Array, rfc4648?: boolean) => string;
-    toUint8Array: (a: string) => Uint8Array;
+    fromUint8Array: (u8a: Uint8Array, rfc4648?: boolean) => string;
+    toUint8Array: (a: string) => any;
     extendString: () => void;
     extendUint8Array: () => void;
     extendBuiltins: () => void;
