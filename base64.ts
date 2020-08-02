@@ -1,5 +1,3 @@
-import { type } from "os";
-
 /**
  *  base64.ts
  *
