@@ -19,7 +19,7 @@ declare const VERSION = "3.4.1";
  * @param {String} src binary string
  * @returns {string} Base64-encoded string
  */
-declare const _btoa: (s: string) => string;
+declare const _btoa: (bin: string) => string;
 /**
  * converts a Uint8Array to a Base64 string.
  * @param {boolean} [rfc4648] URL-and-filename-safe a la RFC4648
@@ -54,7 +54,7 @@ declare const btou: (src: string) => string;
  * @param {String} src Base64-encoded string
  * @returns {string} binary string
  */
-declare const _atob: (a: string) => string;
+declare const _atob: (asc: string) => string;
 /**
  * converts a Base64 string to a UTF-8 string.
  * @param {String} src Base64 string.  Both normal and URL-safe are supported
@@ -71,8 +71,8 @@ declare const extendBuiltins: () => void;
 declare const gBase64: {
     version: string;
     VERSION: string;
-    atob: (a: string) => string;
-    btoa: (s: string) => string;
+    atob: (asc: string) => string;
+    btoa: (bin: string) => string;
     fromBase64: (src: string) => string;
     toBase64: (src: string, rfc4648?: boolean) => string;
     encode: (src: string, rfc4648?: boolean) => string;
