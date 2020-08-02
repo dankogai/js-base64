@@ -14,9 +14,12 @@ const version = '3.4.1';
  * @deprecated use lowercase `version`.
  */
 const VERSION = version;
-const _hasBuffer = typeof Buffer === 'function';
 const _hasatob = typeof atob === 'function';
 const _hasbtoa = typeof btoa === 'function';
+const _hasBuffer = typeof Buffer === 'function';
+if (!(_hasatob && _hasbtoa) && !_hasBuffer) {   // !! SHOULD NEVER HAPPEN !!
+    throw ReferenceError('neither `{atob,btoa}` nor `Buffer` is available');
+}
 const _fromCharCode = String.fromCharCode.bind(String);
 const _U8Afrom = typeof Uint8Array.from === 'function'
     ? Uint8Array.from.bind(Uint8Array)
@@ -34,13 +37,8 @@ const _tidyB64 = (s: string) => s.replace(/[^A-Za-z0-9\+\/]/g, '');
 const _btoa = _hasbtoa ? (s: string) => btoa(s)
     : _hasBuffer
         ? (s: string) => Buffer.from(s, 'binary').toString('base64')
-        : (s: string) => {  /* polyfill */
-            if (s.match(/[^\x00-\xFF]/)) throw new RangeError(
-                'The string contains invalid characters.'
-            );
-            return fromUint8Array(
-                _U8Afrom(s, c => c.charCodeAt(0))
-            );
+        : (s: string) => {  // !! SHOULD NEVER HAPPEN !!
+            throw ReferenceError('neither `btoa` nor `Buffer` is available');
         };
 const _fromUint8Array = _hasBuffer
     ? (u8a: Uint8Array) => Buffer.from(u8a).toString('base64')
@@ -98,9 +96,9 @@ const btou = (src: string) => decodeURIComponent(escape(src));
  */
 const _atob = _hasatob ? (a: string) => atob(_tidyB64(a))
     : _hasBuffer ? (a: string) => Buffer.from(a, 'base64').toString('binary')
-        : (a: string) => { 
-            throw ReferenceError('neither `atob` nor `Buffer` is available ')
-         };
+        : (a: string) => {  // !! SHOULD NEVER HAPPEN !!
+            throw ReferenceError('neither `atob` nor `Buffer` is available');
+        };
 const _decode = _hasBuffer
     ? (a: string) => Buffer.from(a, 'base64').toString('utf8')
     : (a: string) => btou(_atob(a));
