@@ -15,6 +15,7 @@
     "minify":  "uglifyjs base64.js > base64.min.js"
   },
   "devDependencies": {
+    "@babel/core": "^7.10.5",
     "@babel/preset-env": "^7.10.5",
     "@babel/register": "^7.10.5",
     "mocha": "^8.0.0",
