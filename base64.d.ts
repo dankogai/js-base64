@@ -15,8 +15,8 @@ declare const version = "3.4.2";
  */
 declare const VERSION = "3.4.2";
 /**
- * does what `window.btoa` of web browsers does.
- * @param {String} src binary string
+ * does what `window.btoa` of web browsers do.
+ * @param {String} bin binary string
  * @returns {string} Base64-encoded string
  */
 declare const _btoa: (bin: string) => string;
@@ -50,8 +50,8 @@ declare const encodeURI: (src: string) => string;
  */
 declare const btou: (src: string) => string;
 /**
- * does what `window.atob` of web browsers does.
- * @param {String} src Base64-encoded string
+ * does what `window.atob` of web browsers do.
+ * @param {String} asc Base64-encoded string
  * @returns {string} binary string
  */
 declare const _atob: (asc: string) => string;
@@ -65,8 +65,17 @@ declare const decode: (src: string) => string;
  * converts a Base64 string to a Uint8Array.
  */
 declare const toUint8Array: (a: string) => any;
+/**
+ * extend String.prototype with relevant methods
+ */
 declare const extendString: () => void;
+/**
+ * extend Uint8Array.prototype with relevant methods
+ */
 declare const extendUint8Array: () => void;
+/**
+ * extend Builtin prototypes with relevant methods
+ */
 declare const extendBuiltins: () => void;
 declare const gBase64: {
     version: string;
