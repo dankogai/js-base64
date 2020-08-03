@@ -1,18 +1,24 @@
 {
   "name": "js-base64",
-  "version": "2.6.3",
+  "version": "2.6.4",
   "description": "Yet another Base64 transcoder in pure-JS",
   "main": "base64.js",
+  "files":  [
+    "base64.js",
+    "base64.min.js"
+  ],
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "mocha --compilers js:babel-register"
+    "test": "mocha --require @babel/register",
+    "minify":  "uglifyjs base64.js > base64.min.js"
   },
   "devDependencies": {
-    "babel-preset-env": "^1.7.0",
-    "babel-register": "^6.26.0",
-    "mocha": "5.x.x"
+    "@babel/preset-env": "^7.10.5",
+    "@babel/register": "^7.10.5",
+      "mocha": "^8.0.0",
+      "uglifyjs": "^3.10.0"
   },
   "repository": {
     "type": "git",

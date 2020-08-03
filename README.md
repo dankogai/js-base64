@@ -38,7 +38,7 @@ Note `js-base64` itself is stand-alone so its `package.json` has no `dependencie
 
 ```html
 <!-- with version fixed -->
-<script src="https://cdn.jsdelivr.net/npm/js-base64@2.6.3/base64.min.js">
+<script src="https://cdn.jsdelivr.net/npm/js-base64@2.6.4/base64.min.js">
 ```
 
 ### node.js
