@@ -66,6 +66,10 @@ declare const decode: (src: string) => string;
  */
 declare const toUint8Array: (a: string) => any;
 /**
+ *
+ */
+declare const usePolyfill: (use?: boolean) => boolean;
+/**
  * extend String.prototype with relevant methods
  */
 declare const extendString: () => void;
@@ -95,6 +99,7 @@ declare const gBase64: {
     extendString: () => void;
     extendUint8Array: () => void;
     extendBuiltins: () => void;
+    usePolyfill: (use?: boolean) => boolean;
 };
 export { version };
 export { VERSION };
@@ -113,4 +118,5 @@ export { toUint8Array };
 export { extendString };
 export { extendUint8Array };
 export { extendBuiltins };
+export { usePolyfill };
 export { gBase64 as Base64 };
