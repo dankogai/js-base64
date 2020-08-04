@@ -19,6 +19,12 @@ const _hasbtoa = typeof btoa === 'function';
 const _hasBuffer = typeof Buffer === 'function';
 const b64ch =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+const b64chs = [...b64ch];
+const b64tab = ((a) => {
+    let tab = {};
+    a.forEach((c, i) => tab[c] = i);
+    return tab;
+})(b64chs);
 const b64re =
     /^(?:[A-Za-z\d+\/]{4})*?(?:[A-Za-z\d+\/]{2}(?:==)?|[A-Za-z\d+\/]{3}=?)?$/;
 const _fromCC = String.fromCharCode.bind(String);
@@ -42,10 +48,10 @@ const _btoa_polyfill = (bin: string) => {
             (c2 = bin.charCodeAt(i++)) > 255)
             throw new TypeError('invalid character found');
         u32 = (c0 << 16) | (c1 << 8) | c2;
-        asc += b64ch.charAt(u32 >> 18 & 63)
-            + b64ch.charAt(u32 >> 12 & 63)
-            + b64ch.charAt(u32 >> 6 & 63)
-            + b64ch.charAt(u32 & 63);
+        asc += b64chs[u32 >> 18 & 63]
+            + b64chs[u32 >> 12 & 63]
+            + b64chs[u32 >> 6 & 63]
+            + b64chs[u32 & 63];
     }
     return pad ? asc.slice(0, pad - 3) + "===".substring(pad) : asc;
 };
@@ -83,9 +89,7 @@ const fromUint8Array = (u8a: Uint8Array, urlsafe = false) =>
  * @returns {string} UTF-16 string
  */
 const utob = (src: string) => unescape(encodeURIComponent(src));
-/**
- * 
- */
+//
 const _encode = _hasBuffer
     ? (s: string) => Buffer.from(s, 'utf8').toString('base64')
     : (s: string) => _btoa(utob(s));
@@ -116,10 +120,10 @@ const _atob_polyfill = (asc: string) => {
     asc += '=='.slice(2 - (asc.length & 3));
     let u24, bin = '', r1, r2;
     for (let i = 0; i < asc.length;) {
-        u24 = b64ch.indexOf(asc.charAt(i++)) << 18
-            | b64ch.indexOf(asc.charAt(i++)) << 12
-            | (r1 = b64ch.indexOf(asc.charAt(i++))) << 6
-            | (r2 = b64ch.indexOf(asc.charAt(i++)));
+        u24 = b64tab[asc.charAt(i++)] << 18
+            | b64tab[asc.charAt(i++)] << 12
+            | (r1 = b64tab[asc.charAt(i++)]) << 6
+            | (r2 = b64tab[asc.charAt(i++)]);
         bin += r1 === 64 ? _fromCC(u24 >> 16 & 255)
             : r2 === 64 ? _fromCC(u24 >> 16 & 255, u24 >> 8 & 255)
                 : _fromCC(u24 >> 16 & 255, u24 >> 8 & 255, u24 & 255);
@@ -158,9 +162,9 @@ const _noEnum = (v) => {
         value: v, enumerable: false, writable: true, configurable: true
     };
 };
+//
 if (_atob_polyfill === _atob_native) _usePolyfill = true;
 /**
- * 
  */
 const usePolyfill = (use?: boolean) => {
     if (_atob_polyfill !== _atob_native) {
