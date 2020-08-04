@@ -15,6 +15,10 @@ declare const version = "3.4.3";
  */
 declare const VERSION = "3.4.3";
 /**
+ * polyfill version of `btoa`
+ */
+declare const btoaPolyfill: (bin: string) => string;
+/**
  * does what `window.btoa` of web browsers do.
  * @param {String} bin binary string
  * @returns {string} Base64-encoded string
@@ -50,6 +54,10 @@ declare const encodeURI: (src: string) => string;
  */
 declare const btou: (src: string) => string;
 /**
+ * polyfill version of `atob`
+ */
+declare const atobPolyfill: (asc: string) => string;
+/**
  * does what `window.atob` of web browsers do.
  * @param {String} asc Base64-encoded string
  * @returns {string} binary string
@@ -66,10 +74,6 @@ declare const decode: (src: string) => string;
  */
 declare const toUint8Array: (a: string) => any;
 /**
- *
- */
-declare const usePolyfill: (use?: boolean) => boolean;
-/**
  * extend String.prototype with relevant methods
  */
 declare const extendString: () => void;
@@ -85,7 +89,9 @@ declare const gBase64: {
     version: string;
     VERSION: string;
     atob: (asc: string) => string;
+    atobPolyfill: (asc: string) => string;
     btoa: (bin: string) => string;
+    btoaPolyfill: (bin: string) => string;
     fromBase64: (src: string) => string;
     toBase64: (src: string, urlsafe?: boolean) => string;
     encode: (src: string, urlsafe?: boolean) => string;
@@ -99,12 +105,13 @@ declare const gBase64: {
     extendString: () => void;
     extendUint8Array: () => void;
     extendBuiltins: () => void;
-    usePolyfill: (use?: boolean) => boolean;
 };
 export { version };
 export { VERSION };
 export { _atob as atob };
+export { atobPolyfill };
 export { _btoa as btoa };
+export { btoaPolyfill };
 export { decode as fromBase64 };
 export { encode as toBase64 };
 export { utob };
@@ -118,5 +125,4 @@ export { toUint8Array };
 export { extendString };
 export { extendUint8Array };
 export { extendBuiltins };
-export { usePolyfill };
 export { gBase64 as Base64 };

@@ -36,9 +36,10 @@ const _mkUriSafe = (src: string) => src
     .replace(/[+\/]/g, (m0) => m0 == '+' ? '-' : '_')
     .replace(/=+$/m, '');
 const _tidyB64 = (s: string) => s.replace(/[^A-Za-z0-9\+\/]/g, '');
-let _usePolyfill = false;
-//
-const _btoa_polyfill = (bin: string) => {
+/**
+ * polyfill version of `btoa`
+ */
+const btoaPolyfill = (bin: string) => {
     // console.log('polyfilled');
     let u32, c0, c1, c2, asc = '';
     const pad = bin.length % 3;
@@ -55,16 +56,14 @@ const _btoa_polyfill = (bin: string) => {
     }
     return pad ? asc.slice(0, pad - 3) + "===".substring(pad) : asc;
 };
-//
-const _btoa_native = _hasbtoa ? (bin: string) => btoa(bin)
-    : _hasBuffer ? (bin: string) => Buffer.from(bin, 'binary').toString('base64')
-        : _btoa_polyfill;
 /**
  * does what `window.btoa` of web browsers do.
  * @param {String} bin binary string
  * @returns {string} Base64-encoded string
  */
-const _btoa = (bin: string) => (_usePolyfill ? _btoa_polyfill : _btoa_native)(bin);
+const _btoa = _hasbtoa ? (bin: string) => btoa(bin)
+    : _hasBuffer ? (bin: string) => Buffer.from(bin, 'binary').toString('base64')
+        : btoaPolyfill;
 const _fromUint8Array = _hasBuffer
     ? (u8a: Uint8Array) => Buffer.from(u8a).toString('base64')
     : (u8a: Uint8Array) => {
@@ -112,8 +111,10 @@ const encodeURI = (src: string) => encode(src, true);
  * @returns {string} UTF-8 string
  */
 const btou = (src: string) => decodeURIComponent(escape(src));
-//
-const _atob_polyfill = (asc: string) => {
+/**
+ * polyfill version of `atob`
+ */
+const atobPolyfill = (asc: string) => {
     // console.log('polyfilled');
     asc = asc.replace(/\s+/g, '');
     if (!b64re.test(asc)) throw new TypeError('malformed base64.');
@@ -130,16 +131,14 @@ const _atob_polyfill = (asc: string) => {
     }
     return bin;
 };
-//
-const _atob_native = _hasatob ? (asc: string) => atob(_tidyB64(asc))
-    : _hasBuffer ? (asc: string) => Buffer.from(asc, 'base64').toString('binary')
-        : _atob_polyfill;
 /**
  * does what `window.atob` of web browsers do.
  * @param {String} asc Base64-encoded string
  * @returns {string} binary string
  */
-const _atob = (asc: string) => (_usePolyfill ? _atob_polyfill : _atob_native)(asc);
+const _atob = _hasatob ? (asc: string) => atob(_tidyB64(asc))
+    : _hasBuffer ? (asc: string) => Buffer.from(asc, 'base64').toString('binary')
+        : atobPolyfill;
 const _decode = _hasBuffer
     ? (a: string) => Buffer.from(a, 'base64').toString('utf8')
     : (a: string) => btou(_atob(a));
@@ -162,18 +161,6 @@ const _noEnum = (v) => {
         value: v, enumerable: false, writable: true, configurable: true
     };
 };
-//
-if (_atob_polyfill === _atob_native) _usePolyfill = true;
-/**
- */
-const usePolyfill = (use?: boolean) => {
-    if (_atob_polyfill !== _atob_native) {
-        if (typeof use === 'boolean') {
-            _usePolyfill = use;
-        }
-    }
-    return _usePolyfill;
-}
 /**
  * extend String.prototype with relevant methods
  */
@@ -209,7 +196,9 @@ const gBase64 = {
     version: version,
     VERSION: VERSION,
     atob: _atob,
+    atobPolyfill: atobPolyfill,
     btoa: _btoa,
+    btoaPolyfill: btoaPolyfill,
     fromBase64: decode,
     toBase64: encode,
     encode: encode,
@@ -223,13 +212,14 @@ const gBase64 = {
     extendString: extendString,
     extendUint8Array: extendUint8Array,
     extendBuiltins: extendBuiltins,
-    usePolyfill: usePolyfill
 }
 // makecjs:CUT //
 export { version };
 export { VERSION };
 export { _atob as atob };
+export { atobPolyfill };
 export { _btoa as btoa };
+export { btoaPolyfill }
 export { decode as fromBase64 };
 export { encode as toBase64 };
 export { utob };
@@ -243,6 +233,5 @@ export { toUint8Array };
 export { extendString };
 export { extendUint8Array };
 export { extendBuiltins };
-export { usePolyfill };
 // and finally,
 export { gBase64 as Base64 };
