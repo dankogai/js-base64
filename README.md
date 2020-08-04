@@ -87,14 +87,14 @@ import {Base64} from 'js-base64';
 let latin = 'dankogai';
 let utf8  = '小飼弾'
 let u8s   =  new Uint8Array([100,97,110,107,111,103,97,105]);
-Base64.encode(latin);       // ZGFua29nYWk=
-Base64.btoa(latin);         // ZGFua29nYWk=
-Base64.btoa(utf8);          // raises exception 
-Base64.fromUint8Array(u8s); // ZGFua29nYWk=
-Base64.fromUint8Array(u8s); // ZGFua29nYW which is URI safe
-Base64.encode(utf8);        // 5bCP6aO85by+
-Base64.encode(utf8, true)   // 5bCP6aO85by-
-Base64.encodeURI(utf8);     // 5bCP6aO85by-
+Base64.encode(latin);             // ZGFua29nYWk=
+Base64.btoa(latin);               // ZGFua29nYWk=
+Base64.btoa(utf8);                // raises exception
+Base64.fromUint8Array(u8s);       // ZGFua29nYWk=
+Base64.fromUint8Array(u8s, true); // ZGFua29nYW which is URI safe
+Base64.encode(utf8);              // 5bCP6aO85by+
+Base64.encode(utf8, true)         // 5bCP6aO85by-
+Base64.encodeURI(utf8);           // 5bCP6aO85by-
 ```
 
 ```javascript
@@ -118,7 +118,7 @@ Base64.extendString();
 'dankogai'.toBase64();        // ZGFua29nYWk=
 '小飼弾'.toBase64();           // 5bCP6aO85by+
 '小飼弾'.toBase64(true);       // 5bCP6aO85by-
-'小飼弾'.toBase64URI();        // 5bCP6aO85by-
+'小飼弾'.toBase64URI();        // 5bCP6aO85by- ab alias of .toBase64(true)
 '小飼弾'.toBase64URL();        // 5bCP6aO85by- an alias of .toBase64URI()
 'ZGFua29nYWk='.fromBase64();  // dankogai
 '5bCP6aO85by+'.fromBase64();  // 小飼弾

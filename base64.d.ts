@@ -22,10 +22,10 @@ declare const VERSION = "3.4.3";
 declare const _btoa: (bin: string) => string;
 /**
  * converts a Uint8Array to a Base64 string.
- * @param {boolean} [rfc4648] URL-and-filename-safe a la RFC4648
+ * @param {boolean} [urlsafe] URL-and-filename-safe a la RFC4648 §5
  * @returns {string} Base64 string
  */
-declare const fromUint8Array: (u8a: Uint8Array, rfc4648?: boolean) => string;
+declare const fromUint8Array: (u8a: Uint8Array, urlsafe?: boolean) => string;
 /**
  * @deprecated should have been internal use only.
  * @param {string} src UTF-8 string
@@ -34,12 +34,12 @@ declare const fromUint8Array: (u8a: Uint8Array, rfc4648?: boolean) => string;
 declare const utob: (src: string) => string;
 /**
  * converts a UTF-8-encoded string to a Base64 string.
- * @param {boolean} [rfc4648] if `true` make the result URL-safe
+ * @param {boolean} [urlsafe] if `true` make the result URL-safe
  * @returns {string} Base64 string
  */
-declare const encode: (src: string, rfc4648?: boolean) => string;
+declare const encode: (src: string, urlsafe?: boolean) => string;
 /**
- * converts a UTF-8-encoded string to URL-safe Base64 RFC4648.
+ * converts a UTF-8-encoded string to URL-safe Base64 RFC4648 §5.
  * @returns {string} Base64 string
  */
 declare const encodeURI: (src: string) => string;
@@ -83,14 +83,14 @@ declare const gBase64: {
     atob: (asc: string) => string;
     btoa: (bin: string) => string;
     fromBase64: (src: string) => string;
-    toBase64: (src: string, rfc4648?: boolean) => string;
-    encode: (src: string, rfc4648?: boolean) => string;
+    toBase64: (src: string, urlsafe?: boolean) => string;
+    encode: (src: string, urlsafe?: boolean) => string;
     encodeURI: (src: string) => string;
     encodeURL: (src: string) => string;
     utob: (src: string) => string;
     btou: (src: string) => string;
     decode: (src: string) => string;
-    fromUint8Array: (u8a: Uint8Array, rfc4648?: boolean) => string;
+    fromUint8Array: (u8a: Uint8Array, urlsafe?: boolean) => string;
     toUint8Array: (a: string) => any;
     extendString: () => void;
     extendUint8Array: () => void;

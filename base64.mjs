@@ -64,10 +64,10 @@ const _fromUint8Array = _hasBuffer
     };
 /**
  * converts a Uint8Array to a Base64 string.
- * @param {boolean} [rfc4648] URL-and-filename-safe a la RFC4648
+ * @param {boolean} [urlsafe] URL-and-filename-safe a la RFC4648 §5
  * @returns {string} Base64 string
  */
-const fromUint8Array = (u8a, rfc4648 = false) => rfc4648 ? _mkUriSafe(_fromUint8Array(u8a)) : _fromUint8Array(u8a);
+const fromUint8Array = (u8a, urlsafe = false) => urlsafe ? _mkUriSafe(_fromUint8Array(u8a)) : _fromUint8Array(u8a);
 /**
  * @deprecated should have been internal use only.
  * @param {string} src UTF-8 string
@@ -82,14 +82,14 @@ const _encode = _hasBuffer
     : (s) => _btoa(utob(s));
 /**
  * converts a UTF-8-encoded string to a Base64 string.
- * @param {boolean} [rfc4648] if `true` make the result URL-safe
+ * @param {boolean} [urlsafe] if `true` make the result URL-safe
  * @returns {string} Base64 string
  */
-const encode = (src, rfc4648 = false) => rfc4648
+const encode = (src, urlsafe = false) => urlsafe
     ? _mkUriSafe(_encode(src))
     : _encode(src);
 /**
- * converts a UTF-8-encoded string to URL-safe Base64 RFC4648.
+ * converts a UTF-8-encoded string to URL-safe Base64 RFC4648 §5.
  * @returns {string} Base64 string
  */
 const encodeURI = (src) => encode(src, true);
@@ -150,7 +150,7 @@ const _noEnum = (v) => {
 const extendString = function () {
     const _add = (name, body) => Object.defineProperty(String.prototype, name, _noEnum(body));
     _add('fromBase64', function () { return decode(this); });
-    _add('toBase64', function (rfc4648) { return encode(this, rfc4648); });
+    _add('toBase64', function (urlsafe) { return encode(this, urlsafe); });
     _add('toBase64URI', function () { return encode(this, true); });
     _add('toBase64URL', function () { return encode(this, true); });
     _add('toUint8Array', function () { return toUint8Array(this); });
@@ -160,7 +160,7 @@ const extendString = function () {
  */
 const extendUint8Array = function () {
     const _add = (name, body) => Object.defineProperty(Uint8Array.prototype, name, _noEnum(body));
-    _add('toBase64', function (rfc4648) { return fromUint8Array(this, rfc4648); });
+    _add('toBase64', function (urlsafe) { return fromUint8Array(this, urlsafe); });
     _add('toBase64URI', function () { return fromUint8Array(this, true); });
     _add('toBase64URL', function () { return fromUint8Array(this, true); });
 };
