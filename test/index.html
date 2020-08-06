@@ -1,41 +1,42 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Mocha Tests js-base64</title>
-    <link href="https://unpkg.com/mocha@8.0.1/mocha.css" rel="stylesheet" />
-    <link rel="icon" href="https://www.dan.co.jp/favicon.ico" />
-  </head>
-  <body>
-    <div id="mocha"></div>
-    <script src="https://unpkg.com/chai@4.2.0/chai.js"></script>
-    <script src="https://unpkg.com/mocha@8.0.1/mocha.js"></script>
-    <script>
-      mocha.setup('bdd');
-      assert = chai.assert;
-    </script>
-    <!-- test Base64.noConflict() -->
-    <script>
-      Base64 = 'unimplemented'; /* assign a value */
-    </script>
-    <script src="../base64.js">/* load */</script>
-    <script>
-      (function(){
-          Base64.noConflict(); /* restore the value */
-          assert.equal(Base64, 'unimplemented', '.noConflict() failed!');
-      })();
-    </script>
-    <script src="../base64.js">/* and load again */</script>
-    <!-- end test -->
-    <script src="./dankogai.js"></script>
-    <script src="./es5.js"></script>
-    <script src="./large.js"></script>
-    <script src="./yoshinoya.js"></script>
-    <script src="./atob.js"></script>
-    <script src="./umd.js"></script>
-    <script defer>
-        mocha.checkLeaks();
-        mocha.run();
-    </script>
-  </body>
+
+<head>
+  <meta charset="utf-8">
+  <title>Mocha Tests js-base64</title>
+  <link href="https://unpkg.com/mocha@8.0.1/mocha.css" rel="stylesheet" />
+  <link rel="icon" href="https://www.dan.co.jp/favicon.ico" />
+</head>
+
+<body>
+  <div id="mocha"></div>
+  <script src="https://unpkg.com/chai@4.2.0/chai.js"></script>
+  <script src="https://unpkg.com/mocha@8.0.1/mocha.js"></script>
+  <script>
+    mocha.setup('bdd');
+    assert = chai.assert;
+  </script>
+  <!-- begin test Base64.noConflict() -->
+  <script>
+    Base64 = 'unimplemented'; /* assign a value */
+  </script>
+  <script src="../base64.js">/* load */</script>
+  <script>
+    Base64.noConflict(); /* restore the value */
+    assert.equal(Base64, 'unimplemented', '.noConflict() failed!');
+  </script>
+  <script src="../base64.js">/* and load again */</script>
+  <!-- end test Base64.noConflict() -->
+  <script src="./dankogai.js"></script>
+  <script src="./es5.js"></script>
+  <script src="./large.js"></script>
+  <script src="./yoshinoya.js"></script>
+  <script src="./atob.js"></script>
+  <script src="./umd.js"></script>
+  <script defer>
+    mocha.checkLeaks();
+    mocha.run();
+  </script>
+</body>
+
 </html>
