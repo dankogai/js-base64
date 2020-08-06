@@ -3,27 +3,16 @@
   <head>
     <meta charset="utf-8">
     <title>Mocha Tests js-base64</title>
-    <link href="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.css" rel="stylesheet" />
+    <link href="https://unpkg.com/mocha@8.0.1/mocha.css" rel="stylesheet" />
     <link rel="icon" href="https://www.dan.co.jp/favicon.ico" />
   </head>
   <body>
     <div id="mocha"></div>
-    <script src="https://cdn.rawgit.com/jquery/jquery/3.5.1/dist/jquery.min.js"></script>
-    <script src="https://cdn.rawgit.com/Automattic/expect.js/0.3.1/index.js"></script>
-    <script src="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.js"></script>
+    <script src="https://unpkg.com/chai@4.2.0/chai.js"></script>
+    <script src="https://unpkg.com/mocha@8.0.1/mocha.js"></script>
     <script>
       mocha.setup('bdd');
-    </script>
-    <script>
-      var assert = function(expr, msg) {
-          if (!expr) throw new Error(msg || 'failed');
-      };
-      assert.equal = function(a, b, msg) {
-          if (a !== b) throw new Error(msg || ('failed : '+a+','+b));
-      };
-      assert.notEqual = function(a, b, msg) {
-          if (a === b) throw new Error(msg || ('failed : '+a+','+b));
-      };
+      assert = chai.assert;
     </script>
     <!-- test Base64.noConflict() -->
     <script>
@@ -44,11 +33,9 @@
     <script src="./yoshinoya.js"></script>
     <script src="./atob.js"></script>
     <script src="./umd.js"></script>
-    <script>
-      $(function() {
-          mocha.run();
-      });
+    <script defer>
+        mocha.checkLeaks();
+        mocha.run();
     </script>
-    <div id="mocha"></div>
   </body>
 </html>
