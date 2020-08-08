@@ -70,7 +70,7 @@ const _fromUint8Array = _hasBuffer
         for (let i = 0, l = u8a.length; i < l; i += maxargs) {
             strs.push(_fromCC.apply(null, u8a.subarray(i, i + maxargs)));
         }
-        return btoa(strs.join(''));
+        return _btoa(strs.join(''));
     };
 /**
  * converts a Uint8Array to a Base64 string.
