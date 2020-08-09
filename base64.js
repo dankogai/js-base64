@@ -57,7 +57,7 @@ const b64tab = ((a) => {
 })(b64chs);
 const b64re = /^(?:[A-Za-z\d+\/]{4})*?(?:[A-Za-z\d+\/]{2}(?:==)?|[A-Za-z\d+\/]{3}=?)?$/;
 const _fromCC = String.fromCharCode.bind(String);
-const _U8Afrom = typeof Uint8Array.from === 'function'
+const _U8Afrom = typeof Uint8Array !== 'undefined' && typeof Uint8Array.from === 'function'
     ? Uint8Array.from.bind(Uint8Array)
     : (it, fn = (x) => x) => new Uint8Array(Array.prototype.slice.call(it, 0).map(fn));
 const _mkUriSafe = (src) => src
