@@ -78,11 +78,6 @@ const _fromUint8Array = _hasBuffer
  * @returns {string} Base64 string
  */
 const fromUint8Array = (u8a, urlsafe = false) => urlsafe ? _mkUriSafe(_fromUint8Array(u8a)) : _fromUint8Array(u8a);
-/**
- * @deprecated should have been internal use only.
- * @param {string} src UTF-8 string
- * @returns {string} UTF-16 string
- */
 // This trick is found broken https://github.com/dankogai/js-base64/issues/130
 // const utob = (src: string) => unescape(encodeURIComponent(src));
 // reverting good old fationed regexp
@@ -107,6 +102,11 @@ const cb_utob = (c) => {
     }
 };
 const re_utob = /[\uD800-\uDBFF][\uDC00-\uDFFFF]|[^\x00-\x7F]/g;
+/**
+ * @deprecated should have been internal use only.
+ * @param {string} src UTF-8 string
+ * @returns {string} UTF-16 string
+ */
 const utob = (u) => u.replace(re_utob, cb_utob);
 //
 const _encode = _hasBuffer
@@ -125,11 +125,6 @@ const encode = (src, urlsafe = false) => urlsafe
  * @returns {string} Base64 string
  */
 const encodeURI = (src) => encode(src, true);
-/**
- * @deprecated should have been internal use only.
- * @param {string} src UTF-16 string
- * @returns {string} UTF-8 string
- */
 // This trick is found broken https://github.com/dankogai/js-base64/issues/130
 // const btou = (src: string) => decodeURIComponent(escape(src));
 // reverting good old fationed regexp
@@ -152,6 +147,11 @@ const cb_btou = (cccc) => {
                 | (0x3f & cccc.charCodeAt(1)));
     }
 };
+/**
+ * @deprecated should have been internal use only.
+ * @param {string} src UTF-16 string
+ * @returns {string} UTF-8 string
+ */
 const btou = (b) => b.replace(re_btou, cb_btou);
 /**
  * polyfill version of `atob`

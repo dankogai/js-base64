@@ -30,6 +30,11 @@ declare const _btoa: (bin: string) => string;
  * @returns {string} Base64 string
  */
 declare const fromUint8Array: (u8a: Uint8Array, urlsafe?: boolean) => string;
+/**
+ * @deprecated should have been internal use only.
+ * @param {string} src UTF-8 string
+ * @returns {string} UTF-16 string
+ */
 declare const utob: (u: string) => string;
 /**
  * converts a UTF-8-encoded string to a Base64 string.
@@ -42,6 +47,11 @@ declare const encode: (src: string, urlsafe?: boolean) => string;
  * @returns {string} Base64 string
  */
 declare const encodeURI: (src: string) => string;
+/**
+ * @deprecated should have been internal use only.
+ * @param {string} src UTF-16 string
+ * @returns {string} UTF-8 string
+ */
 declare const btou: (b: string) => string;
 /**
  * polyfill version of `atob`
