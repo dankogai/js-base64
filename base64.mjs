@@ -113,7 +113,8 @@ const utob = (u) => u.replace(re_utob, cb_utob);
 //
 const _encode = _hasBuffer
     ? (s) => Buffer.from(s, 'utf8').toString('base64')
-    : _TE ? (s) => _fromUint8Array(_TE.encode(s))
+    : _TE
+        ? (s) => _fromUint8Array(_TE.encode(s))
         : (s) => _btoa(utob(s));
 /**
  * converts a UTF-8-encoded string to a Base64 string.
@@ -185,6 +186,15 @@ const atobPolyfill = (asc) => {
 const _atob = _hasatob ? (asc) => atob(_tidyB64(asc))
     : _hasBuffer ? (asc) => Buffer.from(asc, 'base64').toString('binary')
         : atobPolyfill;
+//
+const _toUint8Array = _hasBuffer
+    ? (a) => _U8Afrom(Buffer.from(a, 'base64'))
+    : (a) => _U8Afrom(_atob(a), c => c.charCodeAt(0));
+/**
+ * converts a Base64 string to a Uint8Array.
+ */
+const toUint8Array = (a) => _toUint8Array(_unURI(a));
+//
 const _decode = _hasBuffer
     ? (a) => Buffer.from(a, 'base64').toString('utf8')
     : _TD
@@ -197,14 +207,6 @@ const _unURI = (a) => _tidyB64(a.replace(/[-_]/g, (m0) => m0 == '-' ? '+' : '/')
  * @returns {string} UTF-8 string
  */
 const decode = (src) => _decode(_unURI(src));
-//
-const _toUint8Array = _hasBuffer
-    ? (a) => _U8Afrom(Buffer.from(a, 'base64'))
-    : (a) => _U8Afrom(_atob(a), c => c.charCodeAt(0));
-/**
- * converts a Base64 string to a Uint8Array.
- */
-const toUint8Array = (a) => _toUint8Array(_unURI(a));
 //
 const _noEnum = (v) => {
     return {

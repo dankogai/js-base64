@@ -64,15 +64,15 @@ declare const atobPolyfill: (asc: string) => string;
  */
 declare const _atob: (asc: string) => string;
 /**
+ * converts a Base64 string to a Uint8Array.
+ */
+declare const toUint8Array: (a: string) => Uint8Array;
+/**
  * converts a Base64 string to a UTF-8 string.
  * @param {String} src Base64 string.  Both normal and URL-safe are supported
  * @returns {string} UTF-8 string
  */
 declare const decode: (src: string) => string;
-/**
- * converts a Base64 string to a Uint8Array.
- */
-declare const toUint8Array: (a: string) => any;
 /**
  * extend String.prototype with relevant methods
  */
@@ -101,7 +101,7 @@ declare const gBase64: {
     btou: (b: string) => string;
     decode: (src: string) => string;
     fromUint8Array: (u8a: Uint8Array, urlsafe?: boolean) => string;
-    toUint8Array: (a: string) => any;
+    toUint8Array: (a: string) => Uint8Array;
     extendString: () => void;
     extendUint8Array: () => void;
     extendBuiltins: () => void;
