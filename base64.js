@@ -48,6 +48,8 @@ const VERSION = version;
 const _hasatob = typeof atob === 'function';
 const _hasbtoa = typeof btoa === 'function';
 const _hasBuffer = typeof Buffer === 'function';
+const _TD = typeof TextDecoder === 'function' ? new TextDecoder() : undefined;
+const _TE = typeof TextEncoder === 'function' ? new TextEncoder() : undefined;
 const b64ch = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 const b64chs = [...b64ch];
 const b64tab = ((a) => {
@@ -142,7 +144,8 @@ const utob = (u) => u.replace(re_utob, cb_utob);
 //
 const _encode = _hasBuffer
     ? (s) => Buffer.from(s, 'utf8').toString('base64')
-    : (s) => _btoa(utob(s));
+    : _TE ? (s) => _fromUint8Array(_TE.encode(s))
+        : (s) => _btoa(utob(s));
 /**
  * converts a UTF-8-encoded string to a Base64 string.
  * @param {boolean} [urlsafe] if `true` make the result URL-safe
@@ -215,7 +218,9 @@ const _atob = _hasatob ? (asc) => atob(_tidyB64(asc))
         : atobPolyfill;
 const _decode = _hasBuffer
     ? (a) => Buffer.from(a, 'base64').toString('utf8')
-    : (a) => btou(_atob(a));
+    : _TD
+        ? (a) => _TD.decode(_toUint8Array(a))
+        : (a) => btou(_atob(a));
 const _unURI = (a) => _tidyB64(a.replace(/[-_]/g, (m0) => m0 == '-' ? '+' : '/'));
 /**
  * converts a Base64 string to a UTF-8 string.
@@ -223,12 +228,15 @@ const _unURI = (a) => _tidyB64(a.replace(/[-_]/g, (m0) => m0 == '-' ? '+' : '/')
  * @returns {string} UTF-8 string
  */
 const decode = (src) => _decode(_unURI(src));
+//
+const _toUint8Array = _hasBuffer
+    ? (a) => _U8Afrom(Buffer.from(a, 'base64'))
+    : (a) => _U8Afrom(_atob(a), c => c.charCodeAt(0));
 /**
  * converts a Base64 string to a Uint8Array.
  */
-const toUint8Array = _hasBuffer
-    ? (a) => _U8Afrom(Buffer.from(_unURI(a), 'base64'))
-    : (a) => _U8Afrom(_atob(_unURI(a)), c => c.charCodeAt(0));
+const toUint8Array = (a) => _toUint8Array(_unURI(a));
+//
 const _noEnum = (v) => {
     return {
         value: v, enumerable: false, writable: true, configurable: true
