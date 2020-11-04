@@ -238,6 +238,16 @@ const _unURI = (a) => _tidyB64(a.replace(/[-_]/g, (m0) => m0 == '-' ? '+' : '/')
  * @returns {string} UTF-8 string
  */
 const decode = (src) => _decode(_unURI(src));
+/**
+ * check if a value is a valid Base64 string
+ * @param {String} src a value to check
+  */
+const isValid = (src) => {
+    if (typeof src !== 'string')
+        return false;
+    const s = src.replace(/\s+/g, '').replace(/=+$/, '');
+    return !/[^\s0-9a-zA-Z\+/]/.test(s) || !/[^\s0-9a-zA-Z\-_]/.test(s);
+};
 //
 const _noEnum = (v) => {
     return {
@@ -286,6 +296,7 @@ const gBase64 = {
     utob: utob,
     btou: btou,
     decode: decode,
+    isValid: isValid,
     fromUint8Array: fromUint8Array,
     toUint8Array: toUint8Array,
     extendString: extendString,

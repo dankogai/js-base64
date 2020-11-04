@@ -74,6 +74,11 @@ declare const toUint8Array: (a: string) => Uint8Array;
  */
 declare const decode: (src: string) => string;
 /**
+ * check if a value is a valid Base64 string
+ * @param {String} src a value to check
+  */
+declare const isValid: (src: any) => boolean;
+/**
  * extend String.prototype with relevant methods
  */
 declare const extendString: () => void;
@@ -100,6 +105,7 @@ declare const gBase64: {
     utob: (u: string) => string;
     btou: (b: string) => string;
     decode: (src: string) => string;
+    isValid: (src: any) => boolean;
     fromUint8Array: (u8a: Uint8Array, urlsafe?: boolean) => string;
     toUint8Array: (a: string) => Uint8Array;
     extendString: () => void;
@@ -120,6 +126,7 @@ export { encodeURI };
 export { encodeURI as encodeURL };
 export { btou };
 export { decode };
+export { isValid };
 export { fromUint8Array };
 export { toUint8Array };
 export { extendString };

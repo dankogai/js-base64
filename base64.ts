@@ -215,6 +215,15 @@ const _unURI = (a: string) =>
  * @returns {string} UTF-8 string
  */
 const decode = (src: string) => _decode(_unURI(src));
+/**
+ * check if a value is a valid Base64 string
+ * @param {String} src a value to check
+  */
+const isValid = (src: any) => {
+    if (typeof src !== 'string') return false;
+    const s = src.replace(/\s+/g, '').replace(/=+$/, '');
+    return !/[^\s0-9a-zA-Z\+/]/.test(s) || !/[^\s0-9a-zA-Z\-_]/.test(s);
+};
 //
 const _noEnum = (v) => {
     return {
@@ -267,6 +276,7 @@ const gBase64 = {
     utob: utob,
     btou: btou,
     decode: decode,
+    isValid: isValid,
     fromUint8Array: fromUint8Array,
     toUint8Array: toUint8Array,
     extendString: extendString,
@@ -288,6 +298,7 @@ export { encodeURI };
 export { encodeURI as encodeURL };
 export { btou };
 export { decode };
+export { isValid };
 export { fromUint8Array };
 export { toUint8Array };
 export { extendString };

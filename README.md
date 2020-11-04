@@ -106,6 +106,17 @@ Base64.decode(      '5bCP6aO85by+');// 小飼弾
 Base64.decode(      '5bCP6aO85by-');// 小飼弾
 ```
 
+```javascript
+Base64.isValid(0);      // false: 0 is not string
+Base64.isValid('');     // true: a valid Base64-encoded empty byte
+Base64.isValid('ZA=='); // true: a valid Base64-encoded 'd'
+Base64.isValid('Z A='); // true: whitespaces are okay
+Base64.isValid('ZA');   // true: padding ='s can be omitted
+Base64.isValid('++');   // true: can be non URL-safe
+Base64.isValid('--');   // true: or URL-safe
+Base64.isValid('+-');   // false: can't mix both
+```
+
 ### Built-in Extensions
 
 By default `Base64` leaves built-in prototypes untouched.  But you can extend them as below.
