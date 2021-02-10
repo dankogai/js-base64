@@ -87,6 +87,8 @@ let latin = 'dankogai';
 let utf8  = '小飼弾'
 let u8s   =  new Uint8Array([100,97,110,107,111,103,97,105]);
 Base64.encode(latin);             // ZGFua29nYWk=
+Base64.encode(latin, true));      // ZGFua29nYWk skips padding
+Base64.encodeURI(latin));         // ZGFua29nYWk
 Base64.btoa(latin);               // ZGFua29nYWk=
 Base64.btoa(utf8);                // raises exception
 Base64.fromUint8Array(u8s);       // ZGFua29nYWk=
@@ -98,6 +100,7 @@ Base64.encodeURI(utf8);           // 5bCP6aO85by-
 
 ```javascript
 Base64.decode(      'ZGFua29nYWk=');// dankogai
+Base64.decode(      'ZGFua29nYWk'); // dankogai
 Base64.atob(        'ZGFua29nYWk=');// dankogai
 Base64.atob(        '5bCP6aO85by+');// 'å°é£¼å¼¾' which is nonsense
 Base64.toUint8Array('ZGFua29nYWk=');// u8s above
