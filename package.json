@@ -10,6 +10,10 @@
     "base64.mjs",
     "base64.d.ts"
   ],
+  "exports": {
+    "import": "./base64.mjs",
+    "require": "./base64.js"
+  },
   "scripts": {
     "test": "make clean && make test"
   },
