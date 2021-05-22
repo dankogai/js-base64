@@ -11,8 +11,11 @@
     "base64.d.ts"
   ],
   "exports": {
-    "import": "./base64.mjs",
-    "require": "./base64.js"
+    ".": {
+      "import": "./base64.mjs",
+      "require": "./base64.js"
+    },
+    "./package.json": "./package.json"
   },
   "scripts": {
     "test": "make clean && make test"
