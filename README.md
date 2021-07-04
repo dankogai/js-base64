@@ -1,4 +1,4 @@
-[![build status](https://secure.travis-ci.org/dankogai/js-base64.png)](http://travis-ci.org/dankogai/js-base64)
+[![build status](https://travis-ci.com/dankogai/js-base64.svg)](http://travis-ci.com/dankogai/js-base64)
 
 # base64.js
 
