@@ -21,10 +21,9 @@
     "test": "make clean && make test"
   },
   "devDependencies": {
-    "typescript": "^3.9.7",
     "@types/node": "^14.0.26",
     "esm": "^3.2.25",
-    "mocha": "^8.0.0"
+    "typescript": "^3.9.7"
   },
   "repository": "git+https://github.com/dankogai/js-base64.git",
   "keywords": [
@@ -32,5 +31,8 @@
     "binary"
   ],
   "author": "Dan Kogai",
-  "license": "BSD-3-Clause"
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "mocha": "^8.4.0"
+  }
 }
