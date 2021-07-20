@@ -140,8 +140,8 @@ Base64.extendString();
 ```
 
 ```javascript
-// you have to explicitly extend String.prototype
-Base64.extendString();
+// you have to explicitly extend Uint8Array.prototype
+Base64.extendUint8Array();
 // once extended, you can do the following
 u8s.toBase64();     // 'ZGFua29nYWk='
 u8s.toBase64URI();  // 'ZGFua29nYWk'
