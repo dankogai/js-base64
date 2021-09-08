@@ -21,7 +21,7 @@ const _TD = typeof TextDecoder === 'function' ? new TextDecoder() : undefined;
 const _TE = typeof TextEncoder === 'function' ? new TextEncoder() : undefined;
 const b64ch =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-const b64chs = [...b64ch];
+const b64chs = Array.prototype.slice.call(b64ch);
 const b64tab = ((a) => {
     let tab = {};
     a.forEach((c, i) => tab[c] = i);
@@ -71,7 +71,7 @@ const _fromUint8Array = _hasBuffer
     : (u8a: Uint8Array) => {
         // cf. https://stackoverflow.com/questions/12710001/how-to-convert-uint8-array-to-base64-encoded-string/12713326#12713326
         const maxargs = 0x1000;
-        let strs = [];
+        let strs: string[] = [];
         for (let i = 0, l = u8a.length; i < l; i += maxargs) {
             strs.push(_fromCC.apply(null, u8a.subarray(i, i + maxargs)));
         }
