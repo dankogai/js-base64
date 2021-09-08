@@ -6,7 +6,10 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "module": "esnext",
+    "module": "es2015",
+    "lib": [
+      "es2015"
+    ],
     "moduleResolution": "node",
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
