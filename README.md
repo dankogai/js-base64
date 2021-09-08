@@ -6,10 +6,6 @@ Yet another [Base64] transcoder.
 
 [Base64]: http://en.wikipedia.org/wiki/Base64
 
-## HEADS UP
-
-In version 3.0 `js-base64` switch to ES2015 module so it is no longer compatible with legacy browsers like IEs before 11 (see below).  And since version 3.3 it is written in TypeScript.  Now `base64.mjs` is compiled from `base64.ts` then `base64.js` is generated from `base64.mjs`.
-
 ## Install
 
 ```shell
@@ -174,7 +170,8 @@ You can transpiles to an ES5 that runs on IEs before 11.  Do the following in yo
 $ make base64.es5.js
 ```
 
-[@loone96] has added IE11 support in [pr146].  But please consider that an unofficial support since IE itself is no longer officially supported.
+## Brief History
 
-[@loone96]: https://github.com/loone96
-[pr146]: https://github.com/dankogai/js-base64/pull/146
+* Since version 3.3 it is written in TypeScript.  Now `base64.mjs` is compiled from `base64.ts` then `base64.js` is generated from `base64.mjs`.
+* Since version 3.4 `base64.js` is ES5-compatible again (hence IE11-compabile).
+* Since 3.0 `js-base64` switch to ES2015 module so it is no longer compatible with legacy browsers like IE (see above)
