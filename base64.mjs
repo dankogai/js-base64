@@ -20,7 +20,7 @@ const _hasBuffer = typeof Buffer === 'function';
 const _TD = typeof TextDecoder === 'function' ? new TextDecoder() : undefined;
 const _TE = typeof TextEncoder === 'function' ? new TextEncoder() : undefined;
 const b64ch = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-const b64chs = [...b64ch];
+const b64chs = Array.prototype.slice.call(b64ch);
 const b64tab = ((a) => {
     let tab = {};
     a.forEach((c, i) => tab[c] = i);
