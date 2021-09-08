@@ -37,7 +37,7 @@
      *
      * @author Dan Kogai (https://github.com/dankogai)
      */
-    var version = '3.6.2';
+    var version = '3.7.0';
     /**
      * @deprecated use lowercase `version`.
      */
