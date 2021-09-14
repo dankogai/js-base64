@@ -23,6 +23,7 @@
   "devDependencies": {
     "@types/node": "^14.0.26",
     "esm": "^3.2.25",
+    "mocha": "^8.4.0",
     "typescript": "^3.9.7"
   },
   "repository": "git+https://github.com/dankogai/js-base64.git",
@@ -31,8 +32,5 @@
     "binary"
   ],
   "author": "Dan Kogai",
-  "license": "BSD-3-Clause",
-  "dependencies": {
-    "mocha": "^8.4.0"
-  }
+  "license": "BSD-3-Clause"
 }
