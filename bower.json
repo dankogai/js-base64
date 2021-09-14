@@ -1,6 +1,6 @@
 {
   "name": "js-base64",
-  "version": "3.7.0",
+  "version": "3.7.1",
   "license": "BSD-3-Clause",
   "main": [
     "./base64.js"
