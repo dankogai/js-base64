@@ -63,8 +63,7 @@
             return new Uint8Array(Array.prototype.slice.call(it, 0).map(fn));
         };
     var _mkUriSafe = function (src) { return src
-        .replace(/[+\/]/g, function (m0) { return m0 == '+' ? '-' : '_'; })
-        .replace(/=+$/m, ''); };
+        .replace(/=/g, '').replace(/[+\/]/g, function (m0) { return m0 == '+' ? '-' : '_'; }); };
     var _tidyB64 = function (s) { return s.replace(/[^A-Za-z0-9\+\/]/g, ''); };
     /**
      * polyfill version of `btoa`
@@ -251,7 +250,7 @@
     var isValid = function (src) {
         if (typeof src !== 'string')
             return false;
-        var s = src.replace(/\s+/g, '').replace(/=+$/, '');
+        var s = src.replace(/\s+/g, '').replace(/={0,2}$/, '');
         return !/[^\s0-9a-zA-Z\+/]/.test(s) || !/[^\s0-9a-zA-Z\-_]/.test(s);
     };
     //

@@ -32,8 +32,7 @@ const _U8Afrom = typeof Uint8Array.from === 'function'
     ? Uint8Array.from.bind(Uint8Array)
     : (it, fn = (x) => x) => new Uint8Array(Array.prototype.slice.call(it, 0).map(fn));
 const _mkUriSafe = (src) => src
-    .replace(/[+\/]/g, (m0) => m0 == '+' ? '-' : '_')
-    .replace(/=+$/m, '');
+    .replace(/=/g, '').replace(/[+\/]/g, (m0) => m0 == '+' ? '-' : '_');
 const _tidyB64 = (s) => s.replace(/[^A-Za-z0-9\+\/]/g, '');
 /**
  * polyfill version of `btoa`
@@ -214,7 +213,7 @@ const decode = (src) => _decode(_unURI(src));
 const isValid = (src) => {
     if (typeof src !== 'string')
         return false;
-    const s = src.replace(/\s+/g, '').replace(/=+$/, '');
+    const s = src.replace(/\s+/g, '').replace(/={0,2}$/, '');
     return !/[^\s0-9a-zA-Z\+/]/.test(s) || !/[^\s0-9a-zA-Z\-_]/.test(s);
 };
 //
