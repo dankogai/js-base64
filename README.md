@@ -162,10 +162,6 @@ Which is a Base64-encoded 1x1 transparent PNG, **DO NOT USE** `Base64.decode(png
 
 Or even better, `Base64.toUint8Array(pngBase64)`.
 
-```shell
-$ make base64.es5.js
-```
-
 ## Brief History
 
 * Since version 3.3 it is written in TypeScript.  Now `base64.mjs` is compiled from `base64.ts` then `base64.js` is generated from `base64.mjs`.
