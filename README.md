@@ -162,10 +162,6 @@ Which is a Base64-encoded 1x1 transparent PNG, **DO NOT USE** `Base64.decode(png
 
 Or even better, `Base64.toUint8Array(pngBase64)`.
 
-### If you really, really need an ES5 version
-
-You can transpiles to an ES5 that runs on IEs before 11.  Do the following in your shell.
-
 ```shell
 $ make base64.es5.js
 ```
