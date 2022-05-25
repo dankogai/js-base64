@@ -1,4 +1,4 @@
-[![build status](https://app.travis-ci.com/dankogai/js-base64.svg)](https://app.travis-ci.com/github/dankogai/js-base64)
+[![CI via GitHub Actions](https://github.com/dankogai/js-base64/actions/workflows/node.js.yml/badge.svg)](https://github.com/dankogai/js-base64/actions/workflows/node.js.yml)
 
 # base64.js
 
