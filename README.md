@@ -83,8 +83,8 @@ let latin = 'dankogai';
 let utf8  = '小飼弾'
 let u8s   =  new Uint8Array([100,97,110,107,111,103,97,105]);
 Base64.encode(latin);             // ZGFua29nYWk=
-Base64.encode(latin, true));      // ZGFua29nYWk skips padding
-Base64.encodeURI(latin));         // ZGFua29nYWk
+Base64.encode(latin, true);       // ZGFua29nYWk skips padding
+Base64.encodeURI(latin);          // ZGFua29nYWk
 Base64.btoa(latin);               // ZGFua29nYWk=
 Base64.btoa(utf8);                // raises exception
 Base64.fromUint8Array(u8s);       // ZGFua29nYWk=
