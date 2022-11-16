@@ -12,6 +12,7 @@
   ],
   "exports": {
     ".": {
+      "types": "./base64.d.ts",
       "import": "./base64.mjs",
       "require": "./base64.js"
     },
