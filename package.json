@@ -5,6 +5,7 @@
   "main": "base64.js",
   "module": "base64.mjs",
   "types": "base64.d.ts",
+  "sideEffects": false,
   "files": [
     "base64.js",
     "base64.mjs",
