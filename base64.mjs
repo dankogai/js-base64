@@ -9,7 +9,7 @@
  *
  * @author Dan Kogai (https://github.com/dankogai)
  */
-const version = '3.7.4';
+const version = '3.7.5';
 /**
  * @deprecated use lowercase `version`.
  */
@@ -30,7 +30,7 @@ const b64re = /^(?:[A-Za-z\d+\/]{4})*?(?:[A-Za-z\d+\/]{2}(?:==)?|[A-Za-z\d+\/]{3
 const _fromCC = String.fromCharCode.bind(String);
 const _U8Afrom = typeof Uint8Array.from === 'function'
     ? Uint8Array.from.bind(Uint8Array)
-    : (it, fn = (x) => x) => new Uint8Array(Array.prototype.slice.call(it, 0).map(fn));
+    : (it) => new Uint8Array(Array.prototype.slice.call(it, 0));
 const _mkUriSafe = (src) => src
     .replace(/=/g, '').replace(/[+\/]/g, (m0) => m0 == '+' ? '-' : '_');
 const _tidyB64 = (s) => s.replace(/[^A-Za-z0-9\+\/]/g, '');
@@ -188,7 +188,7 @@ const _atob = _hasatob ? (asc) => atob(_tidyB64(asc))
 //
 const _toUint8Array = _hasBuffer
     ? (a) => _U8Afrom(Buffer.from(a, 'base64'))
-    : (a) => _U8Afrom(_atob(a), c => c.charCodeAt(0));
+    : (a) => _U8Afrom(_atob(a).split('').map(c => c.charCodeAt(0)));
 /**
  * converts a Base64 string to a Uint8Array.
  */
