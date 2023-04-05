@@ -24,7 +24,6 @@
   },
   "devDependencies": {
     "@types/node": "^14.0.26",
-    "esm": "^3.2.25",
     "mocha": "^8.4.0",
     "typescript": "^3.9.7"
   },
