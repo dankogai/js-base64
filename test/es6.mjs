@@ -4,10 +4,10 @@
  * use mocha to test me
  * http://visionmedia.github.com/mocha/
  */
-// import {Base64} from '../base64.mjs'
-import { extendString } from '../base64.mjs'
 
-var assert = assert || require("assert");
+import { extendString } from '../base64.mjs'
+import assert from 'assert';
+
 var is = function (a, e, m) {
     return function () {
         assert.equal(a, e, m)

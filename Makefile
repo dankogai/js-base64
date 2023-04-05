@@ -21,7 +21,7 @@ $(JS): $(ES5)
 	rm $(ES6) && mv $(ES5) $(JS)
 
 test: $(PJ) $(MJS) $(JS)
-	mocha --require esm
+	mocha
 
 clean:
 	-rm $(DTS) $(MJS) $(JS) $(ES5) $(ES6)
