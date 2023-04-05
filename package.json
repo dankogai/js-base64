@@ -23,9 +23,9 @@
     "test": "make clean && make test"
   },
   "devDependencies": {
-    "@types/node": "^14.0.26",
-    "mocha": "^8.4.0",
-    "typescript": "^3.9.7"
+    "@types/node": "^18.15.11",
+    "mocha": "^10.0.0",
+    "typescript": "^5.0.0"
   },
   "repository": "git+https://github.com/dankogai/js-base64.git",
   "keywords": [
