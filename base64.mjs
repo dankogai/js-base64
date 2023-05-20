@@ -269,7 +269,7 @@ const gBase64 = {
     toUint8Array: toUint8Array,
     extendString: extendString,
     extendUint8Array: extendUint8Array,
-    extendBuiltins: extendBuiltins,
+    extendBuiltins: extendBuiltins
 };
 // makecjs:CUT //
 export { version };
