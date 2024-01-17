@@ -5,11 +5,12 @@ ES5=base64.es5.js
 ES6=base64.es6.js
 MJS=base64.mjs
 DTS=base64.d.ts
+MDTS=base64.d.mts
 
 all: $(MJS) $(JS)
 
 $(MJS): $(PJ) $(TS)
-	-tsc -d --target es6 $(TS) > /dev/null; mv $(JS) $(MJS)
+	-tsc -d --target es6 $(TS) > /dev/null; mv $(JS) $(MJS); cp $(DTS) $(MDTS)
 
 $(ES6): $(MJS)
 	util/makecjs $(MJS) > $(ES6)
@@ -24,4 +25,4 @@ test: $(PJ) $(MJS) $(JS)
 	mocha
 
 clean:
-	-rm $(DTS) $(MJS) $(JS) $(ES5) $(ES6)
+	-rm $(DTS) $(MDTS) $(MJS) $(JS) $(ES5) $(ES6)
