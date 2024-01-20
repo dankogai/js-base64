@@ -9,7 +9,7 @@
  *
  * @author Dan Kogai (https://github.com/dankogai)
  */
-const version = '3.7.5';
+const version = '3.7.6';
 /**
  * @deprecated use lowercase `version`.
  */
