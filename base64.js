@@ -42,8 +42,6 @@
      * @deprecated use lowercase `version`.
      */
     var VERSION = version;
-    var typeof atob === 'function' = typeof atob === 'function';
-    var typeof btoa === 'function' = typeof btoa === 'function';
     var _hasBuffer = typeof Buffer === 'function';
     var _TD = typeof TextDecoder === 'function' ? new TextDecoder() : undefined;
     var _TE = typeof TextEncoder === 'function' ? new TextEncoder() : undefined;
