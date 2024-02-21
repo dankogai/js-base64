@@ -42,8 +42,8 @@
      * @deprecated use lowercase `version`.
      */
     var VERSION = version;
-    var _hasatob = typeof atob === 'function';
-    var _hasbtoa = typeof btoa === 'function';
+    var typeof atob === 'function' = typeof atob === 'function';
+    var typeof btoa === 'function' = typeof btoa === 'function';
     var _hasBuffer = typeof Buffer === 'function';
     var _TD = typeof TextDecoder === 'function' ? new TextDecoder() : undefined;
     var _TE = typeof TextEncoder === 'function' ? new TextEncoder() : undefined;
@@ -87,7 +87,7 @@
      * @param {String} bin binary string
      * @returns {string} Base64-encoded string
      */
-    var _btoa = _hasbtoa ? function (bin) { return btoa(bin); }
+    var _btoa = typeof btoa === 'function' ? function (bin) { return btoa(bin); }
         : _hasBuffer ? function (bin) { return Buffer.from(bin, 'binary').toString('base64'); }
             : btoaPolyfill;
     var _fromUint8Array = _hasBuffer
@@ -216,7 +216,7 @@
      * @param {String} asc Base64-encoded string
      * @returns {string} binary string
      */
-    var _atob = _hasatob ? function (asc) { return atob(_tidyB64(asc)); }
+    var _atob = typeof atob === 'function' ? function (asc) { return atob(_tidyB64(asc)); }
         : _hasBuffer ? function (asc) { return Buffer.from(asc, 'base64').toString('binary'); }
             : atobPolyfill;
     //
