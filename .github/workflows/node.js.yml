@@ -1,6 +1,7 @@
 # cf.
 # https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs#starting-with-the-nodejs-workflow-template
 # https://dev.classmethod.jp/articles/caching-dependencies-in-workflow-execution-on-github-actions/
+# https://github.blog/changelog/2023-09-22-github-actions-transitioning-from-node-16-to-node-20/
 name: CI via GitHub Actions
 
 on:
@@ -15,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [20, 18, 16, 14]
+        node-version: [20, 18]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
