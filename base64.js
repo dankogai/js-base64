@@ -197,17 +197,24 @@
         if (!b64re.test(asc))
             throw new TypeError('malformed base64.');
         asc += '=='.slice(2 - (asc.length & 3));
-        var u24, bin = '', r1, r2;
+        var u24, r1, r2;
+        var binArray = []; // use array to avoid minor gc in loop
         for (var i = 0; i < asc.length;) {
             u24 = b64tab[asc.charAt(i++)] << 18
                 | b64tab[asc.charAt(i++)] << 12
                 | (r1 = b64tab[asc.charAt(i++)]) << 6
                 | (r2 = b64tab[asc.charAt(i++)]);
-            bin += r1 === 64 ? _fromCC(u24 >> 16 & 255)
-                : r2 === 64 ? _fromCC(u24 >> 16 & 255, u24 >> 8 & 255)
-                    : _fromCC(u24 >> 16 & 255, u24 >> 8 & 255, u24 & 255);
+            if (r1 === 64) {
+                binArray.push(_fromCC(u24 >> 16 & 255));
+            }
+            else if (r2 === 64) {
+                binArray.push(_fromCC(u24 >> 16 & 255, u24 >> 8 & 255));
+            }
+            else {
+                binArray.push(_fromCC(u24 >> 16 & 255, u24 >> 8 & 255, u24 & 255));
+            }
         }
-        return bin;
+        return binArray.join('');
     };
     /**
      * does what `window.atob` of web browsers do.
