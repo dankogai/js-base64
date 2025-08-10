@@ -77,7 +77,7 @@ declare const decode: (src: string) => string;
  * check if a value is a valid Base64 string
  * @param {String} src a value to check
   */
-declare const isValid: (src: any) => boolean;
+declare const isValid: (src: unknown) => boolean;
 /**
  * extend String.prototype with relevant methods
  */
@@ -105,7 +105,7 @@ declare const gBase64: {
     utob: (u: string) => string;
     btou: (b: string) => string;
     decode: (src: string) => string;
-    isValid: (src: any) => boolean;
+    isValid: (src: unknown) => boolean;
     fromUint8Array: (u8a: Uint8Array, urlsafe?: boolean) => string;
     toUint8Array: (a: string) => Uint8Array;
     extendString: () => void;
