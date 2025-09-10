@@ -127,7 +127,7 @@ Base64.extendString();
 'dankogai'.toBase64();        // ZGFua29nYWk=
 '小飼弾'.toBase64();           // 5bCP6aO85by+
 '小飼弾'.toBase64(true);       // 5bCP6aO85by-
-'小飼弾'.toBase64URI();        // 5bCP6aO85by- ab alias of .toBase64(true)
+'小飼弾'.toBase64URI();        // 5bCP6aO85by- an alias of .toBase64(true)
 '小飼弾'.toBase64URL();        // 5bCP6aO85by- an alias of .toBase64URI()
 'ZGFua29nYWk='.fromBase64();  // dankogai
 '5bCP6aO85by+'.fromBase64();  // 小飼弾
