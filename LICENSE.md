@@ -1,4 +1,4 @@
-Copyright (c) 2014, Dan Kogai
+Copyright (c) 2025, Dan Kogai
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
