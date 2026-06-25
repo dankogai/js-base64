@@ -32,7 +32,7 @@ var is = function (a, e, m) {
 };
 
 describe('BOM (TextDecoder path)', function () {
-    var bom = '﻿';
+    var bom = String.fromCharCode(0xFeFF);
     it('decode keeps a leading BOM', is(Base64.decode('77u/aGVsbG8='), bom + 'hello'));
     it('round-trips a leading BOM', is(Base64.decode(Base64.encode(bom + 'hello')), bom + 'hello'));
     it('round-trips a lone BOM', is(Base64.decode(Base64.encode(bom)), bom));
