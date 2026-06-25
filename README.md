@@ -1,4 +1,5 @@
 [![CI via GitHub Actions](https://github.com/dankogai/js-base64/actions/workflows/node.js.yml/badge.svg)](https://github.com/dankogai/js-base64/actions/workflows/node.js.yml)
+[![CI on bun](https://github.com/dankogai/js-base64/actions/workflows/bun.yml/badge.svg)](https://github.com/dankogai/js-base64/actions/workflows/bun.yml)
 
 # base64.js
 
