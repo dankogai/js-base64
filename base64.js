@@ -43,7 +43,7 @@
      */
     var VERSION = version;
     var _hasBuffer = typeof Buffer === 'function';
-    var _TD = typeof TextDecoder === 'function' ? new TextDecoder() : undefined;
+    var _TD = typeof TextDecoder === 'function' ? new TextDecoder('utf-8', { ignoreBOM: true }) : undefined;
     var _TE = typeof TextEncoder === 'function' ? new TextEncoder() : undefined;
     var b64ch = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
     var b64chs = Array.prototype.slice.call(b64ch);
