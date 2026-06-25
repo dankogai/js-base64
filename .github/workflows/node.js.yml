@@ -18,7 +18,7 @@ jobs:
       security-events: write
     strategy:
       matrix:
-        node-version: [26, 24, 22, 20]
+        node-version: [26, 24, 22]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
