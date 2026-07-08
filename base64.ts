@@ -60,7 +60,11 @@ const btoaPolyfill = (bin: string) => {
  * @returns {string} Base64-encoded string
  */
 const _btoa = typeof btoa === 'function' ? (bin: string) => btoa(bin)
-    : _hasBuffer ? (bin: string) => Buffer.from(bin, 'binary').toString('base64')
+    : _hasBuffer ? (bin: string) => {
+        if (/[^\x00-\xff]/.test(bin))
+            throw new TypeError('invalid character found');
+        return Buffer.from(bin, 'binary').toString('base64');
+    }
         : btoaPolyfill;
 const _fromUint8Array = _hasBuffer
     ? (u8a: Uint8Array) => Buffer.from(u8a).toString('base64')
