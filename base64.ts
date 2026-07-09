@@ -19,9 +19,9 @@ const _TD = typeof TextDecoder === 'function' ? new TextDecoder('utf-8', { ignor
 const _TE = typeof TextEncoder === 'function' ? new TextEncoder() : undefined;
 const b64ch =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-const b64chs = Array.prototype.slice.call(b64ch);
+const b64chs:string[] = Array.prototype.slice.call(b64ch);
 const b64tab = ((a) => {
-    let tab = {};
+    let tab: { [key: string]: number } = {};
     a.forEach((c, i) => tab[c] = i);
     return tab;
 })(b64chs);
@@ -30,7 +30,7 @@ const b64re =
 const _fromCC = String.fromCharCode.bind(String);
 const _U8Afrom = typeof Uint8Array.from === 'function'
     ? Uint8Array.from.bind(Uint8Array)
-    : (it) => new Uint8Array(Array.prototype.slice.call(it, 0));
+    : (it:Uint8Array) => new Uint8Array(Array.prototype.slice.call(it, 0));
 const _mkUriSafe = (src: string) => src
     .replace(/=/g, '').replace(/[+\/]/g, (m0) => m0 == '+' ? '-' : '_');
 const _tidyB64 = (s: string) => s.replace(/[^A-Za-z0-9\+\/]/g, '');
@@ -73,7 +73,7 @@ const _fromUint8Array = _hasBuffer
         const maxargs = 0x1000;
         let strs: string[] = [];
         for (let i = 0, l = u8a.length; i < l; i += maxargs) {
-            strs.push(_fromCC.apply(null, u8a.subarray(i, i + maxargs)));
+            strs.push(_fromCC.apply(null, u8a.subarray(i, i + maxargs) as unknown as number[]));
         }
         return _btoa(strs.join(''));
     };
@@ -230,7 +230,7 @@ const isValid = (src: unknown) => {
     return !/[^\s0-9a-zA-Z\+/]/.test(s) || !/[^\s0-9a-zA-Z\-_]/.test(s);
 };
 //
-const _noEnum = (v) => {
+const _noEnum = (v:(...args: any[]) => unknown) => {
     return {
         value: v, enumerable: false, writable: true, configurable: true
     };
@@ -239,25 +239,25 @@ const _noEnum = (v) => {
  * extend String.prototype with relevant methods
  */
 const extendString = function () {
-    const _add = (name, body) => Object.defineProperty(
+    const _add = (name:string, body:(arg?:any) => any) => Object.defineProperty(
         String.prototype, name, _noEnum(body)
     );
-    _add('fromBase64', function () { return decode(this) });
-    _add('toBase64', function (urlsafe) { return encode(this, urlsafe) });
-    _add('toBase64URI', function () { return encode(this, true) });
-    _add('toBase64URL', function () { return encode(this, true) });
-    _add('toUint8Array', function () { return toUint8Array(this) });
+    _add('fromBase64', function (this: string) { return decode(this) });
+    _add('toBase64', function (this: string, urlsafe: boolean) { return encode(this, urlsafe) });
+    _add('toBase64URI', function (this: string) { return encode(this, true) });
+    _add('toBase64URL', function (this: string) { return encode(this, true) });
+    _add('toUint8Array', function (this: string) { return toUint8Array(this) });
 };
 /**
  * extend Uint8Array.prototype with relevant methods
  */
 const extendUint8Array = function () {
-    const _add = (name, body) => Object.defineProperty(
+    const _add = (name:string, body:(arg?:any) => any) => Object.defineProperty(
         Uint8Array.prototype, name, _noEnum(body)
     );
-    _add('toBase64', function (urlsafe) { return fromUint8Array(this, urlsafe) });
-    _add('toBase64URI', function () { return fromUint8Array(this, true) });
-    _add('toBase64URL', function () { return fromUint8Array(this, true) });
+    _add('toBase64', function (this: Uint8Array, urlsafe: boolean) { return fromUint8Array(this, urlsafe) });
+    _add('toBase64URI', function (this: Uint8Array) { return fromUint8Array(this, true) });
+    _add('toBase64URL', function (this: Uint8Array) { return fromUint8Array(this, true) });
 };
 /**
  * extend Builtin prototypes with relevant methods
