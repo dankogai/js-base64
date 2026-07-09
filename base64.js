@@ -86,7 +86,11 @@
      * @returns {string} Base64-encoded string
      */
     var _btoa = typeof btoa === 'function' ? function (bin) { return btoa(bin); }
-        : _hasBuffer ? function (bin) { return Buffer.from(bin, 'binary').toString('base64'); }
+        : _hasBuffer ? function (bin) {
+            if (/[^\x00-\xff]/.test(bin))
+                throw new TypeError('invalid character found');
+            return Buffer.from(bin, 'binary').toString('base64');
+        }
             : btoaPolyfill;
     var _fromUint8Array = _hasBuffer
         ? function (u8a) { return Buffer.from(u8a).toString('base64'); }
