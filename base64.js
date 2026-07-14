@@ -37,12 +37,11 @@
      *
      * @author Dan Kogai (https://github.com/dankogai)
      */
-    var version = '3.8.1';
+    var version = '3.9.0';
     /**
      * @deprecated use lowercase `version`.
      */
     var VERSION = version;
-    var _hasBuffer = typeof Buffer === 'function';
     var _TD = typeof TextDecoder === 'function' ? new TextDecoder('utf-8', { ignoreBOM: true }) : undefined;
     var _TE = typeof TextEncoder === 'function' ? new TextEncoder() : undefined;
     var b64ch = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
@@ -86,23 +85,16 @@
      * @returns {string} Base64-encoded string
      */
     var _btoa = typeof btoa === 'function' ? function (bin) { return btoa(bin); }
-        : _hasBuffer ? function (bin) {
-            if (/[^\x00-\xff]/.test(bin))
-                throw new TypeError('invalid character found');
-            return Buffer.from(bin, 'binary').toString('base64');
+        : btoaPolyfill;
+    var _fromUint8Array = function (u8a) {
+        // cf. https://stackoverflow.com/questions/12710001/how-to-convert-uint8-array-to-base64-encoded-string/12713326#12713326
+        var maxargs = 0x1000;
+        var strs = [];
+        for (var i = 0, l = u8a.length; i < l; i += maxargs) {
+            strs.push(_fromCC.apply(null, u8a.subarray(i, i + maxargs)));
         }
-            : btoaPolyfill;
-    var _fromUint8Array = _hasBuffer
-        ? function (u8a) { return Buffer.from(u8a).toString('base64'); }
-        : function (u8a) {
-            // cf. https://stackoverflow.com/questions/12710001/how-to-convert-uint8-array-to-base64-encoded-string/12713326#12713326
-            var maxargs = 0x1000;
-            var strs = [];
-            for (var i = 0, l = u8a.length; i < l; i += maxargs) {
-                strs.push(_fromCC.apply(null, u8a.subarray(i, i + maxargs)));
-            }
-            return _btoa(strs.join(''));
-        };
+        return _btoa(strs.join(''));
+    };
     /**
      * converts a Uint8Array to a Base64 string.
      * @param {boolean} [urlsafe] URL-and-filename-safe a la RFC4648 §5
@@ -143,11 +135,9 @@
      */
     var utob = function (u) { return u.replace(re_utob, cb_utob); };
     //
-    var _encode = _hasBuffer
-        ? function (s) { return Buffer.from(s, 'utf8').toString('base64'); }
-        : _TE
-            ? function (s) { return _fromUint8Array(_TE.encode(s)); }
-            : function (s) { return _btoa(utob(s)); };
+    var _encode = _TE
+        ? function (s) { return _fromUint8Array(_TE.encode(s)); }
+        : function (s) { return _btoa(utob(s)); };
     /**
      * converts a UTF-8-encoded string to a Base64 string.
      * @param {boolean} [urlsafe] if `true` make the result URL-safe
@@ -226,22 +216,17 @@
      * @returns {string} binary string
      */
     var _atob = typeof atob === 'function' ? function (asc) { return atob(_tidyB64(asc)); }
-        : _hasBuffer ? function (asc) { return Buffer.from(asc, 'base64').toString('binary'); }
-            : atobPolyfill;
+        : atobPolyfill;
     //
-    var _toUint8Array = _hasBuffer
-        ? function (a) { return _U8Afrom(Buffer.from(a, 'base64')); }
-        : function (a) { return _U8Afrom(_atob(a).split('').map(function (c) { return c.charCodeAt(0); })); };
+    var _toUint8Array = function (a) { return _U8Afrom(_atob(a).split('').map(function (c) { return c.charCodeAt(0); })); };
     /**
      * converts a Base64 string to a Uint8Array.
      */
     var toUint8Array = function (a) { return _toUint8Array(_unURI(a)); };
     //
-    var _decode = _hasBuffer
-        ? function (a) { return Buffer.from(a, 'base64').toString('utf8'); }
-        : _TD
-            ? function (a) { return _TD.decode(_toUint8Array(a)); }
-            : function (a) { return btou(_atob(a)); };
+    var _decode = _TD
+        ? function (a) { return _TD.decode(_toUint8Array(a)); }
+        : function (a) { return btou(_atob(a)); };
     var _unURI = function (a) { return _tidyB64(a.replace(/[-_]/g, function (m0) { return m0 == '-' ? '+' : '/'; })); };
     /**
      * converts a Base64 string to a UTF-8 string.

@@ -9,12 +9,11 @@
  *
  * @author Dan Kogai (https://github.com/dankogai)
  */
-const version = '3.8.1';
+const version = '3.9.0';
 /**
  * @deprecated use lowercase `version`.
  */
 const VERSION = version;
-const _hasBuffer = typeof Buffer === 'function';
 const _TD = typeof TextDecoder === 'function' ? new TextDecoder('utf-8', { ignoreBOM: true }) : undefined;
 const _TE = typeof TextEncoder === 'function' ? new TextEncoder() : undefined;
 const b64ch = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
@@ -58,23 +57,16 @@ const btoaPolyfill = (bin) => {
  * @returns {string} Base64-encoded string
  */
 const _btoa = typeof btoa === 'function' ? (bin) => btoa(bin)
-    : _hasBuffer ? (bin) => {
-        if (/[^\x00-\xff]/.test(bin))
-            throw new TypeError('invalid character found');
-        return Buffer.from(bin, 'binary').toString('base64');
+    : btoaPolyfill;
+const _fromUint8Array = (u8a) => {
+    // cf. https://stackoverflow.com/questions/12710001/how-to-convert-uint8-array-to-base64-encoded-string/12713326#12713326
+    const maxargs = 0x1000;
+    let strs = [];
+    for (let i = 0, l = u8a.length; i < l; i += maxargs) {
+        strs.push(_fromCC.apply(null, u8a.subarray(i, i + maxargs)));
     }
-        : btoaPolyfill;
-const _fromUint8Array = _hasBuffer
-    ? (u8a) => Buffer.from(u8a).toString('base64')
-    : (u8a) => {
-        // cf. https://stackoverflow.com/questions/12710001/how-to-convert-uint8-array-to-base64-encoded-string/12713326#12713326
-        const maxargs = 0x1000;
-        let strs = [];
-        for (let i = 0, l = u8a.length; i < l; i += maxargs) {
-            strs.push(_fromCC.apply(null, u8a.subarray(i, i + maxargs)));
-        }
-        return _btoa(strs.join(''));
-    };
+    return _btoa(strs.join(''));
+};
 /**
  * converts a Uint8Array to a Base64 string.
  * @param {boolean} [urlsafe] URL-and-filename-safe a la RFC4648 §5
@@ -112,11 +104,9 @@ const re_utob = /[\uD800-\uDBFF][\uDC00-\uDFFFF]|[^\x00-\x7F]/g;
  */
 const utob = (u) => u.replace(re_utob, cb_utob);
 //
-const _encode = _hasBuffer
-    ? (s) => Buffer.from(s, 'utf8').toString('base64')
-    : _TE
-        ? (s) => _fromUint8Array(_TE.encode(s))
-        : (s) => _btoa(utob(s));
+const _encode = _TE
+    ? (s) => _fromUint8Array(_TE.encode(s))
+    : (s) => _btoa(utob(s));
 /**
  * converts a UTF-8-encoded string to a Base64 string.
  * @param {boolean} [urlsafe] if `true` make the result URL-safe
@@ -192,22 +182,17 @@ const atobPolyfill = (asc) => {
  * @returns {string} binary string
  */
 const _atob = typeof atob === 'function' ? (asc) => atob(_tidyB64(asc))
-    : _hasBuffer ? (asc) => Buffer.from(asc, 'base64').toString('binary')
-        : atobPolyfill;
+    : atobPolyfill;
 //
-const _toUint8Array = _hasBuffer
-    ? (a) => _U8Afrom(Buffer.from(a, 'base64'))
-    : (a) => _U8Afrom(_atob(a).split('').map(c => c.charCodeAt(0)));
+const _toUint8Array = (a) => _U8Afrom(_atob(a).split('').map(c => c.charCodeAt(0)));
 /**
  * converts a Base64 string to a Uint8Array.
  */
 const toUint8Array = (a) => _toUint8Array(_unURI(a));
 //
-const _decode = _hasBuffer
-    ? (a) => Buffer.from(a, 'base64').toString('utf8')
-    : _TD
-        ? (a) => _TD.decode(_toUint8Array(a))
-        : (a) => btou(_atob(a));
+const _decode = _TD
+    ? (a) => _TD.decode(_toUint8Array(a))
+    : (a) => btou(_atob(a));
 const _unURI = (a) => _tidyB64(a.replace(/[-_]/g, (m0) => m0 == '-' ? '+' : '/'));
 /**
  * converts a Base64 string to a UTF-8 string.
