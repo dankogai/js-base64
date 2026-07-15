@@ -18,7 +18,7 @@ const _TD = typeof TextDecoder === 'function' ? new TextDecoder('utf-8', { ignor
 const _TE = typeof TextEncoder === 'function' ? new TextEncoder() : undefined;
 const b64ch =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-const b64chs:string[] = Array.prototype.slice.call(b64ch);
+const b64chs: string[] = Array.prototype.slice.call(b64ch);
 const b64tab = ((a) => {
     let tab: { [key: string]: number } = {};
     a.forEach((c, i) => tab[c] = i);
@@ -29,7 +29,7 @@ const b64re =
 const _fromCC = String.fromCharCode.bind(String);
 const _U8Afrom = typeof Uint8Array.from === 'function'
     ? Uint8Array.from.bind(Uint8Array)
-    : (it:Uint8Array) => new Uint8Array(Array.prototype.slice.call(it, 0));
+    : (it: Uint8Array) => new Uint8Array(Array.prototype.slice.call(it, 0));
 const _mkUriSafe = (src: string) => src
     .replace(/=/g, '').replace(/[+\/]/g, (m0) => m0 == '+' ? '-' : '_');
 const _tidyB64 = (s: string) => s.replace(/[^A-Za-z0-9\+\/]/g, '');
@@ -60,7 +60,10 @@ const btoaPolyfill = (bin: string) => {
  */
 const _btoa = typeof btoa === 'function' ? (bin: string) => btoa(bin)
     : btoaPolyfill;
-const _fromUint8Array = (u8a: Uint8Array) => {
+const _fromUint8Array = (u8a: Uint8Array): string => {
+    if (typeof u8a.toBase64 === 'function') {
+        return u8a.toBase64();
+    }
     // cf. https://stackoverflow.com/questions/12710001/how-to-convert-uint8-array-to-base64-encoded-string/12713326#12713326
     const maxargs = 0x1000;
     let strs: string[] = [];
@@ -215,7 +218,7 @@ const isValid = (src: unknown) => {
     return !/[^\s0-9a-zA-Z\+/]/.test(s) || !/[^\s0-9a-zA-Z\-_]/.test(s);
 };
 //
-const _noEnum = (v:(...args: any[]) => unknown) => {
+const _noEnum = (v: (...args: any[]) => unknown) => {
     return {
         value: v, enumerable: false, writable: true, configurable: true
     };
@@ -224,7 +227,7 @@ const _noEnum = (v:(...args: any[]) => unknown) => {
  * extend String.prototype with relevant methods
  */
 const extendString = function () {
-    const _add = (name:string, body:(arg?:any) => any) => Object.defineProperty(
+    const _add = (name: string, body: (arg?: any) => any) => Object.defineProperty(
         String.prototype, name, _noEnum(body)
     );
     _add('fromBase64', function (this: string) { return decode(this) });
@@ -237,7 +240,7 @@ const extendString = function () {
  * extend Uint8Array.prototype with relevant methods
  */
 const extendUint8Array = function () {
-    const _add = (name:string, body:(arg?:any) => any) => Object.defineProperty(
+    const _add = (name: string, body: (arg?: any) => any) => Object.defineProperty(
         Uint8Array.prototype, name, _noEnum(body)
     );
     _add('toBase64', function (this: Uint8Array, urlsafe: boolean) { return fromUint8Array(this, urlsafe) });

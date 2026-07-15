@@ -87,6 +87,9 @@
     var _btoa = typeof btoa === 'function' ? function (bin) { return btoa(bin); }
         : btoaPolyfill;
     var _fromUint8Array = function (u8a) {
+        if (typeof u8a.toBase64 === 'function') {
+            return u8a.toBase64();
+        }
         // cf. https://stackoverflow.com/questions/12710001/how-to-convert-uint8-array-to-base64-encoded-string/12713326#12713326
         var maxargs = 0x1000;
         var strs = [];
