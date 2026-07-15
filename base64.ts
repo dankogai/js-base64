@@ -191,7 +191,13 @@ const atobPolyfill = (asc: string) => {
 const _atob = typeof atob === 'function' ? (asc: string) => atob(_tidyB64(asc))
     : atobPolyfill;
 //
-const _toUint8Array = (a: string) => _U8Afrom(_atob(a).split('').map(c => c.charCodeAt(0)));
+const _toUint8Array = (a: string): Uint8Array =>
+    if (typeof Uint8Array.fromBase64 === 'function') {
+        return Uint8Array.fromBase64(a);
+    } else {
+        return _U8Afrom(_atob(a).split('').map(c => c.charCodeAt(0)));
+    }
+}
 /**
  * converts a Base64 string to a Uint8Array.
  */

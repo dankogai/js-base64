@@ -221,7 +221,14 @@
     var _atob = typeof atob === 'function' ? function (asc) { return atob(_tidyB64(asc)); }
         : atobPolyfill;
     //
-    var _toUint8Array = function (a) { return _U8Afrom(_atob(a).split('').map(function (c) { return c.charCodeAt(0); })); };
+    var _toUint8Array = function (a) {
+        if (typeof Uint8Array.fromBase64 === 'function') {
+            return Uint8Array.fromBase64(a);
+        }
+        else {
+            return _U8Afrom(_atob(a).split('').map(function (c) { return c.charCodeAt(0); }));
+        }
+    };
     /**
      * converts a Base64 string to a Uint8Array.
      */
