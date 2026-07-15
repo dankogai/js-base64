@@ -58,18 +58,16 @@ const btoaPolyfill = (bin) => {
  */
 const _btoa = typeof btoa === 'function' ? (bin) => btoa(bin)
     : btoaPolyfill;
-const _fromUint8Array = (u8a) => {
-    if (typeof u8a.toBase64 === 'function') {
-        return u8a.toBase64();
-    }
-    // cf. https://stackoverflow.com/questions/12710001/how-to-convert-uint8-array-to-base64-encoded-string/12713326#12713326
-    const maxargs = 0x1000;
-    let strs = [];
-    for (let i = 0, l = u8a.length; i < l; i += maxargs) {
-        strs.push(_fromCC.apply(null, u8a.subarray(i, i + maxargs)));
-    }
-    return _btoa(strs.join(''));
-};
+const _fromUint8Array = typeof Uint8Array.prototype.toBase64 === 'function' ? (u8a) => u8a.toBase64()
+    : (u8a) => {
+        // cf. https://stackoverflow.com/questions/12710001/how-to-convert-uint8-array-to-base64-encoded-string/12713326#12713326
+        const maxargs = 0x1000;
+        let strs = [];
+        for (let i = 0, l = u8a.length; i < l; i += maxargs) {
+            strs.push(_fromCC.apply(null, u8a.subarray(i, i + maxargs)));
+        }
+        return _btoa(strs.join(''));
+    };
 /**
  * converts a Uint8Array to a Base64 string.
  * @param {boolean} [urlsafe] URL-and-filename-safe a la RFC4648 §5
@@ -187,14 +185,8 @@ const atobPolyfill = (asc) => {
 const _atob = typeof atob === 'function' ? (asc) => atob(_tidyB64(asc))
     : atobPolyfill;
 //
-const _toUint8Array = (a) => {
-    if (typeof Uint8Array.fromBase64 === 'function') {
-        return Uint8Array.fromBase64(a);
-    }
-    else {
-        return _U8Afrom(_atob(a).split('').map(c => c.charCodeAt(0)));
-    }
-};
+const _toUint8Array = typeof Uint8Array.fromBase64 === 'function'
+    ? (a) => Uint8Array.fromBase64(a) : (a) => _U8Afrom(_atob(a).split('').map(c => c.charCodeAt(0)));
 /**
  * converts a Base64 string to a Uint8Array.
  */

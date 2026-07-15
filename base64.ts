@@ -60,18 +60,17 @@ const btoaPolyfill = (bin: string) => {
  */
 const _btoa = typeof btoa === 'function' ? (bin: string) => btoa(bin)
     : btoaPolyfill;
-const _fromUint8Array = (u8a: Uint8Array): string => {
-    if (typeof u8a.toBase64 === 'function') {
-        return u8a.toBase64();
-    }
-    // cf. https://stackoverflow.com/questions/12710001/how-to-convert-uint8-array-to-base64-encoded-string/12713326#12713326
-    const maxargs = 0x1000;
-    let strs: string[] = [];
-    for (let i = 0, l = u8a.length; i < l; i += maxargs) {
-        strs.push(_fromCC.apply(null, u8a.subarray(i, i + maxargs) as unknown as number[]));
-    }
-    return _btoa(strs.join(''));
-};
+const _fromUint8Array: (u8a: Uint8Array) => string =
+    typeof Uint8Array.prototype.toBase64 === 'function' ? (u8a) => u8a.toBase64()
+        : (u8a) => {
+            // cf. https://stackoverflow.com/questions/12710001/how-to-convert-uint8-array-to-base64-encoded-string/12713326#12713326
+            const maxargs = 0x1000;
+            let strs: string[] = [];
+            for (let i = 0, l = u8a.length; i < l; i += maxargs) {
+                strs.push(_fromCC.apply(null, u8a.subarray(i, i + maxargs) as unknown as number[]));
+            }
+            return _btoa(strs.join(''));
+        };
 /**
  * converts a Uint8Array to a Base64 string.
  * @param {boolean} [urlsafe] URL-and-filename-safe a la RFC4648 §5
@@ -191,13 +190,8 @@ const atobPolyfill = (asc: string) => {
 const _atob = typeof atob === 'function' ? (asc: string) => atob(_tidyB64(asc))
     : atobPolyfill;
 //
-const _toUint8Array = (a: string): Uint8Array =>
-    if (typeof Uint8Array.fromBase64 === 'function') {
-        return Uint8Array.fromBase64(a);
-    } else {
-        return _U8Afrom(_atob(a).split('').map(c => c.charCodeAt(0)));
-    }
-}
+const _toUint8Array: (a: string) => Uint8Array = typeof Uint8Array.fromBase64 === 'function'
+    ? (a) => Uint8Array.fromBase64(a) : (a) => _U8Afrom(_atob(a).split('').map(c => c.charCodeAt(0)));
 /**
  * converts a Base64 string to a Uint8Array.
  */

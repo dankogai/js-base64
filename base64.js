@@ -86,18 +86,16 @@
      */
     var _btoa = typeof btoa === 'function' ? function (bin) { return btoa(bin); }
         : btoaPolyfill;
-    var _fromUint8Array = function (u8a) {
-        if (typeof u8a.toBase64 === 'function') {
-            return u8a.toBase64();
-        }
-        // cf. https://stackoverflow.com/questions/12710001/how-to-convert-uint8-array-to-base64-encoded-string/12713326#12713326
-        var maxargs = 0x1000;
-        var strs = [];
-        for (var i = 0, l = u8a.length; i < l; i += maxargs) {
-            strs.push(_fromCC.apply(null, u8a.subarray(i, i + maxargs)));
-        }
-        return _btoa(strs.join(''));
-    };
+    var _fromUint8Array = typeof Uint8Array.prototype.toBase64 === 'function' ? function (u8a) { return u8a.toBase64(); }
+        : function (u8a) {
+            // cf. https://stackoverflow.com/questions/12710001/how-to-convert-uint8-array-to-base64-encoded-string/12713326#12713326
+            var maxargs = 0x1000;
+            var strs = [];
+            for (var i = 0, l = u8a.length; i < l; i += maxargs) {
+                strs.push(_fromCC.apply(null, u8a.subarray(i, i + maxargs)));
+            }
+            return _btoa(strs.join(''));
+        };
     /**
      * converts a Uint8Array to a Base64 string.
      * @param {boolean} [urlsafe] URL-and-filename-safe a la RFC4648 §5
@@ -221,14 +219,8 @@
     var _atob = typeof atob === 'function' ? function (asc) { return atob(_tidyB64(asc)); }
         : atobPolyfill;
     //
-    var _toUint8Array = function (a) {
-        if (typeof Uint8Array.fromBase64 === 'function') {
-            return Uint8Array.fromBase64(a);
-        }
-        else {
-            return _U8Afrom(_atob(a).split('').map(function (c) { return c.charCodeAt(0); }));
-        }
-    };
+    var _toUint8Array = typeof Uint8Array.fromBase64 === 'function'
+        ? function (a) { return Uint8Array.fromBase64(a); } : function (a) { return _U8Afrom(_atob(a).split('').map(function (c) { return c.charCodeAt(0); })); };
     /**
      * converts a Base64 string to a Uint8Array.
      */
