@@ -1,6 +1,6 @@
 {
 	"name": "js-base64",
-	"version": "3.9.1",
+	"version": "3.9.2",
 	"description": "Yet another Base64 transcoder in pure-JS",
 	"main": "base64.js",
 	"module": "base64.mjs",
@@ -28,7 +28,8 @@
 	"scripts": {
 		"build": "rollup -c && tsc -p . --declaration --emitDeclarationOnly && node -e \"require('fs').copyFileSync('base64.d.ts','base64.d.mts')\"",
 		"clean": "node -e \"['base64.js','base64.mjs','base64.d.ts','base64.d.mts'].forEach(f=>require('fs').rmSync(f,{force:true}))\"",
-		"test": "npm run build && mocha"
+		"test": "npm run build && mocha",
+		"version": "npm run build && git add base64.js base64.mjs base64.d.ts base64.d.mts"
 	},
 	"devDependencies": {
 		"@rollup/plugin-replace": "^6.0.3",
