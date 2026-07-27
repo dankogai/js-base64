@@ -23,7 +23,7 @@
    *
    * @author Dan Kogai (https://github.com/dankogai)
    */
-  var version = '3.9.1';
+  var version = '3.9.2';
   /**
    * @deprecated use lowercase `version`.
    */
