@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "target": "es2015",
+        "module": "esnext",
+        "types": []
+    },
+    "files": ["base64.ts"]
+}

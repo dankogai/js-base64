@@ -9,11 +9,11 @@
  *
  * @author Dan Kogai (https://github.com/dankogai)
  */
-declare const version = "3.9.1";
+declare const version: string;
 /**
  * @deprecated use lowercase `version`.
  */
-declare const VERSION = "3.9.1";
+declare const VERSION: string;
 /**
  * polyfill version of `btoa`
  */

@@ -267,26 +267,5 @@ const gBase64 = {
     extendUint8Array: extendUint8Array,
     extendBuiltins: extendBuiltins
 };
-// makecjs:CUT //
-export { version };
-export { VERSION };
-export { _atob as atob };
-export { atobPolyfill };
-export { _btoa as btoa };
-export { btoaPolyfill };
-export { decode as fromBase64 };
-export { encode as toBase64 };
-export { utob };
-export { encode };
-export { encodeURI };
-export { encodeURI as encodeURL };
-export { btou };
-export { decode };
-export { isValid };
-export { fromUint8Array };
-export { toUint8Array };
-export { extendString };
-export { extendUint8Array };
-export { extendBuiltins };
-// and finally,
-export { gBase64 as Base64 };
+
+export { gBase64 as Base64, VERSION, _atob as atob, atobPolyfill, _btoa as btoa, btoaPolyfill, btou, decode, encode, encodeURI, encodeURI as encodeURL, extendBuiltins, extendString, extendUint8Array, decode as fromBase64, fromUint8Array, isValid, encode as toBase64, toUint8Array, utob, version };

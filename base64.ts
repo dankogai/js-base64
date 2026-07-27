@@ -9,7 +9,7 @@
  * 
  * @author Dan Kogai (https://github.com/dankogai)
  */
-const version = '3.9.1';
+const version: string = '__VERSION__';
 /**
  * @deprecated use lowercase `version`.
  */
@@ -61,7 +61,7 @@ const btoaPolyfill = (bin: string) => {
 const _btoa = typeof btoa === 'function' ? (bin: string) => btoa(bin)
     : btoaPolyfill;
 const _fromUint8Array: (u8a: Uint8Array) => string =
-    typeof Uint8Array.prototype.toBase64 === 'function' ? (u8a) => u8a.toBase64()
+    typeof (Uint8Array.prototype as any).toBase64 === 'function' ? (u8a) => (u8a as any).toBase64()
         : (u8a) => {
             // cf. https://stackoverflow.com/questions/12710001/how-to-convert-uint8-array-to-base64-encoded-string/12713326#12713326
             const maxargs = 0x1000;
@@ -190,8 +190,8 @@ const atobPolyfill = (asc: string) => {
 const _atob = typeof atob === 'function' ? (asc: string) => atob(_tidyB64(asc))
     : atobPolyfill;
 //
-const _toUint8Array: (a: string) => Uint8Array = typeof Uint8Array.fromBase64 === 'function'
-    ? (a) => Uint8Array.fromBase64(a) : (a) => _U8Afrom(_atob(a).split('').map(c => c.charCodeAt(0)));
+const _toUint8Array: (a: string) => Uint8Array = typeof (Uint8Array as any).fromBase64 === 'function'
+    ? (a) => (Uint8Array as any).fromBase64(a) : (a) => _U8Afrom(_atob(a).split('').map(c => c.charCodeAt(0)));
 /**
  * converts a Base64 string to a Uint8Array.
  */
@@ -276,7 +276,6 @@ const gBase64 = {
     extendUint8Array: extendUint8Array,
     extendBuiltins: extendBuiltins
 }
-// makecjs:CUT //
 export { version };
 export { VERSION };
 export { _atob as atob };
