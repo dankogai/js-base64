@@ -26,7 +26,7 @@ Locally…
 … or Directly from CDN.  In which case you don't even need to install.
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/js-base64@3.9.1/base64.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-base64@3.9.2/base64.min.js"></script>
 ```
 
 This good old way loads `Base64` in the global context (`window`).  Though `Base64.noConflict()` is made available, you should consider using ES6 Module to avoid tainting `window`.
@@ -49,14 +49,14 @@ or even remotely.
 ```html
 <script type="module">
 // note jsdelivr.net does not automatically minify .mjs
-import { Base64 } from 'https://cdn.jsdelivr.net/npm/js-base64@3.9.1/base64.mjs';
+import { Base64 } from 'https://cdn.jsdelivr.net/npm/js-base64@3.9.2/base64.mjs';
 </script>
 ```
 
 ```html
 <script type="module">
 // or if you prefer no Base64 namespace
-import { encode, decode } from 'https://cdn.jsdelivr.net/npm/js-base64@3.9.1/base64.mjs';
+import { encode, decode } from 'https://cdn.jsdelivr.net/npm/js-base64@3.9.2/base64.mjs';
 </script>
 ```
 
@@ -165,6 +165,6 @@ Or even better, `Base64.toUint8Array(pngBase64)`.
 
 ## Brief History
 
-* Since version 3.3 it is written in TypeScript.  Now `base64.mjs` is compiled from `base64.ts` then `base64.js` is generated from `base64.mjs`.
+* Since version 3.3 it is written in TypeScript.  Both `base64.mjs` and `base64.js` are compiled from `base64.ts` via [Rollup](https://rollupjs.org).
 * Since version 3.7 `base64.js` is ES5-compatible again (hence IE11-compatible).
 * Since 3.0 `js-base64` switch to ES2015 module so it is no longer compatible with legacy browsers like IE (see above)
