@@ -114,7 +114,7 @@
               + _fromCC(0x80 | (cc & 0x3f)));
       }
   };
-  var re_utob = /[\uD800-\uDBFF][\uDC00-\uDFFFF]|[^\x00-\x7F]/g;
+  var re_utob = /[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\x00-\x7F]/g;
   /**
    * @deprecated should have been internal use only.
    * @param {string} src UTF-8 string
