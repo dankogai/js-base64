@@ -30,7 +30,8 @@ jobs:
           cache-name: cache-node-modules
         with:
           path: '**/node_modules'
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          # package-lock.json is gitignored, so key on package.json instead
+          key: ${{ runner.os }}-node${{ matrix.node-version }}-${{ env.cache-name }}-${{ hashFiles('package.json') }}
       - run: echo '${{ toJSON(steps.node_modules_cache_id.outputs) }}'
       - if: ${{ steps.node_modules_cache_id.outputs.cache-hit != 'true' }}
         run: npm install
