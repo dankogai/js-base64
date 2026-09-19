@@ -63,10 +63,11 @@ declare const atobPolyfill: (asc: string) => string;
  * @returns {string} binary string
  */
 declare const _atob: (asc: string) => string;
+type Uint8ArrayBuffer = ReturnType<Uint8Array['slice']>;
 /**
  * converts a Base64 string to a Uint8Array.
  */
-declare const toUint8Array: (a: string) => Uint8Array;
+declare const toUint8Array: (a: string) => Uint8ArrayBuffer;
 /**
  * converts a Base64 string to a UTF-8 string.
  * @param {String} src Base64 string.  Both normal and URL-safe are supported
@@ -107,7 +108,7 @@ declare const gBase64: {
     decode: (src: string) => string;
     isValid: (src: unknown) => boolean;
     fromUint8Array: (u8a: Uint8Array, urlsafe?: boolean) => string;
-    toUint8Array: (a: string) => Uint8Array;
+    toUint8Array: (a: string) => Uint8ArrayBuffer;
     extendString: () => void;
     extendUint8Array: () => void;
     extendBuiltins: () => void;

@@ -189,13 +189,15 @@ const atobPolyfill = (asc: string) => {
  */
 const _atob = typeof atob === 'function' ? (asc: string) => atob(_tidyB64(asc))
     : atobPolyfill;
+// Use slice's copy type without requiring generic typed-array syntax.
+type Uint8ArrayBuffer = ReturnType<Uint8Array['slice']>;
 //
-const _toUint8Array: (a: string) => Uint8Array = typeof (Uint8Array as any).fromBase64 === 'function'
+const _toUint8Array: (a: string) => Uint8ArrayBuffer = typeof (Uint8Array as any).fromBase64 === 'function'
     ? (a) => (Uint8Array as any).fromBase64(a) : (a) => _U8Afrom(_atob(a).split('').map(c => c.charCodeAt(0)));
 /**
  * converts a Base64 string to a Uint8Array.
  */
-const toUint8Array = (a: string): Uint8Array => _toUint8Array(_unURI(a));
+const toUint8Array = (a: string): Uint8ArrayBuffer => _toUint8Array(_unURI(a));
 //
 const _decode = _TD
     ? (a: string) => _TD.decode(_toUint8Array(a))
