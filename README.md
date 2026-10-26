@@ -117,6 +117,32 @@ Base64.isValid('--');   // true: or URL-safe
 Base64.isValid('+-');   // false: can't mix both
 ```
 
+### Base64 variants
+
+The default encoding uses the standard Base64 alphabet from
+[RFC 4648, section 4](https://www.rfc-editor.org/rfc/rfc4648.html#section-4).
+The URL-safe form in js-base64 uses the base64url alphabet from
+[section 5](https://www.rfc-editor.org/rfc/rfc4648.html#section-5) and omits padding.
+
+| Form | Characters for values 62 and 63 | Padding | Encoding methods |
+| --- | --- | --- | --- |
+| Standard Base64 | `+` and `/` | Trailing `=` as needed | `Base64.encode(text)`, `Base64.fromUint8Array(bytes)` |
+| URL-safe Base64 | `-` and `_` | Omitted | `Base64.encodeURI(text)`, `Base64.encode(text, true)`, `Base64.fromUint8Array(bytes, true)` |
+
+For example, these bytes show both the alphabet and padding differences:
+
+```javascript
+const bytes = new Uint8Array([251, 255]);
+Base64.fromUint8Array(bytes);       // '+/8='
+Base64.fromUint8Array(bytes, true); // '-_8'
+Base64.toUint8Array('+/8=');        // Uint8Array [251, 255]
+Base64.toUint8Array('-_8');         // Uint8Array [251, 255]
+```
+
+`Base64.decode()` and `Base64.toUint8Array()` accept both alphabets, with or
+without padding. Use `decode()` for UTF-8 text and `toUint8Array()` for bytes.
+Encoded output has no line wrapping; MIME or PEM line wrapping is not added.
+
 ### Built-in Extensions
 
 By default `Base64` leaves built-in prototypes untouched.  But you can extend them as below.
