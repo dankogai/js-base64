@@ -89,7 +89,7 @@ Base64.encodeURI(latin);          // ZGFua29nYWk
 Base64.btoa(latin);               // ZGFua29nYWk=
 Base64.btoa(utf8);                // raises exception
 Base64.fromUint8Array(u8s);       // ZGFua29nYWk=
-Base64.fromUint8Array(u8s, true); // ZGFua29nYW which is URI safe
+Base64.fromUint8Array(u8s, true); // ZGFua29nYWk which is URI safe
 Base64.encode(utf8);              // 5bCP6aO85by+
 Base64.encode(utf8, true)         // 5bCP6aO85by-
 Base64.encodeURI(utf8);           // 5bCP6aO85by-
@@ -133,7 +133,7 @@ Base64.extendString();
 'ZGFua29nYWk='.fromBase64();  // dankogai
 '5bCP6aO85by+'.fromBase64();  // 小飼弾
 '5bCP6aO85by-'.fromBase64();  // 小飼弾
-'5bCP6aO85by-'.toUint8Array();// u8s above
+'5bCP6aO85by-'.toUint8Array();// UTF-8 bytes of '小飼弾'
 ```
 
 ```javascript
@@ -159,7 +159,7 @@ var pngBase64 =
   "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
 ```
 
-Which is a Base64-encoded 1x1 transparent PNG, **DO NOT USE** `Base64.decode(pngBase64)`.  Use `Base64.atob(pngBase64)` instead.  `Base64.decode()` decodes to UTF-8 string while `Base64.atob()` decodes to bytes, which is compatible to browser built-in `atob()` (Which is absent in node.js).  The same rule applies to the opposite direction.
+Which is a Base64-encoded 1x1 transparent PNG, **DO NOT USE** `Base64.decode(pngBase64)`.  Use `Base64.atob(pngBase64)` instead.  `Base64.decode()` decodes to UTF-8 string while `Base64.atob()` decodes to bytes, which is compatible to browser built-in `atob()`.  The same rule applies to the opposite direction.
 
 Or even better, `Base64.toUint8Array(pngBase64)`.
 
