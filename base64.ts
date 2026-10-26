@@ -61,7 +61,7 @@ const btoaPolyfill = (bin: string) => {
 const _btoa = typeof btoa === 'function' ? (bin: string) => btoa(bin)
     : btoaPolyfill;
 const _fromUint8Array: (u8a: Uint8Array) => string =
-    typeof (Uint8Array.prototype as any).toBase64 === 'function' ? (u8a) => (u8a as any).toBase64()
+    typeof (Uint8Array.prototype as any).toBase64 === 'function' ? Function.prototype.call.bind((Uint8Array.prototype as any).toBase64)
         : (u8a) => {
             // cf. https://stackoverflow.com/questions/12710001/how-to-convert-uint8-array-to-base64-encoded-string/12713326#12713326
             const maxargs = 0x1000;
