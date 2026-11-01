@@ -217,6 +217,8 @@ const decode = (src: string) => _decode(_unURI(src));
 const isValid = (src: unknown) => {
     if (typeof src !== 'string') return false;
     const s = src.replace(/\s+/g, '').replace(/={0,2}$/, '');
+    // a data length of 4n+1 cannot encode a whole number of bytes (#197)
+    if (s.length % 4 === 1) return false;
     return !/[^\s0-9a-zA-Z\+/]/.test(s) || !/[^\s0-9a-zA-Z\-_]/.test(s);
 };
 //

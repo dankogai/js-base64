@@ -46,8 +46,12 @@ describe('Base64', function () {
 describe('isValid', function () {
     it('', is(Base64.isValid(''), true));
     it('0', is(Base64.isValid(0), false));
-    it('Z', is(Base64.isValid('Z'), true));
+    it('Z', is(Base64.isValid('Z'), false));
+    it('Z=', is(Base64.isValid('Z='), false));
+    it('Z==', is(Base64.isValid('Z=='), false));
+    it('ZGFuA', is(Base64.isValid('ZGFuA'), false));
     it('ZA', is(Base64.isValid('ZA'), true));
+    it('ZGE', is(Base64.isValid('ZGE'), true));
     it('ZA=', is(Base64.isValid('ZA='), true));
     it('ZA==', is(Base64.isValid('ZA=='), true));
     it('++', is(Base64.isValid('++'), true));

@@ -112,6 +112,7 @@ Base64.isValid('');     // true: a valid Base64-encoded empty byte
 Base64.isValid('ZA=='); // true: a valid Base64-encoded 'd'
 Base64.isValid('Z A='); // true: whitespaces are okay
 Base64.isValid('ZA');   // true: padding ='s can be omitted
+Base64.isValid('Z');    // false: a single character can't encode a byte
 Base64.isValid('++');   // true: can be non URL-safe
 Base64.isValid('--');   // true: or URL-safe
 Base64.isValid('+-');   // false: can't mix both
