@@ -25,7 +25,7 @@ const b64tab = ((a) => {
 })(b64chs);
 const b64re = /^(?:[A-Za-z\d+\/]{4})*?(?:[A-Za-z\d+\/]{2}(?:==)?|[A-Za-z\d+\/]{3}=?)?$/;
 const _fromCC = String.fromCharCode.bind(String);
-const _U8Afrom = typeof Uint8Array.from === 'function'
+typeof Uint8Array.from === 'function'
     ? Uint8Array.from.bind(Uint8Array)
     : (it) => new Uint8Array(Array.prototype.slice.call(it, 0));
 const _mkUriSafe = (src) => src
@@ -186,7 +186,12 @@ const _atob = typeof atob === 'function' ? (asc) => atob(_tidyB64(asc))
     : atobPolyfill;
 //
 const _toUint8Array = typeof Uint8Array.fromBase64 === 'function'
-    ? (a) => Uint8Array.fromBase64(a) : (a) => _U8Afrom(_atob(a).split('').map(c => c.charCodeAt(0)));
+    ? (a) => Uint8Array.fromBase64(a) : (a) => {
+    const bin = _atob(a), l = bin.length, u8a = new Uint8Array(l);
+    for (let i = 0; i < l; i++)
+        u8a[i] = bin.charCodeAt(i);
+    return u8a;
+};
 /**
  * converts a Base64 string to a Uint8Array.
  */
