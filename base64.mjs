@@ -25,9 +25,6 @@ const b64tab = ((a) => {
 })(b64chs);
 const b64re = /^(?:[A-Za-z\d+\/]{4})*?(?:[A-Za-z\d+\/]{2}(?:==)?|[A-Za-z\d+\/]{3}=?)?$/;
 const _fromCC = String.fromCharCode.bind(String);
-typeof Uint8Array.from === 'function'
-    ? Uint8Array.from.bind(Uint8Array)
-    : (it) => new Uint8Array(Array.prototype.slice.call(it, 0));
 const _mkUriSafe = (src) => src
     .replace(/=/g, '').replace(/[+\/]/g, (m0) => m0 == '+' ? '-' : '_');
 const _tidyB64 = (s) => s.replace(/[^A-Za-z0-9\+\/]/g, '');
