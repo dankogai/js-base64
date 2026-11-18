@@ -39,7 +39,7 @@
   })(b64chs);
   var b64re = /^(?:[A-Za-z\d+\/]{4})*?(?:[A-Za-z\d+\/]{2}(?:==)?|[A-Za-z\d+\/]{3}=?)?$/;
   var _fromCC = String.fromCharCode.bind(String);
-  var _U8Afrom = typeof Uint8Array.from === 'function'
+  typeof Uint8Array.from === 'function'
       ? Uint8Array.from.bind(Uint8Array)
       : function (it) { return new Uint8Array(Array.prototype.slice.call(it, 0)); };
   var _mkUriSafe = function (src) { return src
@@ -206,7 +206,12 @@
       : atobPolyfill;
   //
   var _toUint8Array = typeof Uint8Array.fromBase64 === 'function'
-      ? function (a) { return Uint8Array.fromBase64(a); } : function (a) { return _U8Afrom(_atob(a).split('').map(function (c) { return c.charCodeAt(0); })); };
+      ? function (a) { return Uint8Array.fromBase64(a); } : function (a) {
+      var bin = _atob(a), l = bin.length, u8a = new Uint8Array(l);
+      for (var i = 0; i < l; i++)
+          u8a[i] = bin.charCodeAt(i);
+      return u8a;
+  };
   /**
    * converts a Base64 string to a Uint8Array.
    */

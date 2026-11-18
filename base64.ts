@@ -193,7 +193,11 @@ const _atob = typeof atob === 'function' ? (asc: string) => atob(_tidyB64(asc))
 type Uint8ArrayBuffer = ReturnType<Uint8Array['slice']>;
 //
 const _toUint8Array: (a: string) => Uint8ArrayBuffer = typeof (Uint8Array as any).fromBase64 === 'function'
-    ? (a) => (Uint8Array as any).fromBase64(a) : (a) => _U8Afrom(_atob(a).split('').map(c => c.charCodeAt(0)));
+    ? (a) => (Uint8Array as any).fromBase64(a) : (a) => {
+        const bin = _atob(a), l = bin.length, u8a = new Uint8Array(l);
+        for (let i = 0; i < l; i++) u8a[i] = bin.charCodeAt(i);
+        return u8a as Uint8ArrayBuffer;
+    };
 /**
  * converts a Base64 string to a Uint8Array.
  */
