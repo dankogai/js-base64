@@ -20,4 +20,5 @@ jobs:
         run: bun add -d mocha && bun install
 
       - name: Run tests
-        run: bun run mocha
+        # --bun: mocha's shebang asks for node, which bun run would honor
+        run: bun --bun run mocha
