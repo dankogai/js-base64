@@ -192,6 +192,8 @@ Or even better, `Base64.toUint8Array(pngBase64)`.
 
 ## Brief History
 
+See [CHANGELOG.md](CHANGELOG.md) for what changed in each version.
+
 * Since version 3.3 it is written in TypeScript.  Both `base64.mjs` and `base64.js` are compiled from `base64.ts` via [Rollup](https://rollupjs.org).
 * Since version 3.7 `base64.js` is ES5-compatible again (hence IE11-compatible).
 * Since 3.0 `js-base64` switch to ES2015 module so it is no longer compatible with legacy browsers like IE (see above)

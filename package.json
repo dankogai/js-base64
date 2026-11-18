@@ -30,7 +30,7 @@
 		"clean": "node -e \"['base64.js','base64.mjs','base64.d.ts','base64.d.mts'].forEach(f=>require('fs').rmSync(f,{force:true}))\"",
 		"test": "npm run build && mocha && npm run test:types",
 		"test:types": "tsc --noEmit --strict --module nodenext --lib es2020,dom test/types.cts test/types.mts",
-		"version": "npm run build && node util/sync-version.js && git add base64.js base64.mjs base64.d.ts base64.d.mts README.md"
+		"version": "npm run build && node util/sync-version.js && git add base64.js base64.mjs base64.d.ts base64.d.mts README.md CHANGELOG.md"
 	},
 	"devDependencies": {
 		"@rollup/plugin-replace": "^6.0.3",
