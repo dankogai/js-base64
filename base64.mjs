@@ -181,10 +181,12 @@ const atobPolyfill = (asc) => {
  */
 const _atob = typeof atob === 'function' ? (asc) => atob(_tidyB64(asc))
     : atobPolyfill;
+const _atobTidied = typeof atob === 'function' ? (asc) => atob(asc)
+    : atobPolyfill;
 //
 const _toUint8Array = typeof Uint8Array.fromBase64 === 'function'
     ? (a) => Uint8Array.fromBase64(a) : (a) => {
-    const bin = _atob(a), l = bin.length, u8a = new Uint8Array(l);
+    const bin = _atobTidied(a), l = bin.length, u8a = new Uint8Array(l);
     for (let i = 0; i < l; i++)
         u8a[i] = bin.charCodeAt(i);
     return u8a;
@@ -196,7 +198,7 @@ const toUint8Array = (a) => _toUint8Array(_unURI(a));
 //
 const _decode = _TD
     ? (a) => _TD.decode(_toUint8Array(a))
-    : (a) => btou(_atob(a));
+    : (a) => btou(_atobTidied(a));
 const _unURI = (a) => _tidyB64(a.replace(/[-_]/g, (m0) => m0 == '-' ? '+' : '/'));
 /**
  * converts a Base64 string to a UTF-8 string.
