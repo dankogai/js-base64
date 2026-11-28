@@ -6,6 +6,8 @@ touched documentation, tests or CI are omitted.
 
 ## [Unreleased]
 
+## [3.9.8] - 2026-11-28
+
 ### Changed
 
 - `decode()` and `toUint8Array()` are faster on platforms with `atob` but
@@ -323,7 +325,8 @@ touched documentation, tests or CI are omitted.
 
 See the [commit history](https://github.com/dankogai/js-base64/commits/main).
 
-[Unreleased]: https://github.com/dankogai/js-base64/compare/v3.9.7...HEAD
+[Unreleased]: https://github.com/dankogai/js-base64/compare/v3.9.8...HEAD
+[3.9.8]: https://github.com/dankogai/js-base64/releases/tag/v3.9.8
 [3.9.7]: https://github.com/dankogai/js-base64/releases/tag/v3.9.7
 [3.9.6]: https://github.com/dankogai/js-base64/releases/tag/v3.9.6
 [3.9.5]: https://github.com/dankogai/js-base64/releases/tag/v3.9.5
