@@ -11,6 +11,11 @@ touched documentation, tests or CI are omitted.
 - `decode()` and `toUint8Array()` are faster on platforms with `atob` but
   without `Uint8Array.fromBase64`: the input is cleaned once, not twice.
 
+### Fixed
+
+- `atobPolyfill()` no longer fails on large input.  Its validating regexp
+  overflowed the stack on V8 from about 5,000,000 characters ([#200]).
+
 ## [3.9.7] - 2026-11-18
 
 ### Changed
@@ -364,6 +369,7 @@ See the [commit history](https://github.com/dankogai/js-base64/commits/main).
 [2.6.1]: https://github.com/dankogai/js-base64/releases/tag/2.6.1
 [2.6.0]: https://github.com/dankogai/js-base64/releases/tag/2.6.0
 
+[#200]: https://github.com/dankogai/js-base64/issues/200
 [#198]: https://github.com/dankogai/js-base64/issues/198
 [#197]: https://github.com/dankogai/js-base64/issues/197
 [#194]: https://github.com/dankogai/js-base64/issues/194

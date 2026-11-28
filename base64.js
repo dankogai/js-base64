@@ -37,7 +37,6 @@
       a.forEach(function (c, i) { return tab[c] = i; });
       return tab;
   })(b64chs);
-  var b64re = /^(?:[A-Za-z\d+\/]{4})*?(?:[A-Za-z\d+\/]{2}(?:==)?|[A-Za-z\d+\/]{3}=?)?$/;
   var _fromCC = String.fromCharCode.bind(String);
   var _mkUriSafe = function (src) { return src
       .replace(/=/g, '').replace(/[+\/]/g, function (m0) { return m0 == '+' ? '-' : '_'; }); };
@@ -172,7 +171,12 @@
   var atobPolyfill = function (asc) {
       // console.log('polyfilled');
       asc = asc.replace(/\s+/g, '');
-      if (!b64re.test(asc))
+      // checked by hand: a regexp that matches the whole string overflows
+      // the stack on large input (#200)
+      var pad = asc.slice(-2) === '==' ? 2 : asc.slice(-1) === '=' ? 1 : 0;
+      var len = asc.length - pad, rem = len & 3;
+      if (rem === 1 || (pad && pad + rem !== 4)
+          || /[^A-Za-z\d+\/]/.test(asc.slice(0, len)))
           throw new TypeError('malformed base64.');
       asc += '=='.slice(2 - (asc.length & 3));
       var u24, r1, r2;

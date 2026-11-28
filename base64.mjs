@@ -23,7 +23,6 @@ const b64tab = ((a) => {
     a.forEach((c, i) => tab[c] = i);
     return tab;
 })(b64chs);
-const b64re = /^(?:[A-Za-z\d+\/]{4})*?(?:[A-Za-z\d+\/]{2}(?:==)?|[A-Za-z\d+\/]{3}=?)?$/;
 const _fromCC = String.fromCharCode.bind(String);
 const _mkUriSafe = (src) => src
     .replace(/=/g, '').replace(/[+\/]/g, (m0) => m0 == '+' ? '-' : '_');
@@ -152,7 +151,12 @@ const btou = (b) => b.replace(re_btou, cb_btou);
 const atobPolyfill = (asc) => {
     // console.log('polyfilled');
     asc = asc.replace(/\s+/g, '');
-    if (!b64re.test(asc))
+    // checked by hand: a regexp that matches the whole string overflows
+    // the stack on large input (#200)
+    const pad = asc.slice(-2) === '==' ? 2 : asc.slice(-1) === '=' ? 1 : 0;
+    const len = asc.length - pad, rem = len & 3;
+    if (rem === 1 || (pad && pad + rem !== 4)
+        || /[^A-Za-z\d+\/]/.test(asc.slice(0, len)))
         throw new TypeError('malformed base64.');
     asc += '=='.slice(2 - (asc.length & 3));
     let u24, r1, r2;
