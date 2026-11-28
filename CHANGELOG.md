@@ -6,6 +6,11 @@ touched documentation, tests or CI are omitted.
 
 ## [Unreleased]
 
+### Changed
+
+- `decode()` and `toUint8Array()` are faster on platforms with `atob` but
+  without `Uint8Array.fromBase64`: the input is cleaned once, not twice.
+
 ## [3.9.7] - 2026-11-18
 
 ### Changed

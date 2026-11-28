@@ -201,10 +201,12 @@
    */
   var _atob = typeof atob === 'function' ? function (asc) { return atob(_tidyB64(asc)); }
       : atobPolyfill;
+  var _atobTidied = typeof atob === 'function' ? function (asc) { return atob(asc); }
+      : atobPolyfill;
   //
   var _toUint8Array = typeof Uint8Array.fromBase64 === 'function'
       ? function (a) { return Uint8Array.fromBase64(a); } : function (a) {
-      var bin = _atob(a), l = bin.length, u8a = new Uint8Array(l);
+      var bin = _atobTidied(a), l = bin.length, u8a = new Uint8Array(l);
       for (var i = 0; i < l; i++)
           u8a[i] = bin.charCodeAt(i);
       return u8a;
@@ -216,7 +218,7 @@
   //
   var _decode = _TD
       ? function (a) { return _TD.decode(_toUint8Array(a)); }
-      : function (a) { return btou(_atob(a)); };
+      : function (a) { return btou(_atobTidied(a)); };
   var _unURI = function (a) {
       return _tidyB64(a.replace(/[-_]/g, function (m0) { return m0 == '-' ? '+' : '/'; }));
   };
